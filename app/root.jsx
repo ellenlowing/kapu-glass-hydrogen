@@ -16,7 +16,6 @@ import resetStyles from './styles/reset.css';
 
 export const links = () => {
   return [
-    {rel: 'stylesheet', href: styles},
     {rel: 'stylesheet', href: bootstrapStyles},
     {rel: 'stylesheet', href: resetStyles},
     {
@@ -28,6 +27,7 @@ export const links = () => {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'stylesheet', href: styles},
     {rel: 'stylesheet', href: customStyles},
   ];
 };

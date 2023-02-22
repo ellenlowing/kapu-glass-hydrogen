@@ -1,10 +1,14 @@
 import {Link, useLocation, useSearchParams, useTransition} from '@remix-run/react';
+import { useState } from 'react';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownToggle from 'react-bootstrap/esm/DropdownToggle';
 
 export default function ProductOptions({options, selectedVariant}) {
   // pathname and search will be used to build option URLs
   const {pathname, search} = useLocation();
-  const [currentSearchParams] = useSearchParams();
+  const [currentSearchParams, setSearchParams] = useSearchParams({});
   const transition = useTransition();
+  const [index, setIndex] = useState(0);
 
   const paramsWithDefaults = (() => {
     const defaultParams = new URLSearchParams(currentSearchParams);
@@ -25,9 +29,10 @@ export default function ProductOptions({options, selectedVariant}) {
   const searchParams = transition.location
     ? new URLSearchParams(transition.location.search)
     : paramsWithDefaults;
-
+  
+  
   return (
-    <div className="grid gap-4 mb-6">
+    <div className="grid gap-4">
       {/* Each option will show a label and option value <Links> */}
       {options.map((option) => {
         if (!option.values.length) {
@@ -39,33 +44,34 @@ export default function ProductOptions({options, selectedVariant}) {
         return (
           <div
             key={option.name}
-            className="flex flex-col flex-wrap mb-4 gap-y-2 last:mb-0"
+            className="gap-y-2 border-[1.5px] border-black-500 text-md w-fit-content"
           >
-            <h3 className="whitespace-pre-wrap max-w-prose font-bold text-lead min-w-[4rem]">
-              {option.name}
-            </h3>
+            <Dropdown>
+              <Dropdown.Toggle className="p-1 cursor-pointer" as="div">
+                {currentOptionVal}
+              </Dropdown.Toggle>
 
-            <div className="flex flex-wrap items-baseline gap-4">
-              {option.values.map((value) => {
-                // Build a URLSearchParams object from the current search string
-                const linkParams = new URLSearchParams(searchParams);
-                const isSelected = currentOptionVal === value;
-                // Set the option name and value, overwriting any existing values
-                linkParams.set(option.name, value);
-                return (
-                  <Link
-                    key={value}
-                    to={`${pathname}?${linkParams.toString()}`}
-                    preventScrollReset
-                    replace
-                    className={`leading-none py-1 border-b-[1.5px] cursor-pointer transition-all duration-200 ${ isSelected ? 'border-gray-500' : 'border-neutral-50'
-                      }`}
-                  >
-                    {value}
-                  </Link>
-                );
-              })}
-            </div>
+              <Dropdown.Menu className="non-rounded border-black-500 border-[1.5px] p-1 w-fit-content">
+                {option.values.map((value) => {
+                  const linkParams = new URLSearchParams(searchParams);
+                  const isSelected = currentOptionVal === value;
+                  linkParams.set(option.name, value);
+                  return (
+                    <Dropdown.Item as="div" key={value} className="p-0 relativ w-fit-content hover:bg-unset">
+                      <Link
+                        to={`${pathname}?${linkParams.toString()}`}
+                        preventScrollReset
+                        replace
+                        className={`leading-none cursor-pointer transition-all duration-200 w-fit-content relative hover:bg-hover hover:col-unset`}
+                      >
+                        {value}
+                      </Link>
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Menu>
+            </Dropdown>
+            
           </div>
         );
       })}

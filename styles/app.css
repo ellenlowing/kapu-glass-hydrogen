@@ -4,9 +4,19 @@
 
 @layer components {
   /* New component styles can go here */
+  
+  :root {
+    --neongreen: #B3FF00cc;
+    --hover-bgcolor: var(--neongreen);
+    --hover-txtcolor: #000;
+  }
 
   .w-half {
     width: 50%;
+  }
+
+  .w-fit-content {
+    width: fit-content;
   }
 
   .left-0 {
@@ -17,8 +27,41 @@
     right: 0;
   }
 
+  .border-black-500 {
+    --tw-border-opacity: 1;
+    border-color: rgb(0 / var(--tw-border-opacity));
+  }
+
+  .non-rounded {
+    border-radius: 0;
+  }
+
+  .p-2 {
+    padding: 0.5rem;
+  }
+
+  .p-3 {
+    padding: 0.75rem;
+  }
+
   .z-bg {
     z-index: -1;
+  }
+
+  .col-unset {
+    color: unset;
+  }
+
+  .col-hover {
+    color: var(--hover-txtcolor);
+  }
+
+  .bg-unset {
+    background: unset;
+  }
+
+  .bg-hover {
+    background-color: var(--hover-bgcolor);
   }
 
   .cursor-next {
@@ -27,5 +70,9 @@
 
   .cursor-prev {
     cursor: w-resize;
+  }
+
+  .prevent-scroll {
+    overflow-anchor: none;
   }
 }

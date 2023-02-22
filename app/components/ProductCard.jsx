@@ -6,7 +6,7 @@ export default function ProductCard({product}) {
   const isDiscounted = compareAtPrice?.amount > price?.amount;
 
   return (
-    <Link to={`/products/${product.handle}`}>
+    <Link to={`/products/${product.handle}`} className=" hover:col-unset hover:bg-unset">
       <div className="grid gap-6">
         <div className="shadow-sm rounded relative">
           {isDiscounted && (
@@ -20,11 +20,11 @@ export default function ProductCard({product}) {
           />
         </div>
         <div className="grid gap-1">
-          <h3 className="max-w-prose text-copy w-full overflow-hidden whitespace-nowrap text-ellipsis ">
+          <h3 className="max-w-prose text-copy overflow-hidden whitespace-nowrap text-ellipsis w-fit-content ">
             {product.title}
           </h3>
           <div className="flex gap-4">
-            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-4">
+            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
               {price.currencyCode}$
               <Money 
                 withoutCurrency 

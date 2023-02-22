@@ -48,8 +48,8 @@ export default function ProductHandle() {
                         <h1 className="text-2xl font-bold whitespace-normal">
                             {product.title}
                         </h1>
-                        <div className="flex gap-4">
-                          <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-4">
+                        <div className="flex gap-2">
+                          <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                             {price.currencyCode}$
                             <Money 
                               withoutCurrency 

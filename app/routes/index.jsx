@@ -22,7 +22,7 @@ export default function Index() {
             <div className="grid-flow-row grid gap-2 gap-y-6 md:gap-4 lg:gap-6 grid-cols-1 false  sm:grid-cols-3 false false">
                 {collections.nodes.map((collection) => {
                     return (
-                        <Link to={`/collections/${collection.handle}`} key={collection.id}>
+                        <Link to={`/collections/${collection.handle}`} key={collection.id} className="hover:col-unset">
                             {collection?.image && (
                                 <Image
                                     alt={`Image of ${collection.title}`}
@@ -36,7 +36,7 @@ export default function Index() {
                                     }}
                                 />
                             )}
-                            <h2 className="whitespace-pre-wrap max-w-prose font-medium text-copy">
+                            <h2 className="whitespace-pre-wrap max-w-prose font-medium text-copy w-fit-content">
                                 {collection.title}
                             </h2>
                         </Link>
