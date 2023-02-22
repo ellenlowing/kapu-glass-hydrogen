@@ -28,7 +28,6 @@ export default function ProductOptions({options, selectedVariant}) {
 
   return (
     <div className="grid gap-4 mb-6">
-
       {/* Each option will show a label and option value <Links> */}
       {options.map((option) => {
         if (!option.values.length) {

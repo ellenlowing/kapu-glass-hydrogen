@@ -7,13 +7,18 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import styles from './styles/app.css';
+import customStyles from './styles/custom.css';
 import favicon from '../public/favicon.svg';
 import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
+import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
+import resetStyles from './styles/reset.css';
 
 export const links = () => {
   return [
     {rel: 'stylesheet', href: styles},
+    {rel: 'stylesheet', href: bootstrapStyles},
+    {rel: 'stylesheet', href: resetStyles},
     {
       rel: 'preconnect',
       href: 'https://cdn.shopify.com',
@@ -23,6 +28,7 @@ export const links = () => {
       href: 'https://shop.app',
     },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'stylesheet', href: customStyles},
   ];
 };
 

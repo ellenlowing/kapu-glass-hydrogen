@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "Director-Light";
+  src: url("../../public/fonts/Director-Light.woff2") format("woff2"),
+       url("../../public/fonts/Director-Light.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Director-Regular";
+  src: url("../../public/fonts/Director-Regular.woff2") format("woff2"),
+       url("../../public/fonts/Director-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Director-Bold";
+  font-weight: 700;
+  src: url("../../public/fonts/Director-Bold.woff2") format("woff2"),
+       url("../../public/fonts/Director-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "fa";
+  src: url("../../public/fonts/FA_TEEQGAFPBI.ttf") format("truetype");
+}
+
+html, body {
+    font-family: 'Director-Light';
+}

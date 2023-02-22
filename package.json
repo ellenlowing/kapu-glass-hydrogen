@@ -14,14 +14,17 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
+    "@coreui/react": "^4.6.0",
     "@remix-run/react": "1.12.0",
     "@shopify/cli": "3.29.0",
     "@shopify/cli-hydrogen": "^4.0.6",
     "@shopify/hydrogen": "^2023.1.4",
     "@shopify/remix-oxygen": "^1.0.3",
+    "bootstrap": "^5.2.3",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
     "react": "^18.2.0",
+    "react-bootstrap": "^2.7.2",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {

@@ -25,11 +25,17 @@ export default function ProductCard({product}) {
           </h3>
           <div className="flex gap-4">
             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-4">
-              <Money withoutTrailingZeros data={price} />
+              {price.currencyCode}$
+              <Money 
+                withoutCurrency 
+                withoutTrailingZeros 
+                data={price} 
+              />
               {isDiscounted && (
                 <Money
                   className="line-through opacity-50"
                   withoutTrailingZeros
+                  withoutCurrency
                   data={compareAtPrice}
                 />
               )}

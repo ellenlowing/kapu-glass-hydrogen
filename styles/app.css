@@ -4,4 +4,28 @@
 
 @layer components {
   /* New component styles can go here */
+
+  .w-half {
+    width: 50%;
+  }
+
+  .left-0 {
+    left: 0;
+  }
+
+  .right-0 {
+    right: 0;
+  }
+
+  .z-bg {
+    z-index: -1;
+  }
+
+  .cursor-next {
+    cursor: e-resize;
+  }
+
+  .cursor-prev {
+    cursor: w-resize;
+  }
 }
