@@ -36,7 +36,7 @@ export default function Index() {
                                     }}
                                 />
                             )}
-                            <h2 className="whitespace-pre-wrap max-w-prose font-medium text-copy w-fit-content">
+                            <h2 className="whitespace-pre-wrap max-w-prose font-medium text-copy w-full">
                                 {collection.title}
                             </h2>
                         </Link>

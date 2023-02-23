@@ -20,7 +20,7 @@ export default function ProductCard({product}) {
           />
         </div>
         <div className="grid gap-1">
-          <h3 className="max-w-prose text-copy overflow-hidden whitespace-nowrap text-ellipsis w-fit-content ">
+          <h3 className="max-w-prose text-copy overflow-hidden whitespace-nowrap text-ellipsis w-full">
             {product.title}
           </h3>
           <div className="flex gap-4">

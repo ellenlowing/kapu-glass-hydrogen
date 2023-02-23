@@ -36,10 +36,10 @@ export default function ProductHandle() {
     const isDiscounted = compareAtPrice?.amount > price?.amount;
 
     return (
-        <section className="w-full gap-4 grid px-6">
+        <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto">
             <div className="grid items-start gap-6">
-                <div className="mx-auto grid md:grid-flow-row md:p-0 .md:max-w-md">
-                    <div className="snap-center card-image w-[80vw] shadow rounded">
+                <div className="mx-auto grid max-w-[500px] w-[80%] py-8 md:p-4">
+                    <div className="snap-center shadow">
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
