@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-const ReactP5Wrapper = React.lazy(() => 
+import {useEffect, lazy, Suspense} from "react";
+const ReactP5Wrapper = lazy(() => 
   import('react-p5-wrapper').then(module => ({
     default: module.ReactP5Wrapper
   }))
@@ -12,9 +12,9 @@ export default function Sketch() {
     return (
         <>
             {/* {!isSSR && ( */}
-                <React.Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<div>Loading...</div>}>
                     <ReactP5Wrapper sketch={sketch}></ReactP5Wrapper>
-                </React.Suspense>
+                </Suspense>
             {/* )} */}
         </>
     );
