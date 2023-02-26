@@ -4,29 +4,37 @@ import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
 
+const seo = ({data}) => ({
+  title: data?.product?.title,
+  description: data?.product?.description,
+});
+export const handle = {
+  seo,
+};
+
 export const loader = async ({params, context, request}) => {
-    const {handle} = params;
-    const searchParams = new URL(request.url).searchParams;
-    const selectedOptions = [];
-    searchParams.forEach((value, name) => {
-      selectedOptions.push({name, value});
-    });
-    const {product} = await context.storefront.query(PRODUCT_QUERY, {
-        variables: {
-            handle,
-            selectedOptions
-        },
-    });
-    const selectedVariant = product.selectedVariant ?? product?.variants?.nodes[0];
+  const {handle} = params;
+  const searchParams = new URL(request.url).searchParams;
+  const selectedOptions = [];
+  searchParams.forEach((value, name) => {
+    selectedOptions.push({name, value});
+  });
+  const {product} = await context.storefront.query(PRODUCT_QUERY, {
+      variables: {
+          handle,
+          selectedOptions
+      },
+  });
+  const selectedVariant = product.selectedVariant ?? product?.variants?.nodes[0];
 
-    if (!product?.id) {
-        throw new Response(null, {status: 404});
-    }
+  if (!product?.id) {
+      throw new Response(null, {status: 404});
+  }
 
-    return json({
-        product,
-        selectedVariant
-    });
+  return json({
+      product,
+      selectedVariant
+  });
 }
 
 
@@ -38,7 +46,7 @@ export default function ProductHandle() {
     return (
         <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto">
             <div className="grid items-start gap-6">
-                <div className="mx-auto grid max-w-[500px] w-[80%] py-8 md:p-4">
+                <div className="mx-auto grid max-w-[600px] w-[80%] py-8 md:p-4">
                     <div className="snap-center shadow">
                         <ProductGallery media={product.media.nodes}/>
                     </div>

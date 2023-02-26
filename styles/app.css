@@ -11,6 +11,19 @@
     --hover-txtcolor: #000;
   }
 
+  ::-webkit-scrollbar {
+    display: none;
+  }
+
+  svg {
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+  
   .w-half {
     width: 50%;
   }
@@ -74,5 +87,12 @@
 
   .prevent-scroll {
     overflow-anchor: none;
+  }
+
+  .react-p5-wrapper {
+    display: block;
+    position: fixed;
+    top: 0;
+    z-index: -1;
   }
 }

@@ -1,14 +1,14 @@
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 
-export default function ProductCard({product}) {
+export default function ProductCard({product, dataIndex}) {
   const {price, compareAtPrice} = product.variants?.nodes[0] || {};
   const isDiscounted = compareAtPrice?.amount > price?.amount;
 
   return (
-    <Link to={`/products/${product.handle}`} className=" hover:col-unset hover:bg-unset">
+    <Link id={dataIndex} to={`/products/${product.handle}`} className={`hover:col-unset hover:bg-unset col-2 offset-0 absolute`}>
       <div className="grid gap-6">
-        <div className="shadow-sm rounded relative">
+        <div className="hover:shadow rounded relative">
           {isDiscounted && (
             <label className="subpixel-antialiased absolute top-0 right-0 m-4 text-right text-notice text-red-600 text-xs">
               Sale
@@ -19,7 +19,7 @@ export default function ProductCard({product}) {
             alt={product.title}
           />
         </div>
-        <div className="grid gap-1">
+        <div className="grid gap-1 hidden">
           <h3 className="max-w-prose text-copy overflow-hidden whitespace-nowrap text-ellipsis w-full">
             {product.title}
           </h3>

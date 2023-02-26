@@ -15,6 +15,7 @@
   "prettier": "@shopify/prettier-config",
   "dependencies": {
     "@coreui/react": "^4.6.0",
+    "@loadable/component": "^5.15.3",
     "@remix-run/react": "1.12.0",
     "@shopify/cli": "3.29.0",
     "@shopify/cli-hydrogen": "^4.0.6",
@@ -23,9 +24,11 @@
     "bootstrap": "^5.2.3",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "p5": "^1.6.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.2",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-p5-wrapper": "^4.1.0"
   },
   "devDependencies": {
     "@remix-run/dev": "1.12.0",
