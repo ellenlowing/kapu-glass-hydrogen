@@ -1,4 +1,4 @@
-import {useEffect, lazy, Suspense} from "react";
+import {useEffect, useState, lazy, Suspense} from "react";
 const ReactP5Wrapper = lazy(() => 
   import('react-p5-wrapper').then(module => ({
     default: module.ReactP5Wrapper
@@ -7,15 +7,23 @@ const ReactP5Wrapper = lazy(() =>
 // import Slide from "./Slide";
 
 export default function Sketch() {
-    // const isSSR = typeof window === 'undefined';
+
+    const [isSSR, setIsSSR] = useState(true);
+
+    useEffect(() => {
+        setIsSSR(false);
+    })
 
     return (
         <>
-            {/* {!isSSR && ( */}
-                <Suspense fallback={<div>Loading...</div>}>
-                    <ReactP5Wrapper sketch={sketch}></ReactP5Wrapper>
-                </Suspense>
-            {/* )} */}
+            {
+                !isSSR && (
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <ReactP5Wrapper sketch={sketch}></ReactP5Wrapper>
+                    </Suspense>
+                )
+            }
+            
         </>
     );
 }
