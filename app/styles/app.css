@@ -481,6 +481,7 @@ svg {
     margin: 0 auto;
     width: 100%;
     height: auto;
+    /* height: calc(100vh - 64px); */
     position: relative;
     top: 0;
     left: 0;
@@ -508,7 +509,8 @@ svg {
 .react-p5-wrapper {
     display: block;
     position: fixed;
-    top: 0;
+    top: 64px;
+    left: 0;
     z-index: -1;
   }
 .absolute {
@@ -839,10 +841,6 @@ svg {
     padding: 1.5rem;
   }
 
-  .md\:p-8 {
-    padding: 2rem;
-  }
-
   .md\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
@@ -857,10 +855,6 @@ svg {
 
   .lg\:gap-6 {
     gap: 1.5rem;
-  }
-
-  .lg\:p-12 {
-    padding: 3rem;
   }
 }
 

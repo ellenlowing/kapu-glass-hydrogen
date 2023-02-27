@@ -19,6 +19,7 @@
     margin: 0 auto;
     width: 100%;
     height: auto;
+    /* height: calc(100vh - 64px); */
     position: relative;
     top: 0;
     left: 0;
@@ -92,7 +93,8 @@
   .react-p5-wrapper {
     display: block;
     position: fixed;
-    top: 0;
+    top: 64px;
+    left: 0;
     z-index: -1;
   }
 }
