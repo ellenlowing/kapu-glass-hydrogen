@@ -9,6 +9,8 @@
     --neongreen: #B3FF00cc;
     --hover-bgcolor: var(--neongreen);
     --hover-txtcolor: #000;
+    --product-hover-bgcolor: #E5F3FF;
+    --product-hover-txtcolor: #3300FF;
   }
 
   ::-webkit-scrollbar {
@@ -38,12 +40,24 @@
     width: fit-content;
   }
 
+  .h-fit-content {
+    height: fit-content;
+  }
+
+  .w-min-content {
+    width: min-content;
+  }
+
   .left-0 {
     left: 0;
   }
 
   .right-0 {
     right: 0;
+  }
+
+  .bottom-0 {
+    bottom: 0;
   }
 
   .border-black-500 {
@@ -101,5 +115,14 @@
     top: 64px;
     left: 0;
     z-index: -1;
+  }
+
+  .product-hover {
+    background-color: var(--product-hover-bgcolor);
+    color: var(--product-hover-txtcolor);
+  }
+
+  .font-fa {
+    font-family: "fa";
   }
 }

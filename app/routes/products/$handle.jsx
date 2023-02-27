@@ -51,7 +51,7 @@ export default function ProductHandle() {
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
-                <div className="md:sticky max-w-xl grid gap-8 p-0 md:p-6 md:px-0 top-[6rem] lg:top-[8rem] xl:top-[10rem]">
+                <div className="md:sticky max-w-xl grid gap-8 px-0 py-8 md:p-6 md:px-0 top-[6rem] lg:top-[8rem] xl:top-[10rem]">
                     <div className="grid gap-2">
                         <h1 className="text-2xl font-bold whitespace-normal">
                             {product.title}

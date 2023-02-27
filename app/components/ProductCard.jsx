@@ -6,9 +6,10 @@ export default function ProductCard({product, dataIndex}) {
   const isDiscounted = compareAtPrice?.amount > price?.amount;
 
   return (
-    <Link id={dataIndex} to={`/products/${product.handle}`} className={`hover:col-unset hover:bg-unset w-[140px] md:w-[180px] lg:w-[16vw] max-w-[240px] offset-0 absolute`}>
-      <div className="grid gap-6">
-        <div className="hover:shadow rounded relative transition ease-in-out duration-500 hover:scale-[2.0] hover:z-50 z-1">
+    <Link id={dataIndex} to={`/products/${product.handle}`} 
+      className={`group hover:col-unset hover:bg-unset w-[140px] md:w-[160px] lg:w-[16vw] max-w-[200px] offset-0 absolute hover:scale-[2.0] hover:z-50 z-1 transition ease-in-out duration-50 `}>
+      <div className="grid gap-2 relative">
+        <div className="hover:shadow rounded relative">
           {isDiscounted && (
             <label className="subpixel-antialiased absolute top-0 right-0 m-4 text-right text-notice text-red-600 text-xs">
               Sale
@@ -20,12 +21,12 @@ export default function ProductCard({product, dataIndex}) {
             className="rounded"
           />
         </div>
-        <div className="grid gap-1 hidden">
-          <h3 className="max-w-prose text-copy overflow-hidden whitespace-nowrap text-ellipsis w-full">
+        <div className="group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
+          <h3 className="t-0 left-0 p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-fit-content h-fit-content">
             {product.title}
           </h3>
-          <div className="flex gap-4">
-            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
+          <div className="absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content bottom-0 right-0">
+            <span className="max-w-prose whitespace-pre-wrap inherit text-copy text-xs flex gap-3">
               {price.currencyCode}$
               <Money 
                 withoutCurrency 

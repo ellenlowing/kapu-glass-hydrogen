@@ -19,7 +19,7 @@
 
 @font-face {
   font-family: "fa";
-  src: url("../../public/fonts/FA_TEEQGAFPBI.ttf") format("truetype");
+  src: url("../../public/fonts/FA_TEEQGAFPBI_cleaned.ttf") format("truetype");
 }
 
 html, body {
