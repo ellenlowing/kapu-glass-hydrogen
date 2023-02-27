@@ -47,6 +47,8 @@ function sketch(p5) {
         p5.noStroke();
 
         const urlPath = p5.getURLPath();
+        const collectionName = urlPath[1];
+        console.log(collectionName);
 
         if(urlPath.length == 0) {
             // homepage
@@ -59,14 +61,21 @@ function sketch(p5) {
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             // other pages
             page = 'collections';
-
-            console.log('collections');
+            const collectionName = urlPath[1];
 
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
 
-            slide = document.getElementById('slide');
-            slidePath = document.getElementById('slide-path');
+            const svgs = document.getElementsByClassName('svg-slide');
+            slide = document.getElementById(`slide-${collectionName}`);
+            for(let svg of svgs) {
+                if(svg !== slide) {
+                    svg.style.display = 'none';
+                } else {
+                    svg.style.display = 'block';
+                }
+            }
+            slidePath = document.getElementById(`slide-path-${collectionName}`);
             slideLength = slidePath.getTotalLength();
             pathLengthOffset = slideLength / 4;
             scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1);
@@ -75,7 +84,6 @@ function sketch(p5) {
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
-            console.log(leadingProductIndex, lastProductIndex);
             for(let i = 0; i < numProducts; i++) {
                 const product = document.getElementById(`product-${i}`);
                 product.style.position = 'absolute';
@@ -90,9 +98,6 @@ function sketch(p5) {
             }
         }
     }
-
-
-    
 
     p5.draw = () => {
 
@@ -141,12 +146,12 @@ function sketch(p5) {
                 productsDisplayCountList[leadingProductIndex] -= 1;
                 setTimeout(() => {
                     productsNodeList[leadingProductIndex].style.display = 'block';
-                }, 100);
+                }, 50);
             }
 
-            p5.stroke(0);
-            p5.noFill();
-            p5.text(p5.round(p5.frameRate()), 100, 200);
+            // p5.stroke(0);
+            // p5.noFill();
+            // p5.text(p5.round(p5.frameRate()), 100, 200);
         }
         
     }

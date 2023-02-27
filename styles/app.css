@@ -18,11 +18,16 @@
   svg {
     margin: 0 auto;
     width: 100%;
-    height: auto;
-    /* height: calc(100vh - 64px); */
+    /* height: auto; */
+    height: calc(100vh - 64px);
     position: relative;
     top: 0;
     left: 0;
+    /* visibility: hidden; */
+  }
+
+  path {
+    stroke: none;
   }
   
   .w-half {
