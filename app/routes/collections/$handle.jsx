@@ -38,17 +38,8 @@ export default function Collection() {
         <h1 className="text-4xl whitespace-pre-wrap font-fa uppercase">
           {collection.title}
         </h1>
-
-        {/* {collection.description && (
-          <div className="flex items-baseline justify-between w-full">
-            <div>
-              <p className="max-w-md whitespace-pre-wrap inherit text-copy inline-block">
-                {collection.description}
-              </p>
-            </div>
-          </div>
-        )} */}
       </header>
+      <div id="collection-blur-filter" className="hidden backdrop-blur z-30 absolute t-0 left-0 w-full h-full"></div>
       <ProductGrid
         collection={collection}
         url={`/collections/${collection.handle}`}

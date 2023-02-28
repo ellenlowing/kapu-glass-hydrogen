@@ -42,6 +42,8 @@ function sketch(p5) {
     let pathLengthOffset;
     let maxNumProductsDisplayed = 4;
     let totalToMaxNumDisplayRatio;
+    let scrollSpeed = 0;
+    let collectionBlurFilter;
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
@@ -74,6 +76,7 @@ function sketch(p5) {
 
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
+            collectionBlurFilter = document.getElementById('collection-blur-filter');
 
             // slide layout things
             const collectionName = urlPath[1];
@@ -89,7 +92,7 @@ function sketch(p5) {
             slidePath = document.getElementById(`slide-path-${collectionName}`);
             slideLength = slidePath.getTotalLength();
             pathLengthOffset = slideLength / 4;
-            scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1);
+            scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
             productsContainer = document.getElementById('products-container');
             const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
@@ -100,13 +103,19 @@ function sketch(p5) {
                 product.style.position = 'absolute';
                 productsNodeList.push(product);
                 productsDisplayCountList.push(0);
+
+                product.addEventListener('mouseover', (e) => {
+                    show(collectionBlurFilter, 0);
+                })
+
+                product.addEventListener('mouseleave', (e) => {
+                    hide(collectionBlurFilter);
+                })
                 
                 if(i >= leadingProductIndex && i < (leadingProductIndex + maxNumProductsDisplayed)) {
-                    // product.style.display = 'block';
-                    product.style.opacity = '1';
+                    show(product);
                 } else {
-                    // product.style.display = 'none';
-                    product.style.opacity = '0';
+                    hide(product);
                 }
             }
 
@@ -140,38 +149,32 @@ function sketch(p5) {
             for(let i = 0; i < productsNodeList.length; i++) {
                 let offsetScrollProgress = (scrollProgress - i * pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slideLength);
                 const slidePoint = slidePath.getPointAtLength(offsetScrollProgress);
-                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth;
+                const slideOffsetLeft = (p5.width - slide.clientWidth - 200) / 2;
+                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft;
                 slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
                 const product = productsNodeList[i];
                 product.style.top = `${slidePoint.y}px`;
                 product.style.left = `${slidePoint.x}px`;
             }
 
+
             const scrollThreshold = (slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * pathLengthOffset);
             const reverseScrollThreshold = slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
-            
-            if( scrollProgress > scrollThreshold ) {
-                productsNodeList[leadingProductIndex].style.opacity = '0';
-                // productsNodeList[leadingProductIndex].style.display = 'none';
+
+            if( scrollProgress >= scrollThreshold) {
+                hide(productsNodeList[leadingProductIndex]);
                 productsDisplayCountList[leadingProductIndex] += 1;
                 lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed) % productsNodeList.length;
-
-                productsNodeList[lastProductIndex].style.opacity = '1';
-                // productsNodeList[lastProductIndex].style.display = 'block';
+                show(productsNodeList[lastProductIndex]);
                 leadingProductIndex = (leadingProductIndex + 1) % productsNodeList.length;
             } 
             if ( scrollProgress < reverseScrollThreshold + 1) {
-                productsNodeList[lastProductIndex].style.opacity = '0';
-                // productsNodeList[lastProductIndex].style.display = 'none';
-
+                hide(productsNodeList[lastProductIndex]);
                 lastProductIndex = (lastProductIndex - 1) % productsNodeList.length;
                 if(lastProductIndex < 0) lastProductIndex = productsNodeList.length + lastProductIndex;
                 leadingProductIndex = (leadingProductIndex - 1) % productsNodeList.length < 0 ? productsNodeList.length + (leadingProductIndex - 1) % productsNodeList.length : (leadingProductIndex - 1) % productsNodeList.length;
                 productsDisplayCountList[leadingProductIndex] -= 1;
-                setTimeout(() => {
-                    productsNodeList[leadingProductIndex].style.opacity = '1';
-                    // productsNodeList[leadingProductIndex].style.display = 'block';
-                }, 50);
+                show(productsNodeList[leadingProductIndex]);
             }
 
             // draw slide
@@ -203,7 +206,10 @@ function sketch(p5) {
     }
 
     p5.mouseWheel = (e) => {
-        scrollProgress += e.delta;
+
+        scrollProgress += p5.constrain(e.delta, -50, 50);
+
+        scrollSpeed = p5.abs(p5.constrain(e.delta, -50, 50));
 
         if(!debounceTimeout) {
             caterpillarActiveIndex = (caterpillarActiveIndex + Math.sign(e.delta)) % numCaterpillar;
@@ -217,6 +223,21 @@ function sketch(p5) {
 
     p5.windowResized = () => {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight - 64);
+    }
+
+    function show (el, delay=50) {
+        if(delay == 0) {
+            el.style.display = 'block';
+        } else {
+            setTimeout(() => {
+                el.style.display = 'block';
+            }, delay);
+        }
+        
+    }
+
+    function hide (el) {
+        el.style.display = 'none';
     }
 
     function drawGradientStep(x, y, radius, colorA, colorB=p5.color(255, 255, 255, 0)) {
