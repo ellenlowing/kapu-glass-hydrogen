@@ -13,6 +13,7 @@ import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
 import resetStyles from './styles/reset.css';
+import rough from 'roughjs';
 
 export const links = () => {
   return [

@@ -7,7 +7,7 @@ export default function ProductGrid({collection, url}) {
     <section 
       className="gap-8 grid mr-[140px] md:mr-[180px] lg:mr-[16vw] relative"
     >
-      <svg className="relative svg-slide max-w-[800px] lg:w-[80%]" id="slide-vessels" width="1090" height="1386" viewBox="0 0 1090 1386" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg className="relative svg-slide" id="slide-vessels" width="1090" height="1386" viewBox="0 0 1090 1386" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path id="slide-path-vessels" d="M1 1C122.877 60.573 221.217 129.104 315.904 277.895C391.726 397.041 342.785 504.593 434.158 693C534.238 899.361 622.903 889.829 730.616 955.598C784.637 996.107 773.351 1220.93 862.045 1282.06C949.084 1342.05 994.334 1358.59 1089 1385" stroke="black"/>
       </svg>
 

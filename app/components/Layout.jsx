@@ -12,6 +12,14 @@ export function Layout({children, title}) {
           <a className="h-full p-2" href="/">
             <img className="h-full" src={logo}></img>
           </a>
+
+          <nav className="px-3">
+            <a href="/collections/vessels" className="px-3 cursor-pointer">vessels</a>
+            <a href="/collections/accessories" className="px-3 cursor-pointer">accessories</a>
+            <a className="px-3 cursor-pointer">archive</a>
+            <a href="/about" className="px-3 cursor-pointer">about</a>
+            <a className="px-3 cursor-pointer">cart</a>
+          </nav>
         </header>
 
         <main

@@ -557,11 +557,11 @@ path {
 .top-\[6rem\] {
   top: 6rem;
 }
-.z-40 {
-  z-index: 40;
-}
 .z-30 {
   z-index: 30;
+}
+.z-40 {
+  z-index: 40;
 }
 .m-4 {
   margin: 1rem;
@@ -577,23 +577,8 @@ path {
 .mr-\[140px\] {
   margin-right: 140px;
 }
-.ml-\[150px\] {
-  margin-left: 150px;
-}
-.ml-\[-150px\] {
-  margin-left: -150px;
-}
-.ml-\[-50px\] {
-  margin-left: -50px;
-}
-.ml-\[-100px\] {
-  margin-left: -100px;
-}
 .block {
   display: block;
-}
-.inline-block {
-  display: inline-block;
 }
 .flex {
   display: flex;
@@ -610,6 +595,9 @@ path {
 .h-full {
   height: 100%;
 }
+.h-\[calc\(100vh-64px\)\] {
+  height: calc(100vh - 64px);
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -622,11 +610,14 @@ path {
 .w-full {
   width: 100%;
 }
+.w-\[auto\] {
+  width: auto;
+}
 .max-w-\[1200px\] {
   max-width: 1200px;
 }
-.max-w-\[200px\] {
-  max-width: 200px;
+.max-w-\[180px\] {
+  max-width: 180px;
 }
 .max-w-\[600px\] {
   max-width: 600px;
@@ -634,17 +625,11 @@ path {
 .max-w-\[800px\] {
   max-width: 800px;
 }
-.max-w-md {
-  max-width: 28rem;
-}
 .max-w-prose {
   max-width: 65ch;
 }
 .max-w-xl {
   max-width: 36rem;
-}
-.max-w-\[180px\] {
-  max-width: 180px;
 }
 .flex-grow {
   flex-grow: 1;
@@ -669,9 +654,6 @@ path {
 }
 .items-center {
   align-items: center;
-}
-.items-baseline {
-  align-items: baseline;
 }
 .justify-between {
   justify-content: space-between;
@@ -748,6 +730,22 @@ path {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+.px-1 {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
 .pt-6 {
   padding-top: 1.5rem;
 }
@@ -820,10 +818,6 @@ path {
 }
 .outline-blue-300 {
   outline-color: #93c5fd;
-}
-.blur {
-  --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .backdrop-blur {
   --tw-backdrop-blur: blur(8px);
