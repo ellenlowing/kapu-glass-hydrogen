@@ -16,9 +16,11 @@ export function Layout({children, title}) {
           <nav className="px-3">
             <a href="/collections/vessels" className="px-3 cursor-pointer">vessels</a>
             <a href="/collections/accessories" className="px-3 cursor-pointer">accessories</a>
-            <a className="px-3 cursor-pointer">archive</a>
+            <a href="/" className="line-through px-3 cursor-pointer">magazine</a>
+            <a href="/" className="line-through px-3 cursor-pointer">workshop</a>
+            <a className="line-through px-3 cursor-pointer">archive</a>
             <a href="/about" className="px-3 cursor-pointer">about</a>
-            <a className="px-3 cursor-pointer">cart</a>
+            <a className="px-3 cursor-pointer line-through">cart</a>
           </nav>
         </header>
 
