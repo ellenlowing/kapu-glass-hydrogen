@@ -32,6 +32,7 @@ export async function loader({params, context}) {
 
 export default function Collection() {
   const {collection} = useLoaderData();
+  console.log(collection);
   return (
     <>
       <header className=" hidden grid w-full gap-8 py-8 justify-items-start absolute t-[80px]">
@@ -42,7 +43,6 @@ export default function Collection() {
       <div id="collection-blur-filter" className="hidden backdrop-blur z-30 absolute t-0 left-0 w-full h-full"></div>
       <ProductGrid
         collection={collection}
-        url={`/collections/${collection.handle}`}
       />
     </>
   );

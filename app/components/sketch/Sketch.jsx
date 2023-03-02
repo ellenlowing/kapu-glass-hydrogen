@@ -61,6 +61,7 @@ function sketch(p5) {
 
         const urlPath = p5.getURLPath();
         const collectionName = urlPath[1];
+        console.log(collectionName);
 
         if(urlPath.length == 0) {
             // homepage
@@ -82,6 +83,11 @@ function sketch(p5) {
             const collectionName = urlPath[1];
             const svgs = document.getElementsByClassName('svg-slide');
             slide = document.getElementById(`slide-${collectionName}`);
+            slidePath = document.getElementById(`slide-path-${collectionName}`);
+            if(!slide) {
+                slide = document.getElementById(`slide-vessels`);
+                slidePath = document.getElementById(`slide-path-vessels`);
+            }
             for(let svg of svgs) {
                 if(svg !== slide) {
                     svg.style.display = 'none';
@@ -89,7 +95,6 @@ function sketch(p5) {
                     svg.style.display = 'block';
                 }
             }
-            slidePath = document.getElementById(`slide-path-${collectionName}`);
             slideLength = slidePath.getTotalLength();
             pathLengthOffset = slideLength / 4;
             scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;

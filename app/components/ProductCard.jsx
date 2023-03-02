@@ -15,11 +15,14 @@ export default function ProductCard({product, dataIndex}) {
               Sale
             </label>
           )} */}
+          {product.variants.nodes[0].image && 
           <Image
             data={product.variants.nodes[0].image}
             alt={product.title}
             className="rounded"
           />
+}
+          
         </div>
         <div className="group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
           <h3 className="t-0 left-0 p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-fit-content h-fit-content">
