@@ -29,7 +29,6 @@ export default function Sketch() {
 }
 
 function sketch(p5) {
-    let slide2;
     let page;
 
     // collections/$ page variables
@@ -40,9 +39,10 @@ function sketch(p5) {
     let scrollProgress = 0;
     let leadingProductIndex, lastProductIndex;
     let pathLengthOffset;
-    let maxNumProductsDisplayed = 4;
+    let maxNumProductsDisplayed = 3;
     let totalToMaxNumDisplayRatio;
     let collectionBlurFilter;
+    let slideMarginLeft;
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
@@ -114,12 +114,18 @@ function sketch(p5) {
                 productsNodeList.push(product);
                 productsDisplayCountList.push(0);
 
-                product.addEventListener('mouseover', (e) => {
-                    // show(collectionBlurFilter, 0);
+                product.addEventListener('mouseenter', (e) => {
+                    for(let product of productsNodeList) {
+                        if(product != e.target) {
+                            product.classList.add('product-blur');
+                        }
+                    }
                 })
 
                 product.addEventListener('mouseleave', (e) => {
-                    // hide(collectionBlurFilter);
+                    for(let product of productsNodeList) {
+                        product.classList.remove('product-blur');
+                    }
                 })
                 
                 if(i >= leadingProductIndex && i < (leadingProductIndex + maxNumProductsDisplayed)) {
@@ -128,7 +134,7 @@ function sketch(p5) {
                     hide(product);
                 }
             }
-
+            slideMarginLeft = productsNodeList[0].clientWidth / 2;
         }
     }
 
@@ -151,7 +157,7 @@ function sketch(p5) {
                 const product = productsNodeList[i];
                 const slideOffsetLeft = -product.clientWidth / 2;
                 const slideOffsetTop = -product.clientHeight / 2;
-                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft;
+                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft + slideMarginLeft;
                 slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight + slideOffsetTop;
                 product.style.top = `${slidePoint.y}px`;
                 product.style.left = `${slidePoint.x}px`;
@@ -270,7 +276,7 @@ function sketch(p5) {
                 hide(nav);
                 ladder.interval = setInterval(() => {
                     if(ladder.startY < 0) {
-                        ladder.startY += 5;
+                        ladder.startY += 10;
                         nav.style.transform = `translateY(${ladder.startY}px)`;
                     } else {
                         clearInterval(ladder.interval);
@@ -283,7 +289,7 @@ function sketch(p5) {
                 hide(nav);
                 ladder.interval = setInterval(() => {
                     if(ladder.startY > ladder.menuLength) {
-                        ladder.startY -= 5;
+                        ladder.startY -= 10;
                         nav.style.transform = `translateY(${ladder.startY}px)`;
                     } else {
                         clearInterval(ladder.interval);
@@ -305,9 +311,9 @@ function sketch(p5) {
         for(let i = 0; i < ladder.numSteps; i++) {
             let y = i * ladder.stepHeight + ladder.startY;
             if(ladder.activeIndex.indexOf(i) < 0) {
-                ladder.hoverStyle.fill = `${colors.blue}00`;
+                ladder.hoverStyle.fill = `${colors.orange}00`;
             } else {
-                ladder.hoverStyle.fill = colors.blue;
+                ladder.hoverStyle.fill = colors.orange;
             }
             rc.rectangle(ladder.startX, y, ladder.width, ladder.stepHeight, ladder.hoverStyle);
         }
@@ -334,7 +340,7 @@ function sketch(p5) {
         let slideSteps = 40;
         for(let i = 0; i < slideSteps; i++) {
             let slidePoint = slidePath.getPointAtLength(i * slideLength / slideSteps);
-            slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth;
+            slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideMarginLeft;
             slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
             slideCurvepoints.push([slidePoint.x, slidePoint.y]);
         }
@@ -395,18 +401,12 @@ const colors = {
 
 const caterpillar = {
     bodyRadius: 120,
-    slide2Data: [
-        { x1: 1002, y1: 693, x2: 1068, y2: 810, x3: 970, y3: 950, x4: 824, y4: 768 },
-        { x1: 1231, y1: 1038, x2: 970, y2: 950, x3: 919, y3: 1010, x4: 910, y4: 1093 },
-        { x1: 818, y1: 861, x2: 919, y2: 1010, x3: 800, y3: 1123, x4: 650, y4: 952 },
-        { x1: 971, y1: 1100, x2: 800, y2: 1123, x3: 600, y3: 1280, x4: 600, y4: 1341 }
-    ],
 };
 
 const ladder = {
     activeIndex: [],
     width: 160,
-    stepHeight: 60,
+    stepHeight: 40,
     numSteps: 7,
     lineStyle: {fill: 'black', roughness: 1.5, strokeWidth: 0.5 },
     hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', roughness: 1.4, fillWeight: 0.1 },

@@ -7,7 +7,7 @@ export default function ProductCard({product, dataIndex}) {
 
   return (
     <Link id={dataIndex} to={`/products/${product.handle}`} 
-      className={`product relative group hover:col-unset hover:bg-unset w-[140px] md:w-[160px] lg:w-[16vw] max-w-[180px] offset-0 absolute hover:scale-[2.0] hover:z-50 z-1 transition ease-in-out duration-50`}>
+      className={`product relative group hover:col-unset hover:bg-unset w-[120px] md:w-[140px] lg:w-[16vw] max-w-[160px] offset-0 absolute hover:scale-[2.0] hover:z-50 z-1 transition ease-in-out duration-50`}>
       <div className="grid gap-2 relative">
         <div className="hover:shadow rounded relative">
           {/* {isDiscounted && (
@@ -25,10 +25,10 @@ export default function ProductCard({product, dataIndex}) {
           
         </div>
         <div className="group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
-          <h3 className="t-0 left-0 p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-fit-content h-fit-content">
+          <h3 className="t-0 left-[150px] p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-max-content h-fit-content absolute">
             {product.title}
           </h3>
-          <div className="absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content bottom-0 right-0">
+          <div className="absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0">
             <span className="max-w-prose whitespace-pre-wrap inherit text-copy text-xs flex gap-3">
               {price.currencyCode}$
               <Money 

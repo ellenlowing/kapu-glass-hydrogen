@@ -132,14 +132,18 @@
     top: 0;
     height: 100%;
     right: 5vw;
-    transform: translateY(-420px);
+    transform: translateY(-280px);
   }
 
   .nav-link {
     text-align: center;
     display: block;
-    height: 60px;
-    padding: 20px 0;
+    height: 40px;
+    padding: 12px 0;
+  }
+
+  .product-blur {
+    filter: blur(4px);
   }
 
 }
