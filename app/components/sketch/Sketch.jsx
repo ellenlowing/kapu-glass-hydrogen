@@ -59,7 +59,7 @@ function sketch(p5) {
     let startTouch;
 
     p5.setup = () => {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight-64); // 64px is header height
+        p5.createCanvas(p5.windowWidth, p5.windowHeight); // before: p5.createCanvas(p5.windowWidth, p5.windowHeight - 64px)
         p5.pixelDensity(2);
         p5.noStroke();
 
@@ -67,13 +67,11 @@ function sketch(p5) {
 
         rc = rough.canvas(document.getElementById('defaultCanvas0'));
 
+        setupRoughLadder();
+
         if(urlPath.length == 0) {
             // homepage
             page = 'home';
-
-            // init slides
-            // slide2 = new Slide(caterpillar.slide2Data, colors.blue, p5.createVector(p5.width / 2 - caterpillar.bodyRadius, p5.height/2), p5);
-            // slide2.setup();
 
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             // other pages
@@ -117,11 +115,11 @@ function sketch(p5) {
                 productsDisplayCountList.push(0);
 
                 product.addEventListener('mouseover', (e) => {
-                    show(collectionBlurFilter, 0);
+                    // show(collectionBlurFilter, 0);
                 })
 
                 product.addEventListener('mouseleave', (e) => {
-                    hide(collectionBlurFilter);
+                    // hide(collectionBlurFilter);
                 })
                 
                 if(i >= leadingProductIndex && i < (leadingProductIndex + maxNumProductsDisplayed)) {
@@ -130,10 +128,6 @@ function sketch(p5) {
                     hide(product);
                 }
             }
-
-            // caterpillar menu
-            caterpillarHeadPos = p5.createVector(p5.width - caterpillarRadius * numCaterpillar, p5.height - caterpillarRadius);
-            caterpillarActiveIndex = 0;
 
         }
     }
@@ -184,20 +178,14 @@ function sketch(p5) {
             // draw slide w/ rough
             if(p5.frameCount % 10 == 0) {
                 drawRoughSlide();
-                p5.noLoop();
+                drawRoughLadder();
+                // p5.noLoop();
             }
-            
-            // draw caterpillar menu move w scroll
-            // p5.fill(0);
-            // for(let i = 0; i < numCaterpillar; i++) {
-            //     let offset = i == caterpillarActiveIndex ? -caterpillarRadius * 0.35 : 0;
-            //     p5.circle(caterpillarHeadPos.x + i * caterpillarRadius, caterpillarHeadPos.y + offset, caterpillarRadius);
-            // }
 
             // frame rate debug
-            // p5.stroke(0);
-            // p5.noFill();
-            // p5.text(p5.round(p5.frameRate()), 100, 200);
+            p5.stroke(0);
+            p5.noFill();
+            p5.text(p5.round(p5.frameRate()), 100, 200);
         }
         
     }
@@ -232,8 +220,41 @@ function sketch(p5) {
         if(page == 'home') {
             drawRoughCaterpillar();
         } else {
-
             drawRoughSlide();
+        }
+        drawRoughLadder();
+    }
+
+    function setupRoughLadder() {
+        ladder.marginRight = p5.width * 0.05;
+        ladder.endX = p5.width - ladder.marginRight;
+        ladder.startX = ladder.endX - ladder.width;
+        ladder.height = ladder.stepHeight * (ladder.numSteps + 1);
+        for(let i = 0; i < ladder.numSteps; i++) {
+            const navLink = document.getElementById(`nav-link-${i}`);
+            navLink.addEventListener('mouseover', (e) => {
+                ladder.activeIndex.push(i);
+                p5.loop();
+            })
+            navLink.addEventListener('mouseleave', (e) => {
+                let index = ladder.activeIndex.indexOf(i);
+                ladder.activeIndex.splice(index, 1);
+                p5.loop();
+            })
+        }
+    }
+
+    function drawRoughLadder() {
+        rc.line(ladder.startX, ladder.startY, ladder.startX, ladder.height + ladder.startY, ladder.lineStyle );
+        rc.line(ladder.endX, ladder.startY, ladder.endX, ladder.height + ladder.startY, ladder.lineStyle );
+        for(let i = 0; i < ladder.numSteps; i++) {
+            let y = i * ladder.stepHeight + ladder.startY;
+            if(ladder.activeIndex.indexOf(i) < 0) {
+                ladder.hoverStyle.fill = `${colors.blue}00`;
+            } else {
+                ladder.hoverStyle.fill = colors.blue;
+            }
+            rc.rectangle(ladder.startX, y, ladder.width, ladder.stepHeight, ladder.hoverStyle);
         }
     }
 
@@ -243,14 +264,9 @@ function sketch(p5) {
             rc.circle(p5.width / 2 + i * caterpillar.bodyRadius, p5.height / 2, caterpillar.bodyRadius, 
                 { fill: 'red', fillStyle: 'hachure', roughness: 2.4, fillWeight: 1 }
             );
-            // rc.path('M1 1C122.877 60.573 221.217 129.104 315.904 277.895C391.726 397.041 342.785 504.593 434.158 693C534.238 899.361 622.903 889.829 730.616 955.598C784.637 996.107 773.351 1220.93 862.045 1282.06C949.084 1342.05 994.334 1358.59 1089 1385',
-            //     { stroke: 'green', 
-            //     roughness: 1.0, 
-            //     strokeWidth: 0.2,
-            //     strokeLineDash: [15, 15],
-            //     simplification: 0.1} 
-            // );
         }
+        rc.circle(p5.width / 2 , p5.height / 2 + caterpillarRadius * 3, 30);
+
     }
 
     function drawRoughSlide() {
@@ -264,7 +280,7 @@ function sketch(p5) {
             slideCurvepoints.push([slidePoint.x, slidePoint.y]);
         }
         rc.curve(slideCurvepoints, {
-            stroke: '#3300FF',
+            stroke: colors.blue,
             strokeWidth: 1,
             roughness: 2.5,
             strokeLineDash: [15, 15],
@@ -310,8 +326,8 @@ const colors = {
     red: '#EC1E24',
     orange: '#FF8C00',
     green: '#23C17C',
-    navy: '#003E83',
-    blue: '#4F8FE6',
+    blue: '#3300FF',
+    lightblue: '#4F8FE6',
     lightgreen: '#A6D40D'
 };
 
@@ -323,4 +339,18 @@ const caterpillar = {
         { x1: 818, y1: 861, x2: 919, y2: 1010, x3: 800, y3: 1123, x4: 650, y4: 952 },
         { x1: 971, y1: 1100, x2: 800, y2: 1123, x3: 600, y3: 1280, x4: 600, y4: 1341 }
     ],
-}
+};
+
+const ladder = {
+    activeIndex: [],
+    marginRight: 0,
+    endX: 0,
+    width: 160,
+    startX: 0,
+    stepHeight: 60,
+    numSteps: 7,
+    height: 0,
+    startY: 0,
+    lineStyle: {fill: 'black', roughness: 1.5, strokeWidth: 0.5 },
+    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', roughness: 1.4, fillWeight: 0.1 }
+};

@@ -13,14 +13,14 @@ export function Layout({children, title}) {
             <img className="h-full" src={logo}></img>
           </a>
 
-          <nav className="px-3">
-            <a href="/collections/vessels" className="px-3 cursor-pointer">vessels</a>
-            <a href="/collections/accessories" className="px-3 cursor-pointer">accessories</a>
-            <a href="/" className="line-through px-3 cursor-pointer">magazine</a>
-            <a href="/collections/workshops" className="line-through px-3 cursor-pointer">workshop</a>
-            <a href="/collections/archive" className="px-3 cursor-pointer">archive</a>
-            <a href="/about" className="px-3 cursor-pointer">about</a>
-            <a className="px-3 cursor-pointer line-through">cart</a>
+          <nav className="">
+            <a id="nav-link-0" href="/collections/vessels" className="px-3 cursor-pointer nav-link">vessels</a>
+            <a id="nav-link-1" href="/collections/accessories" className="px-3 cursor-pointer nav-link">accessories</a>
+            <a id="nav-link-2" href="/" className="line-through px-3 cursor-pointer nav-link">magazine</a>
+            <a id="nav-link-3" href="/collections/workshops" className="line-through px-3 cursor-pointer nav-link">workshop</a>
+            <a id="nav-link-4" href="/collections/archive" className="px-3 cursor-pointer nav-link">archive</a>
+            <a id="nav-link-5" href="/about" className="px-3 cursor-pointer nav-link">about</a>
+            <a id="nav-link-6" className="px-3 cursor-pointer line-through nav-link">cart</a>
           </nav>
         </header>
 
