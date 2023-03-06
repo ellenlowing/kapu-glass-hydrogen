@@ -13,7 +13,6 @@ import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
 import resetStyles from './styles/reset.css';
-import rough from 'roughjs';
 
 export const links = () => {
   return [
@@ -63,6 +62,7 @@ export default function App() {
         </Layout>
         <ScrollRestoration />
         <Scripts />
+        <script src="https://unpkg.com/roughjs@latest/bundled/rough.js"></script>
       </body>
     </html>
   );

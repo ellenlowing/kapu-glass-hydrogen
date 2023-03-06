@@ -42,7 +42,6 @@ function sketch(p5) {
     let pathLengthOffset;
     let maxNumProductsDisplayed = 4;
     let totalToMaxNumDisplayRatio;
-    let scrollSpeed = 0;
     let collectionBlurFilter;
 
     // caterpillar qt menu
@@ -53,28 +52,33 @@ function sketch(p5) {
     let debounceTimeout;
     let debounceTime = 50;
 
+    // rough 
+    let rc;
+
+    // touch
+    let startTouch;
+
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight-64); // 64px is header height
         p5.pixelDensity(2);
         p5.noStroke();
-        // p5.blendMode(p5.LIGHTEST);
 
         const urlPath = p5.getURLPath();
-        const collectionName = urlPath[1];
-        console.log(collectionName);
+
+        rc = rough.canvas(document.getElementById('defaultCanvas0'));
 
         if(urlPath.length == 0) {
             // homepage
             page = 'home';
 
             // init slides
-            slide2 = new Slide(caterpillar.slide2Data, colors.blue, p5.createVector(p5.width / 2 - caterpillar.bodyRadius, p5.height/2), p5);
-            slide2.setup();
+            // slide2 = new Slide(caterpillar.slide2Data, colors.blue, p5.createVector(p5.width / 2 - caterpillar.bodyRadius, p5.height/2), p5);
+            // slide2.setup();
 
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             // other pages
             page = 'collections';
-
+ 
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
             collectionBlurFilter = document.getElementById('collection-blur-filter');
@@ -95,11 +99,14 @@ function sketch(p5) {
                     svg.style.display = 'block';
                 }
             }
-            slideLength = slidePath.getTotalLength();
-            pathLengthOffset = slideLength / 4;
-            scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
             productsContainer = document.getElementById('products-container');
             const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
+            if(numProducts < maxNumProductsDisplayed) {
+                maxNumProductsDisplayed = numProducts;
+            }
+            slideLength = slidePath.getTotalLength();
+            pathLengthOffset = slideLength / maxNumProductsDisplayed;
+            scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
@@ -134,34 +141,26 @@ function sketch(p5) {
     p5.draw = () => {
 
         if(page == 'home') {
-            p5.background(255, 255, 255, 255);
 
-            // slide 2
-            p5.noStroke();
-            slide2.draw();
-
-            // caterpillar body
-            p5.fill(colors.lightgreen);
-            for(let i = -2; i < 3; i++) {
-                p5.circle(p5.width / 2 + i * caterpillar.bodyRadius, p5.height / 2, caterpillar.bodyRadius);
+            // rough: caterpillar body
+            if(p5.frameCount % 10 == 0) {
+                drawRoughCaterpillar();
             }
 
         } else if (page == 'collections') {
-            p5.background(255, 255, 255, 255); // else
-            p5.fill(255, 0, 0);
 
             // slide layout things
             for(let i = 0; i < productsNodeList.length; i++) {
                 let offsetScrollProgress = (scrollProgress - i * pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slideLength);
                 const slidePoint = slidePath.getPointAtLength(offsetScrollProgress);
-                const slideOffsetLeft = (p5.width - slide.clientWidth - 200) / 2;
-                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft;
-                slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
                 const product = productsNodeList[i];
+                const slideOffsetLeft = -product.clientWidth / 2;
+                const slideOffsetTop = -product.clientHeight / 2;
+                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft;
+                slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight + slideOffsetTop;
                 product.style.top = `${slidePoint.y}px`;
                 product.style.left = `${slidePoint.x}px`;
             }
-
 
             const scrollThreshold = (slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * pathLengthOffset);
             const reverseScrollThreshold = slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
@@ -182,19 +181,12 @@ function sketch(p5) {
                 show(productsNodeList[leadingProductIndex]);
             }
 
-            // draw slide
-            // let slideSteps = 40;
-            // p5.fill(255, 0, 0);
-            // for(let i = 0; i < slideSteps; i++) {
-            //     let slidePoint = slidePath.getPointAtLength(i * slideLength / slideSteps);
-            //     slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth;
-            //     slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
-                
-            //     let radius = (p5.sin(i - scrollProgress * 0.01) + 1) * 15 + 10;
-            //     // p5.circle(slidePoint.x, slidePoint.y, (p5.sin(i - scrollProgress * 0.01) + 1) * 15 + 10);
-            //     drawGradientStep(slidePoint.x, slidePoint.y, radius, p5.color(255, 0, 0));
-            // }
-
+            // draw slide w/ rough
+            if(p5.frameCount % 10 == 0) {
+                drawRoughSlide();
+                p5.noLoop();
+            }
+            
             // draw caterpillar menu move w scroll
             // p5.fill(0);
             // for(let i = 0; i < numCaterpillar; i++) {
@@ -211,10 +203,8 @@ function sketch(p5) {
     }
 
     p5.mouseWheel = (e) => {
-
+        p5.loop();
         scrollProgress += p5.constrain(e.delta, -50, 50);
-
-        scrollSpeed = p5.abs(p5.constrain(e.delta, -50, 50));
 
         if(!debounceTimeout) {
             caterpillarActiveIndex = (caterpillarActiveIndex + Math.sign(e.delta)) % numCaterpillar;
@@ -226,8 +216,60 @@ function sketch(p5) {
         }
     }
 
+    p5.touchStarted = (e) => {
+        p5.loop();
+        startTouch = p5.createVector(e.touches[0].clientX, e.touches[0].clientY);
+    }
+
+    p5.touchMoved = (e) => {
+        p5.loop();
+        let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
+        scrollProgress += p5.constrain(movedTouch.y, -20, 20);
+    }
+
     p5.windowResized = () => {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight - 64);
+        if(page == 'home') {
+            drawRoughCaterpillar();
+        } else {
+
+            drawRoughSlide();
+        }
+    }
+
+    function drawRoughCaterpillar() {
+        p5.background(255, 255, 255, 255);
+        for(let i = -2; i < 3; i++) {
+            rc.circle(p5.width / 2 + i * caterpillar.bodyRadius, p5.height / 2, caterpillar.bodyRadius, 
+                { fill: 'red', fillStyle: 'hachure', roughness: 2.4, fillWeight: 1 }
+            );
+            // rc.path('M1 1C122.877 60.573 221.217 129.104 315.904 277.895C391.726 397.041 342.785 504.593 434.158 693C534.238 899.361 622.903 889.829 730.616 955.598C784.637 996.107 773.351 1220.93 862.045 1282.06C949.084 1342.05 994.334 1358.59 1089 1385',
+            //     { stroke: 'green', 
+            //     roughness: 1.0, 
+            //     strokeWidth: 0.2,
+            //     strokeLineDash: [15, 15],
+            //     simplification: 0.1} 
+            // );
+        }
+    }
+
+    function drawRoughSlide() {
+        p5.background(255, 255, 255, 255);
+        let slideCurvepoints = [];
+        let slideSteps = 40;
+        for(let i = 0; i < slideSteps; i++) {
+            let slidePoint = slidePath.getPointAtLength(i * slideLength / slideSteps);
+            slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth;
+            slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
+            slideCurvepoints.push([slidePoint.x, slidePoint.y]);
+        }
+        rc.curve(slideCurvepoints, {
+            stroke: '#3300FF',
+            strokeWidth: 1,
+            roughness: 2.5,
+            strokeLineDash: [15, 15],
+            simplification: 0.1
+        });
     }
 
     function show (el, delay=50) {

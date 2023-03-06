@@ -577,6 +577,9 @@ path {
 .mr-\[140px\] {
   margin-right: 140px;
 }
+.mr-\[70px\] {
+  margin-right: 70px;
+}
 .block {
   display: block;
 }
@@ -889,6 +892,10 @@ path {
     margin-right: 180px;
   }
 
+  .md\:mr-\[90px\] {
+    margin-right: 90px;
+  }
+
   .md\:w-\[160px\] {
     width: 160px;
   }
@@ -919,6 +926,10 @@ path {
 
   .lg\:mr-\[16vw\] {
     margin-right: 16vw;
+  }
+
+  .lg\:mr-\[8vw\] {
+    margin-right: 8vw;
   }
 
   .lg\:w-\[16vw\] {

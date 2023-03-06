@@ -32,7 +32,6 @@ export async function loader({params, context}) {
 
 export default function Collection() {
   const {collection} = useLoaderData();
-  console.log(collection);
   return (
     <>
       <header className=" hidden grid w-full gap-8 py-8 justify-items-start absolute t-[80px]">

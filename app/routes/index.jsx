@@ -5,7 +5,7 @@ import bg from '../../public/bg_placeholder.png';
 export default function Index() {
     return (
         <section className="h-[calc(100vh-64px)] w-[auto] gap-4">
-            <img className="h-full mx-auto" src={bg}></img>
+            {/* <img className="h-full mx-auto" src={bg}></img> */}
         </section>
     );
 }

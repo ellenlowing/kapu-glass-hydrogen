@@ -16,12 +16,12 @@ export default function ProductCard({product, dataIndex}) {
             </label>
           )} */}
           {product.variants.nodes[0].image && 
-          <Image
-            data={product.variants.nodes[0].image}
-            alt={product.title}
-            className="rounded"
-          />
-}
+            <Image
+              data={product.variants.nodes[0].image}
+              alt={product.title}
+              className="rounded"
+            />
+          }
           
         </div>
         <div className="group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
