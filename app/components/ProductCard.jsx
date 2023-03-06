@@ -24,12 +24,12 @@ export default function ProductCard({product, dataIndex}) {
           }
           
         </div>
-        <div className="group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
-          <h3 className="t-0 left-[150px] p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-max-content h-fit-content absolute">
+        <div className="hidden group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
+          <h3 id="product-title" className="t-0 left-[150px] p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-max-content h-fit-content absolute">
             {product.title}
           </h3>
-          <div className="absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0">
-            <span className="max-w-prose whitespace-pre-wrap inherit text-copy text-xs flex gap-3">
+          <div data-price={price.amount} id="product-price" className={` absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0`}>
+            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
               {price.currencyCode}$
               <Money 
                 withoutCurrency 

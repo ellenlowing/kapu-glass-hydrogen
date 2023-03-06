@@ -41,7 +41,6 @@ function sketch(p5) {
     let pathLengthOffset;
     let maxNumProductsDisplayed = 3;
     let totalToMaxNumDisplayRatio;
-    let collectionBlurFilter;
     let slideMarginLeft;
 
     // caterpillar qt menu
@@ -79,7 +78,6 @@ function sketch(p5) {
  
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
-            collectionBlurFilter = document.getElementById('collection-blur-filter');
 
             // slide layout things
             const collectionName = urlPath[1];
@@ -108,6 +106,10 @@ function sketch(p5) {
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
+
+            const selectedProductInfo = document.getElementById('selected-product-info');
+            const selectedProductTitle = document.getElementById('selected-product-title');
+            const selectedProductPrice = document.getElementById('selected-product-price');
             for(let i = 0; i < numProducts; i++) {
                 const product = document.getElementById(`product-${i}`);
                 product.style.position = 'absolute';
@@ -118,14 +120,25 @@ function sketch(p5) {
                     for(let product of productsNodeList) {
                         if(product != e.target) {
                             product.classList.add('product-blur');
+                        } else {
+                            selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
+                            selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
+
+                            if(Number(e.target.querySelector('#product-price').getAttribute('data-price')) == 0) {
+                                hide(selectedProductPrice);
+                            } else {
+                                show(selectedProductPrice);
+                            }
                         }
                     }
+                    show(selectedProductInfo);
                 })
 
                 product.addEventListener('mouseleave', (e) => {
                     for(let product of productsNodeList) {
                         product.classList.remove('product-blur');
                     }
+                    hide(selectedProductInfo);
                 })
                 
                 if(i >= leadingProductIndex && i < (leadingProductIndex + maxNumProductsDisplayed)) {
@@ -190,9 +203,9 @@ function sketch(p5) {
             }
 
             // frame rate debug
-            p5.stroke(0);
-            p5.noFill();
-            p5.text(p5.round(p5.frameRate()), 100, 200);
+            // p5.stroke(0);
+            // p5.noFill();
+            // p5.text(p5.round(p5.frameRate()), 100, 200);
         }
 
         if(p5.frameCount % 10 == 0) {
@@ -202,7 +215,7 @@ function sketch(p5) {
 
     p5.mouseWheel = (e) => {
         p5.loop();
-        scrollProgress += p5.constrain(e.delta, -50, 50);
+        scrollProgress += p5.constrain(e.delta, -30, 30);
 
         if(!debounceTimeout) {
             caterpillarActiveIndex = (caterpillarActiveIndex + Math.sign(e.delta)) % numCaterpillar;
@@ -225,7 +238,7 @@ function sketch(p5) {
         if(e.touches) {
             p5.loop();
             let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
-            scrollProgress += p5.constrain(movedTouch.y, -20, 20);
+            scrollProgress += p5.constrain(movedTouch.y, -10, 10);
         }
     }
 
@@ -409,6 +422,6 @@ const ladder = {
     stepHeight: 40,
     numSteps: 7,
     lineStyle: {fill: 'black', roughness: 1.5, strokeWidth: 0.5 },
-    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', roughness: 1.4, fillWeight: 0.1 },
+    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'cross-hatch', roughness: 1.4, fillWeight: 0.3 },
     menuActive: false
 };

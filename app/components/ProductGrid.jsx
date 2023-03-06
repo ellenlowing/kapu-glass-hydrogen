@@ -15,6 +15,11 @@ export default function ProductGrid({collection}) {
           <ProductCard dataIndex={`product-${index}`} key={product.id} product={product} />
         ))}
       </div>
+
+      <div id="selected-product-info" className="hidden absolute bottom-[60px] left-0 p-4">
+        <h1 id="selected-product-title" className="text-3xl py-2">Product title</h1>
+        <span id="selected-product-price" className="text-lg ">AUD$ 44.44</span>
+      </div>
     </section>
   );
 }

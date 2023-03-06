@@ -143,7 +143,7 @@
   }
 
   .product-blur {
-    filter: blur(4px);
+    filter: blur(6px);
   }
 
 }

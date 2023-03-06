@@ -34,12 +34,11 @@ export default function Collection() {
   const {collection} = useLoaderData();
   return (
     <>
-      <header className=" hidden grid w-full gap-8 py-8 justify-items-start absolute t-[80px]">
+      <header className="hidden grid w-full gap-8 py-8 justify-items-start absolute bottom-[0px] left-0">
         <h1 className="text-4xl whitespace-pre-wrap font-fa uppercase">
           {collection.title}
         </h1>
       </header>
-      <div id="collection-blur-filter" className="hidden backdrop-blur z-30 absolute t-0 left-0 w-full h-full"></div>
       <ProductGrid
         collection={collection}
       />
