@@ -138,6 +138,7 @@ function sketch(p5) {
 
             // rough: caterpillar body
             if(p5.frameCount % 10 == 0) {
+                p5.background(255, 255, 255, 255);
                 drawRoughCaterpillar();
             }
 
@@ -177,8 +178,8 @@ function sketch(p5) {
 
             // draw slide w/ rough
             if(p5.frameCount % 10 == 0) {
+                p5.background(255, 255, 255, 255);
                 drawRoughSlide();
-                drawRoughLadder();
                 // p5.noLoop();
             }
 
@@ -187,7 +188,10 @@ function sketch(p5) {
             p5.noFill();
             p5.text(p5.round(p5.frameRate()), 100, 200);
         }
-        
+
+        if(p5.frameCount % 10 == 0) {
+            drawRoughLadder();
+        }
     }
 
     p5.mouseWheel = (e) => {
@@ -205,14 +209,18 @@ function sketch(p5) {
     }
 
     p5.touchStarted = (e) => {
-        p5.loop();
-        startTouch = p5.createVector(e.touches[0].clientX, e.touches[0].clientY);
+        if(e.touches) {
+            p5.loop();
+            startTouch = p5.createVector(e.touches[0].clientX, e.touches[0].clientY);
+        }
     }
 
     p5.touchMoved = (e) => {
-        p5.loop();
-        let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
-        scrollProgress += p5.constrain(movedTouch.y, -20, 20);
+        if(e.touches) {
+            p5.loop();
+            let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
+            scrollProgress += p5.constrain(movedTouch.y, -20, 20);
+        }
     }
 
     p5.windowResized = () => {
@@ -222,6 +230,7 @@ function sketch(p5) {
         } else {
             drawRoughSlide();
         }
+        resizeRoughLadder();
         drawRoughLadder();
     }
 
@@ -242,6 +251,52 @@ function sketch(p5) {
                 p5.loop();
             })
         }
+        ladder.startY = -ladder.stepHeight * ladder.numSteps;
+        ladder.menuLength = -ladder.stepHeight * ladder.numSteps;
+        ladder.menuSpeed = 20;
+
+        // menu
+        const menuSwitch = document.getElementById('menu-switch');
+        const nav = document.getElementById('nav');
+        menuSwitch.addEventListener('mouseover', (e) => {
+            if(!menuSwitch.menuActive) {
+                menuSwitch.innerHTML = 'open';
+            }
+        })
+        menuSwitch.addEventListener('click', (e) => {
+            if(!menuSwitch.menuActive) {
+                menuSwitch.menuActive = true;
+                menuSwitch.innerHTML = 'close';
+                hide(nav);
+                ladder.interval = setInterval(() => {
+                    if(ladder.startY < 0) {
+                        ladder.startY += 5;
+                        nav.style.transform = `translateY(${ladder.startY}px)`;
+                    } else {
+                        clearInterval(ladder.interval);
+                        show(nav);
+                    }
+                }, ladder.menuSpeed);
+            } else {
+                menuSwitch.menuActive = false;
+                menuSwitch.innerHTML = 'open';
+                hide(nav);
+                ladder.interval = setInterval(() => {
+                    if(ladder.startY > ladder.menuLength) {
+                        ladder.startY -= 5;
+                        nav.style.transform = `translateY(${ladder.startY}px)`;
+                    } else {
+                        clearInterval(ladder.interval);
+                        show(nav);
+                    }
+                }, ladder.menuSpeed);
+            }
+        })
+        menuSwitch.addEventListener('mouseleave', (e) => {
+            if(!menuSwitch.menuActive) {
+                menuSwitch.innerHTML = 'menu';
+            }
+        })
     }
 
     function drawRoughLadder() {
@@ -258,8 +313,13 @@ function sketch(p5) {
         }
     }
 
+    function resizeRoughLadder() {
+        ladder.marginRight = p5.width * 0.05;
+        ladder.endX = p5.width - ladder.marginRight;
+        ladder.startX = ladder.endX - ladder.width;
+    }
+
     function drawRoughCaterpillar() {
-        p5.background(255, 255, 255, 255);
         for(let i = -2; i < 3; i++) {
             rc.circle(p5.width / 2 + i * caterpillar.bodyRadius, p5.height / 2, caterpillar.bodyRadius, 
                 { fill: 'red', fillStyle: 'hachure', roughness: 2.4, fillWeight: 1 }
@@ -270,7 +330,6 @@ function sketch(p5) {
     }
 
     function drawRoughSlide() {
-        p5.background(255, 255, 255, 255);
         let slideCurvepoints = [];
         let slideSteps = 40;
         for(let i = 0; i < slideSteps; i++) {
@@ -296,11 +355,14 @@ function sketch(p5) {
                 el.style.display = 'block';
             }, delay);
         }
-        
     }
 
     function hide (el) {
         el.style.display = 'none';
+    }
+
+    function map(x, in_min, in_max, out_min, out_max) {
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
     }
 
     function drawGradientStep(x, y, radius, colorA, colorB=p5.color(255, 255, 255, 0)) {
@@ -343,14 +405,10 @@ const caterpillar = {
 
 const ladder = {
     activeIndex: [],
-    marginRight: 0,
-    endX: 0,
     width: 160,
-    startX: 0,
     stepHeight: 60,
     numSteps: 7,
-    height: 0,
-    startY: 0,
     lineStyle: {fill: 'black', roughness: 1.5, strokeWidth: 0.5 },
-    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', roughness: 1.4, fillWeight: 0.1 }
+    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', roughness: 1.4, fillWeight: 0.1 },
+    menuActive: false
 };

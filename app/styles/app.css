@@ -542,6 +542,7 @@ nav {
     top: 0;
     height: 100%;
     right: 5vw;
+    transform: translateY(-420px);
   }
 .nav-link {
     text-align: center;
@@ -643,6 +644,9 @@ nav {
 }
 .flex-grow {
   flex-grow: 1;
+}
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .cursor-pointer {
   cursor: pointer;
