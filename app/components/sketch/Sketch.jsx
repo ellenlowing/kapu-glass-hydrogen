@@ -4,7 +4,6 @@ const ReactP5Wrapper = lazy(() =>
     default: module.ReactP5Wrapper
   }))
 );
-import Slide from "./Slide";
 
 export default function Sketch() {
 
