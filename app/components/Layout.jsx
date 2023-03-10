@@ -28,7 +28,7 @@ export function Layout({children, title}) {
         <main
           role="main"
           id="mainContent"
-          className="flex-grow h-[100vh]"
+          className="flex-grow"
         >
           {children}
 

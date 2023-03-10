@@ -38,6 +38,7 @@ function sketch(p5) {
     let productsContainer;
     let productsNodeList = [];
     let productsDisplayCountList = [];
+    let freezeScroll = false;
     let scrollProgress = 0;
     let leadingProductIndex, lastProductIndex;
     let pathLengthOffset;
@@ -55,6 +56,7 @@ function sketch(p5) {
 
     // rough 
     let rc;
+    let roughFPS = 5;
 
     // touch
     let startTouch;
@@ -85,11 +87,10 @@ function sketch(p5) {
             const collectionName = urlPath[1];
             const svgs = document.getElementsByClassName('svg-slide');
             slide = document.getElementById(`slide-${collectionName}`);
-            slidePath = document.getElementById(`slide-path-${collectionName}`);
             if(!slide) {
                 slide = document.getElementById(`slide-vessels`);
-                slidePath = document.getElementById(`slide-path-vessels`);
             }
+            slidePath = slide.firstChild;
             for(let svg of svgs) {
                 if(svg !== slide) {
                     svg.style.display = 'none';
@@ -124,6 +125,7 @@ function sketch(p5) {
                 productsDisplayCountList.push(0);
 
                 product.addEventListener('mouseenter', (e) => {
+                    freezeScroll = true;
                     for(let product of productsNodeList) {
                         if(product != e.target) {
                             product.classList.add('product-blur');
@@ -142,6 +144,7 @@ function sketch(p5) {
                 })
 
                 product.addEventListener('mouseleave', (e) => {
+                    freezeScroll = false;
                     for(let product of productsNodeList) {
                         product.classList.remove('product-blur');
                     }
@@ -160,10 +163,14 @@ function sketch(p5) {
 
     p5.draw = () => {
 
+        if(p5.frameCount < 5) {
+            roughFPS = p5.round(p5.frameRate() / 6);
+        }
+
         if(page == 'home') {
 
             // rough: caterpillar body
-            if(p5.frameCount % 10 == 0) {
+            if(p5.frameCount % roughFPS == 0) {
                 p5.background(255, 255, 255, 255);
                 drawRoughCaterpillar();
             }
@@ -201,26 +208,28 @@ function sketch(p5) {
             }
 
             // draw slide w/ rough
-            if(p5.frameCount % 10 == 0) {
+            if(p5.frameCount % roughFPS == 0) {
                 p5.background(255, 255, 255, 255);
                 drawRoughSlide();
                 // p5.noLoop();
-            }
 
-            // frame rate debug
-            // p5.stroke(0);
-            // p5.noFill();
-            // p5.text(p5.round(p5.frameRate()), 100, 200);
+                // frame rate debug
+                p5.stroke(0);
+                p5.noFill();
+                p5.text(p5.round(p5.frameRate()), 100, 200);
+            }
         }
 
-        if(p5.frameCount % 10 == 0) {
+        if(p5.frameCount % roughFPS == 0) {
             drawRoughLadder();
         }
     }
 
     p5.mouseWheel = (e) => {
-        p5.loop();
-        scrollProgress += p5.constrain(e.delta, -30, 30);
+        if(!freezeScroll) {
+            p5.loop();
+            scrollProgress += p5.constrain(e.delta, -30, 30);
+        }
 
         if(!debounceTimeout) {
             caterpillarActiveIndex = (caterpillarActiveIndex + Math.sign(e.delta)) % numCaterpillar;
@@ -357,7 +366,7 @@ function sketch(p5) {
         point.x = point.x / slideWidth * slide.clientWidth + slideMarginLeft + offset.x;
         point.y = point.y / slideHeight * slide.clientHeight + offset.y;
         if(slideOriginalHeight != slideHeight) {
-            point.y += p5.height/2 - slideOriginalHeight;
+            point.y += p5.height/2 - slideOriginalHeight/2;
         }
         return point;
     }

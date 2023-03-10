@@ -17,6 +17,10 @@
     display: none;
   }
 
+  #mainContent {
+    height: calc(100vh - 4rem);
+  }
+
   svg {
     margin: 0 auto;
     width: 100%;

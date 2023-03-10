@@ -479,6 +479,9 @@ video {
 ::-webkit-scrollbar {
     display: none;
   }
+#mainContent {
+    height: calc(100vh - 4rem);
+  }
 svg {
     margin: 0 auto;
     width: 100%;
@@ -569,9 +572,6 @@ nav {
 .bottom-\[0px\] {
   bottom: 0px;
 }
-.bottom-\[60px\] {
-  bottom: 60px;
-}
 .left-0 {
   left: 0px;
 }
@@ -618,9 +618,6 @@ nav {
 }
 .h-16 {
   height: 4rem;
-}
-.h-\[100vh\] {
-  height: 100vh;
 }
 .h-\[calc\(100vh-64px\)\] {
   height: calc(100vh - 64px);
