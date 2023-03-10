@@ -35,12 +35,9 @@ function sketch(p5) {
     let productsContainer;
     let productsNodeList = [];
     let productsDisplayCountList = [];
-    let freezeScroll = false;
-    let scrollProgress = 0;
     let leadingProductIndex, lastProductIndex;
     let maxNumProductsDisplayed = 3;
     let totalToMaxNumDisplayRatio;
-    let slideMarginLeft;
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
@@ -96,9 +93,6 @@ function sketch(p5) {
             }
             slide.attrW = Number(slide.svg.getAttribute("width"));
             slide.attrH = Number(slide.svg.getAttribute("height"));
-            let slideViewbox = slide.svg.getAttribute('viewBox');
-            slideViewbox = slideViewbox.split(/\s+|,/);
-            slide.ogH = Number(slideViewbox[3]);
             productsContainer = document.getElementById('products-container');
             const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
             if(numProducts < maxNumProductsDisplayed) {
@@ -106,7 +100,7 @@ function sketch(p5) {
             }
             slide.pathLength = slide.path.getTotalLength();
             slide.pathLengthOffset = slide.pathLength / maxNumProductsDisplayed;
-            scrollProgress = slide.pathLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
+            slide.scrollProgress = slide.pathLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
@@ -121,7 +115,7 @@ function sketch(p5) {
                 productsDisplayCountList.push(0);
 
                 product.addEventListener('mouseenter', (e) => {
-                    freezeScroll = true;
+                    slide.freezeScroll = true;
                     for(let product of productsNodeList) {
                         if(product != e.target) {
                             product.classList.add('product-blur');
@@ -140,7 +134,7 @@ function sketch(p5) {
                 })
 
                 product.addEventListener('mouseleave', (e) => {
-                    freezeScroll = false;
+                    slide.freezeScroll = false;
                     for(let product of productsNodeList) {
                         product.classList.remove('product-blur');
                     }
@@ -153,7 +147,6 @@ function sketch(p5) {
                     hide(product);
                 }
             }
-            slide.marginLeft = productsNodeList[0].clientWidth / 2;
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             page = 'products';
         }
@@ -177,7 +170,7 @@ function sketch(p5) {
 
             // slide layout things
             for(let i = 0; i < productsNodeList.length; i++) {
-                let offsetScrollProgress = (scrollProgress - i * slide.pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slide.pathLength);
+                let offsetScrollProgress = (slide.scrollProgress - i * slide.pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slide.pathLength);
                 let slidePoint = slide.path.getPointAtLength(offsetScrollProgress);
                 const product = productsNodeList[i];
                 const productOffset = p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
@@ -189,14 +182,14 @@ function sketch(p5) {
             const scrollThreshold = (slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * slide.pathLengthOffset);
             const reverseScrollThreshold = slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + slide.pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
 
-            if( scrollProgress >= scrollThreshold) {
+            if( slide.scrollProgress >= scrollThreshold) {
                 hide(productsNodeList[leadingProductIndex]);
                 productsDisplayCountList[leadingProductIndex] += 1;
                 lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed) % productsNodeList.length;
                 show(productsNodeList[lastProductIndex]);
                 leadingProductIndex = (leadingProductIndex + 1) % productsNodeList.length;
             } 
-            if ( scrollProgress < reverseScrollThreshold + 1) {
+            if ( slide.scrollProgress < reverseScrollThreshold + 1) {
                 hide(productsNodeList[lastProductIndex]);
                 lastProductIndex = (lastProductIndex - 1) % productsNodeList.length;
                 if(lastProductIndex < 0) lastProductIndex = productsNodeList.length + lastProductIndex;
@@ -226,9 +219,9 @@ function sketch(p5) {
     }
 
     p5.mouseWheel = (e) => {
-        if(!freezeScroll) {
+        if(!slide.freezeScroll) {
             p5.loop();
-            scrollProgress += p5.constrain(e.delta, -30, 30);
+            slide.scrollProgress += p5.constrain(e.delta, -30, 30);
         }
 
         if(!debounceTimeout) {
@@ -252,7 +245,7 @@ function sketch(p5) {
         if(e.touches) {
             p5.loop();
             let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
-            scrollProgress += p5.constrain(movedTouch.y, -10, 10);
+            slide.scrollProgress += p5.constrain(movedTouch.y, -10, 10);
         }
     }
 
@@ -365,9 +358,6 @@ function sketch(p5) {
     function mapSlidePoint(point, offset=p5.createVector(0, 0)) {
         point.x = point.x / slide.attrW * slide.svg.clientWidth + offset.x + (p5.width - slide.svg.clientWidth) / 2;
         point.y = point.y / slide.attrH * slide.svg.clientHeight + offset.y + (p5.height - slide.svg.clientHeight) / 2;
-        // if(slide.ogH != slide.attrH) {
-        //     point.y += p5.height/2 - slide.svg.clientHeight/2 + (slide.attrH - slide.ogH) / 2;
-        // }
         return point;
     }
 
@@ -455,6 +445,6 @@ const slide = {
     pathLengthOffset: null,
     attrW: null,
     attrH: null,
-    ogH: null,
-    marginLeft: null
+    freezeScroll: false,
+    scrollProgress: -1
 }
