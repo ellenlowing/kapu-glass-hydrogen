@@ -490,6 +490,7 @@ svg {
     /* visibility: hidden; */
   }
 path {
+    position: relative;
     stroke: none;
   }
 .w-half {
@@ -522,9 +523,6 @@ path {
 .p-2 {
     padding: 0.5rem;
   }
-.p-3 {
-    padding: 0.75rem;
-  }
 .react-p5-wrapper {
     display: block;
     position: fixed;
@@ -556,6 +554,9 @@ nav {
 .product-blur {
     filter: blur(6px);
   }
+.fixed {
+  position: fixed;
+}
 .absolute {
   position: absolute;
 }
@@ -564,6 +565,12 @@ nav {
 }
 .bottom-0 {
   bottom: 0px;
+}
+.bottom-\[0px\] {
+  bottom: 0px;
+}
+.bottom-\[60px\] {
+  bottom: 60px;
 }
 .left-0 {
   left: 0px;
@@ -579,21 +586,6 @@ nav {
 }
 .top-\[6rem\] {
   top: 6rem;
-}
-.bottom-\[40px\] {
-  bottom: 40px;
-}
-.bottom-\[0px\] {
-  bottom: 0px;
-}
-.bottom-\[140px\] {
-  bottom: 140px;
-}
-.bottom-\[80px\] {
-  bottom: 80px;
-}
-.bottom-\[60px\] {
-  bottom: 60px;
 }
 .z-40 {
   z-index: 40;
@@ -627,14 +619,14 @@ nav {
 .h-16 {
   height: 4rem;
 }
+.h-\[100vh\] {
+  height: 100vh;
+}
 .h-\[calc\(100vh-64px\)\] {
   height: calc(100vh - 64px);
 }
 .h-full {
   height: 100%;
-}
-.h-\[100vh\] {
-  height: 100vh;
 }
 .min-h-screen {
   min-height: 100vh;
@@ -756,15 +748,6 @@ nav {
 .p-\[0\.1rem\] {
   padding: 0.1rem;
 }
-.p-3 {
-  padding: 0.75rem;
-}
-.p-6 {
-  padding: 1.5rem;
-}
-.p-8 {
-  padding: 2rem;
-}
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -777,6 +760,10 @@ nav {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
@@ -784,14 +771,6 @@ nav {
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-.py-3 {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
-.py-2 {
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
@@ -803,9 +782,17 @@ nav {
   font-size: 1.5rem;
   line-height: 2rem;
 }
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 .text-sm {
   font-size: 0.875rem;
@@ -814,18 +801,6 @@ nav {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
 }
 .font-bold {
   font-weight: 700;

@@ -13,7 +13,7 @@ export function Layout({children, title}) {
             <img className="h-full" src={logo}></img>
           </a>
 
-          <nav id="nav" className="">
+          <nav id="nav" className="fixed">
             <a id="nav-link-0" href="/collections/vessels" className="px-3 cursor-pointer nav-link">vessels</a>
             <a id="nav-link-1" href="/collections/accessories" className="px-3 cursor-pointer nav-link">accessories</a>
             <a id="nav-link-2" href="/" className="line-through px-3 cursor-pointer nav-link">magazine</a>
