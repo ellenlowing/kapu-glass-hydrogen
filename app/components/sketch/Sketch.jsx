@@ -32,16 +32,12 @@ function sketch(p5) {
     let page;
 
     // collections/$ page variables
-    let slide, slidePath, slideLength;
-    let slideOriginalHeight;
-    let slideWidth, slideHeight;
     let productsContainer;
     let productsNodeList = [];
     let productsDisplayCountList = [];
     let freezeScroll = false;
     let scrollProgress = 0;
     let leadingProductIndex, lastProductIndex;
-    let pathLengthOffset;
     let maxNumProductsDisplayed = 3;
     let totalToMaxNumDisplayRatio;
     let slideMarginLeft;
@@ -86,31 +82,31 @@ function sketch(p5) {
             // slide layout things
             const collectionName = urlPath[1];
             const svgs = document.getElementsByClassName('svg-slide');
-            slide = document.getElementById(`slide-${collectionName}`);
-            if(!slide) {
-                slide = document.getElementById(`slide-vessels`);
+            slide.svg = document.getElementById(`slide-${collectionName}`);
+            if(!slide.svg) {
+                slide.svg = document.getElementById(`slide-vessels`);
             }
-            slidePath = slide.firstChild;
+            slide.path = slide.svg.firstChild;
             for(let svg of svgs) {
-                if(svg !== slide) {
+                if(svg !== slide.svg) {
                     svg.style.display = 'none';
                 } else {
                     svg.style.display = 'block';
                 }
             }
-            slideWidth = Number(slide.getAttribute("width"));
-            slideHeight = Number(slide.getAttribute("height"));
-            let slideViewbox = slide.getAttribute('viewBox');
+            slide.attrW = Number(slide.svg.getAttribute("width"));
+            slide.attrH = Number(slide.svg.getAttribute("height"));
+            let slideViewbox = slide.svg.getAttribute('viewBox');
             slideViewbox = slideViewbox.split(/\s+|,/);
-            slideOriginalHeight = Number(slideViewbox[3]);
+            slide.ogH = Number(slideViewbox[3]);
             productsContainer = document.getElementById('products-container');
             const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
             if(numProducts < maxNumProductsDisplayed) {
                 maxNumProductsDisplayed = numProducts;
             }
-            slideLength = slidePath.getTotalLength();
-            pathLengthOffset = slideLength / maxNumProductsDisplayed;
-            scrollProgress = slideLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
+            slide.pathLength = slide.path.getTotalLength();
+            slide.pathLengthOffset = slide.pathLength / maxNumProductsDisplayed;
+            scrollProgress = slide.pathLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
             totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
@@ -157,14 +153,16 @@ function sketch(p5) {
                     hide(product);
                 }
             }
-            slideMarginLeft = productsNodeList[0].clientWidth / 2;
+            slide.marginLeft = productsNodeList[0].clientWidth / 2;
+        } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
+            page = 'products';
         }
     }
 
     p5.draw = () => {
 
         if(p5.frameCount < 5) {
-            roughFPS = p5.round(p5.frameRate() / 6);
+            roughFPS = p5.constrain(p5.round(p5.frameRate() / 6), 0, 10);
         }
 
         if(page == 'home') {
@@ -179,8 +177,8 @@ function sketch(p5) {
 
             // slide layout things
             for(let i = 0; i < productsNodeList.length; i++) {
-                let offsetScrollProgress = (scrollProgress - i * pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slideLength);
-                let slidePoint = slidePath.getPointAtLength(offsetScrollProgress);
+                let offsetScrollProgress = (scrollProgress - i * slide.pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slide.pathLength);
+                let slidePoint = slide.path.getPointAtLength(offsetScrollProgress);
                 const product = productsNodeList[i];
                 const productOffset = p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
                 slidePoint = mapSlidePoint(slidePoint, productOffset);
@@ -188,8 +186,8 @@ function sketch(p5) {
                 product.style.left = `${slidePoint.x}px`;
             }
 
-            const scrollThreshold = (slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * pathLengthOffset);
-            const reverseScrollThreshold = slideLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
+            const scrollThreshold = (slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * slide.pathLengthOffset);
+            const reverseScrollThreshold = slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + slide.pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
 
             if( scrollProgress >= scrollThreshold) {
                 hide(productsNodeList[leadingProductIndex]);
@@ -218,7 +216,9 @@ function sketch(p5) {
                 p5.noFill();
                 p5.text(p5.round(p5.frameRate()), 100, 200);
             }
-        }
+        } else if(page == 'products') {
+
+        } 
 
         if(p5.frameCount % roughFPS == 0) {
             drawRoughLadder();
@@ -363,11 +363,11 @@ function sketch(p5) {
     }
 
     function mapSlidePoint(point, offset=p5.createVector(0, 0)) {
-        point.x = point.x / slideWidth * slide.clientWidth + slideMarginLeft + offset.x;
-        point.y = point.y / slideHeight * slide.clientHeight + offset.y;
-        if(slideOriginalHeight != slideHeight) {
-            point.y += p5.height/2 - slideOriginalHeight/2;
-        }
+        point.x = point.x / slide.attrW * slide.svg.clientWidth + offset.x + (p5.width - slide.svg.clientWidth) / 2;
+        point.y = point.y / slide.attrH * slide.svg.clientHeight + offset.y + (p5.height - slide.svg.clientHeight) / 2;
+        // if(slide.ogH != slide.attrH) {
+        //     point.y += p5.height/2 - slide.svg.clientHeight/2 + (slide.attrH - slide.ogH) / 2;
+        // }
         return point;
     }
 
@@ -375,7 +375,7 @@ function sketch(p5) {
         let slideCurvepoints = [];
         let slideSteps = 40;
         for(let i = 0; i < slideSteps; i++) {
-            let slidePoint = slidePath.getPointAtLength(i * slideLength / slideSteps);
+            let slidePoint = slide.path.getPointAtLength(i * slide.pathLength / slideSteps);
             slidePoint = mapSlidePoint(slidePoint);
             slideCurvepoints.push([slidePoint.x, slidePoint.y]);
         }
@@ -447,3 +447,14 @@ const ladder = {
     hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'cross-hatch', roughness: 1.4, fillWeight: 0.3 },
     menuActive: false
 };
+
+const slide = {
+    svg: null,
+    path: null,
+    pathLength: null,
+    pathLengthOffset: null,
+    attrW: null,
+    attrH: null,
+    ogH: null,
+    marginLeft: null
+}
