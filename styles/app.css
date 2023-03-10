@@ -29,6 +29,7 @@
   }
 
   path {
+    position: relative;
     stroke: none;
   }
   
@@ -38,6 +39,10 @@
 
   .w-fit-content {
     width: fit-content;
+  }
+
+  .h-half {
+    height: 50%;
   }
 
   .h-fit-content {

@@ -33,6 +33,8 @@ function sketch(p5) {
 
     // collections/$ page variables
     let slide, slidePath, slideLength;
+    let slideOriginalHeight;
+    let slideWidth, slideHeight;
     let productsContainer;
     let productsNodeList = [];
     let productsDisplayCountList = [];
@@ -95,6 +97,11 @@ function sketch(p5) {
                     svg.style.display = 'block';
                 }
             }
+            slideWidth = Number(slide.getAttribute("width"));
+            slideHeight = Number(slide.getAttribute("height"));
+            let slideViewbox = slide.getAttribute('viewBox');
+            slideViewbox = slideViewbox.split(/\s+|,/);
+            slideOriginalHeight = Number(slideViewbox[3]);
             productsContainer = document.getElementById('products-container');
             const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
             if(numProducts < maxNumProductsDisplayed) {
@@ -166,12 +173,10 @@ function sketch(p5) {
             // slide layout things
             for(let i = 0; i < productsNodeList.length; i++) {
                 let offsetScrollProgress = (scrollProgress - i * pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slideLength);
-                const slidePoint = slidePath.getPointAtLength(offsetScrollProgress);
+                let slidePoint = slidePath.getPointAtLength(offsetScrollProgress);
                 const product = productsNodeList[i];
-                const slideOffsetLeft = -product.clientWidth / 2;
-                const slideOffsetTop = -product.clientHeight / 2;
-                slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideOffsetLeft + slideMarginLeft;
-                slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight + slideOffsetTop;
+                const productOffset = p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
+                slidePoint = mapSlidePoint(slidePoint, productOffset);
                 product.style.top = `${slidePoint.y}px`;
                 product.style.left = `${slidePoint.x}px`;
             }
@@ -348,13 +353,21 @@ function sketch(p5) {
 
     }
 
+    function mapSlidePoint(point, offset=p5.createVector(0, 0)) {
+        point.x = point.x / slideWidth * slide.clientWidth + slideMarginLeft + offset.x;
+        point.y = point.y / slideHeight * slide.clientHeight + offset.y;
+        if(slideOriginalHeight != slideHeight) {
+            point.y += p5.height/2 - slideOriginalHeight;
+        }
+        return point;
+    }
+
     function drawRoughSlide() {
         let slideCurvepoints = [];
         let slideSteps = 40;
         for(let i = 0; i < slideSteps; i++) {
             let slidePoint = slidePath.getPointAtLength(i * slideLength / slideSteps);
-            slidePoint.x = slidePoint.x / Number(slide.getAttribute("width")) * slide.clientWidth + slideMarginLeft;
-            slidePoint.y = slidePoint.y / Number(slide.getAttribute("height")) * slide.clientHeight;
+            slidePoint = mapSlidePoint(slidePoint);
             slideCurvepoints.push([slidePoint.x, slidePoint.y]);
         }
         rc.curve(slideCurvepoints, {
