@@ -3,6 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
+import {useMatches, useFetcher} from '@remix-run/react';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -56,38 +57,70 @@ export default function ProductHandle() {
                         <h1 className="text-2xl font-bold whitespace-normal">
                             {product.title}
                         </h1>
-                        <div className="flex gap-2">
-                          <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
-                            {price.currencyCode}$
-                            <Money 
-                              withoutCurrency 
-                              withoutTrailingZeros 
-                              data={price} 
-                            />
-                            {isDiscounted && (
-                              <Money
-                                className="line-through opacity-50"
-                                withoutTrailingZeros
-                                withoutCurrency
-                                data={compareAtPrice}
+                        {(price > 0) && 
+                          <div className="flex gap-2">
+                            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
+                              {price.currencyCode}$
+                              <Money 
+                                withoutCurrency 
+                                withoutTrailingZeros 
+                                data={price} 
                               />
-                            )}
-                          </span>
-                        </div>
+                              {isDiscounted && (
+                                <Money
+                                  className="line-through opacity-50"
+                                  withoutTrailingZeros
+                                  withoutCurrency
+                                  data={compareAtPrice}
+                                />
+                              )}
+                            </span>
+                          </div>
+                        }
+                        
                     </div>
                     {product.options[0].values.length > 1 && <ProductOptions options={product.options} selectedVariant={selectedVariant} />}
                     <div
                       className="prose pt-6 text-black text-sm"
                       dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                     />
+                    <div className="space-y-2">
+                      {/* <ShopPayButton
+                        variantIds={[selectedVariant?.id]}
+                        width={'400px'}
+                      /> */}
+                      <ProductForm variantId={selectedVariant?.id} />
+                    </div>
+
                 </div>
             </div>
         </section>
     );
 }
 
+function ProductForm({variantId}) {
+  const [root] = useMatches();
+  const selectedLocale = root?.data?.selectedLocale;
+  const fetcher = useFetcher();
 
-  
+  const lines = [{merchandiseId: variantId, quantity: 1}];
+
+  return (
+    <fetcher.Form action="/cart" method="post">
+      <input type="hidden" name="cartAction" value={'ADD_TO_CART'} />
+      <input
+        type="hidden"
+        name="countryCode"
+        value={selectedLocale?.country ?? 'US'}
+      />
+      <input type="hidden" name="lines" value={JSON.stringify(lines)} />
+      <button className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium max-w-[400px]">
+        Add to Bag
+      </button>
+    </fetcher.Form>
+  );
+}
+
 
 function PrintJson({data}) {
     return (

@@ -274,7 +274,7 @@ function sketch(p5) {
 
     p5.mouseWheel = (e) => {
         // TODO add condition to ignore this if slide is not present
-        if(!slide.freezeScroll) {
+        if(!slide.freezeScroll && slide.svg) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
             hide(selectedProductInfo);
@@ -300,7 +300,7 @@ function sketch(p5) {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
         if(page == 'home') {
             drawRoughCaterpillar();
-        } else {
+        } else if (page == 'collections') {
             drawRoughSlide();
         }
         ladder.resize();

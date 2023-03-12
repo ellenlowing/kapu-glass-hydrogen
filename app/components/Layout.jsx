@@ -20,7 +20,7 @@ export function Layout({children, title}) {
             <a id="nav-link-3" href="/collections/workshops" className="line-through px-3 cursor-pointer nav-link">workshop</a>
             <a id="nav-link-4" href="/collections/archive" className="px-3 cursor-pointer nav-link">archive</a>
             <a id="nav-link-5" href="/about" className="px-3 cursor-pointer nav-link">about</a>
-            <a id="nav-link-6" className="px-3 cursor-pointer line-through nav-link">cart</a>
+            <a id="nav-link-6" href="/cart" className="px-3 cursor-pointer line-through nav-link">cart</a>
             <a id="menu-switch" className="px-3 cursor-pointer nav-link">menu</a>
           </nav>
         </header>
