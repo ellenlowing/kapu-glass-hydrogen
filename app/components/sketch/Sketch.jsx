@@ -225,14 +225,13 @@ function sketch(p5) {
 
             // draw slide w/ rough
             if(p5.frameCount % roughFPS == 0) {
-                p5.background(colors.lightblue);
+                p5.background(colors.palekingblue);
                 drawRoughSlide();
                 // for(let i = 0; i < flower.positions.length; i++) {
                 //     drawRoughFlower(i);
                 // }
                 if(mousePath.points.length > 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
-                    console.log(mousePath.points.length, mousePath.angles.length);
                     butterfly.show();
                 }
 
@@ -377,7 +376,8 @@ const colors = {
     green: '#23C17C',
     blue: '#3300FF',
     lightblue: '#4F8FE6',
-    lightgreen: '#A6D40D'
+    lightgreen: '#A6D40D',
+    palekingblue: '#abf5ed'
 };
 
 const caterpillar = {
