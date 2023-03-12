@@ -43,6 +43,7 @@ export default function ProductHandle() {
     const {product, selectedVariant} = useLoaderData();
     const {price, compareAtPrice} = product.variants?.nodes[0] || {};
     const isDiscounted = compareAtPrice?.amount > price?.amount;
+    const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
 
     return (
         <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto">
@@ -57,7 +58,7 @@ export default function ProductHandle() {
                         <h1 className="text-2xl font-bold whitespace-normal">
                             {product.title}
                         </h1>
-                        {(price > 0) && 
+                        {(price?.amount > 0 && availableForSale) && 
                           <div className="flex gap-2">
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                               {price.currencyCode}$
@@ -77,6 +78,13 @@ export default function ProductHandle() {
                             </span>
                           </div>
                         }
+                        {(price?.amount > 0 && !availableForSale) && 
+                          <div className="flex gap-2">
+                            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
+                              Sold out
+                            </span>
+                          </div>
+                        }
                         
                     </div>
                     {product.options[0].values.length > 1 && <ProductOptions options={product.options} selectedVariant={selectedVariant} />}
@@ -84,13 +92,11 @@ export default function ProductHandle() {
                       className="prose pt-6 text-black text-sm"
                       dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                     />
-                    <div className="space-y-2">
-                      {/* <ShopPayButton
-                        variantIds={[selectedVariant?.id]}
-                        width={'400px'}
-                      /> */}
-                      <ProductForm variantId={selectedVariant?.id} />
-                    </div>
+                    {(price?.amount > 0 && availableForSale) && 
+                      <div className="space-y-2">
+                        <ProductForm variantId={selectedVariant?.id} />
+                      </div>
+                    }
 
                 </div>
             </div>

@@ -4,6 +4,7 @@ import {Image, Money} from '@shopify/hydrogen';
 export default function ProductCard({product, dataIndex}) {
   const {price, compareAtPrice} = product.variants?.nodes[0] || {};
   const isDiscounted = compareAtPrice?.amount > price?.amount;
+  const availableForSale = product.variants?.nodes[0].availableForSale;
 
   return (
     <a id={dataIndex} href={`/products/${product.handle}`} 
@@ -28,24 +29,34 @@ export default function ProductCard({product, dataIndex}) {
           <h3 id="product-title" className="t-0 left-[150px] p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-max-content h-fit-content absolute">
             {product.title}
           </h3>
-          <div data-price={price.amount} id="product-price" className={` absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0`}>
-            <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
-              {price.currencyCode}$
-              <Money 
-                withoutCurrency 
-                withoutTrailingZeros 
-                data={price} 
-              />
-              {isDiscounted && (
-                <Money
-                  className="line-through opacity-50"
-                  withoutTrailingZeros
-                  withoutCurrency
-                  data={compareAtPrice}
+          {availableForSale && 
+            <div data-price={price.amount} id="product-price" className={` absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0`}>
+              <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
+                {price.currencyCode}$
+                <Money 
+                  withoutCurrency 
+                  withoutTrailingZeros 
+                  data={price} 
                 />
-              )}
-            </span>
-          </div>
+                {isDiscounted && (
+                  <Money
+                    className="line-through opacity-50"
+                    withoutTrailingZeros
+                    withoutCurrency
+                    data={compareAtPrice}
+                  />
+                )}
+              </span>
+            </div>
+          }
+          {!availableForSale && 
+            <div data-price={price.amount} id="product-price" className={` absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0`}>
+              <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
+                Sold out
+              </span>
+            </div>
+          }
+          
         </div>
       </div>
     </a>

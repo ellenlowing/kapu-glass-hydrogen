@@ -61,6 +61,7 @@ const COLLECTION_QUERY = `#graphql
                 variants(first: 1) {
                     nodes {
                         id
+                        availableForSale
                         image {
                             url
                             altText
