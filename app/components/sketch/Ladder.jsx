@@ -9,7 +9,7 @@ export default class Ladder {
         this.stepHeight = 40;
         this.numSteps = 7;
         this.lineStyle = {fill: 'black', roughness: 1.5, strokeWidth: 0.5 };
-        this.hoverStyle = {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'cross-hatch', roughness: 1.4, fillWeight: 0.5 };
+        this.hoverStyle = {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', hachureGap: 1, roughness: 1.4, fillWeight: 0.5, disableMultiStrokeFill: true };
         this.menuActive = false;
         this.marginRight = this.p5.width * 0.05;
         this.endX = this.p5.width - this.marginRight;

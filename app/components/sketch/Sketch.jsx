@@ -72,6 +72,25 @@ function sketch(p5) {
 
         ladder = new Ladder(p5, rc);
 
+        butterfly = new Butterfly(
+            p5.createVector(p5.width/2, p5.height/2),
+            p5.random(0.01, 0.1),
+            {
+                stroke: colors.red,
+                strokeWidth: 1,
+                roughness: 0.5,
+                fill: colors.red,
+                fillStyle: 'hachure', 
+                hachureGap: 2,
+                // fillWeight: 0.2,
+                simplification: 0.1
+            },
+            p5,
+            rc
+        );
+
+        mousePath = new Path(p5);
+
         if(urlPath.length == 0) {
             // homepage
             page = 'home';
@@ -153,24 +172,6 @@ function sketch(p5) {
                 } else {
                     hide(product);
                 }
-
-                butterfly = new Butterfly(
-                    p5.createVector(p5.width/2, p5.height/2),
-                    p5.random(0.01, 0.1),
-                    {
-                        stroke: colors.red,
-                        strokeWidth: 1,
-                        roughness: 0.5,
-                        fill: colors.red,
-                        fillStyle: 'dots',
-                        fillWeight: 0.2,
-                        simplification: 0.1
-                    },
-                    p5,
-                    rc
-                );
-
-                mousePath = new Path(p5);
             }
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             page = 'products';
@@ -230,10 +231,6 @@ function sketch(p5) {
                 // for(let i = 0; i < flower.positions.length; i++) {
                 //     drawRoughFlower(i);
                 // }
-                if(mousePath.points.length > 2) {
-                    butterfly.update(mousePath.points[0], mousePath.angles[0]);
-                    butterfly.show();
-                }
 
                 // *uncomment if want to freeze after scrolling stop
                 // p5.noLoop();
@@ -245,11 +242,21 @@ function sketch(p5) {
             }
 
         } else if(page == 'products') {
-
-        } 
+            if(p5.frameCount % roughFPS == 0) {
+                p5.background(colors.palekingblue);
+            }
+        } else {
+            if(p5.frameCount % roughFPS == 0) {
+                p5.background(colors.palekingblue);
+            }
+        }
 
         if(p5.frameCount % roughFPS == 0) {
             ladder.show();
+            if(mousePath.points.length > 2) {
+                butterfly.update(mousePath.points[0], mousePath.angles[0]);
+                butterfly.show();
+            }
         }
     }
 
@@ -266,6 +273,7 @@ function sketch(p5) {
     }
 
     p5.mouseWheel = (e) => {
+        // TODO add condition to ignore this if slide is not present
         if(!slide.freezeScroll) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
@@ -377,7 +385,7 @@ const colors = {
     blue: '#3300FF',
     lightblue: '#4F8FE6',
     lightgreen: '#A6D40D',
-    palekingblue: '#abf5ed'
+    palekingblue: '#96bfe6'
 };
 
 const caterpillar = {
