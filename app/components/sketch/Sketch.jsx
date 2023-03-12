@@ -7,6 +7,7 @@ const ReactP5Wrapper = lazy(() =>
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
 import {hide, show} from './Utility';
+import Path from './Path';
 
 export default function Sketch() {
 
@@ -40,12 +41,15 @@ function sketch(p5) {
     let leadingProductIndex, lastProductIndex;
     let maxNumProductsDisplayed = 3;
     let totalToMaxNumDisplayRatio;
+    let selectedProductInfo;
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
 
     // butterfly
     let butterfly;
+
+    let mousePath;
 
     // ladder
     let ladder;
@@ -108,7 +112,7 @@ function sketch(p5) {
             leadingProductIndex = 0;
             lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
 
-            const selectedProductInfo = document.getElementById('selected-product-info');
+            selectedProductInfo = document.getElementById('selected-product-info');
             const selectedProductTitle = document.getElementById('selected-product-title');
             const selectedProductPrice = document.getElementById('selected-product-price');
             for(let i = 0; i < numProducts; i++) {
@@ -159,12 +163,14 @@ function sketch(p5) {
                         roughness: 0.5,
                         fill: colors.red,
                         fillStyle: 'dots',
-                        fillWeight: 1,
+                        fillWeight: 0.2,
                         simplification: 0.1
                     },
                     p5,
                     rc
                 );
+
+                mousePath = new Path(p5);
             }
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             page = 'products';
@@ -219,13 +225,14 @@ function sketch(p5) {
 
             // draw slide w/ rough
             if(p5.frameCount % roughFPS == 0) {
-                p5.background(colors.lightgreen);
+                p5.background(colors.lightblue);
                 drawRoughSlide();
-                for(let i = 0; i < flower.positions.length; i++) {
-                    drawRoughFlower(i);
-                }
-                if(butterfly) {
-                    butterfly.update();
+                // for(let i = 0; i < flower.positions.length; i++) {
+                //     drawRoughFlower(i);
+                // }
+                if(mousePath.points.length > 2) {
+                    butterfly.update(mousePath.points[0], mousePath.angles[0]);
+                    console.log(mousePath.points.length, mousePath.angles.length);
                     butterfly.show();
                 }
 
@@ -233,16 +240,25 @@ function sketch(p5) {
                 // p5.noLoop();
 
                 // frame rate debug
-                // p5.stroke(0);
-                // p5.noFill();
-                // p5.text(p5.round(p5.frameRate()), 100, 200);
+                p5.stroke(0);
+                p5.noFill();
+                p5.text(p5.round(p5.frameRate()), 100, 200);
             }
+
         } else if(page == 'products') {
 
         } 
 
         if(p5.frameCount % roughFPS == 0) {
             ladder.show();
+        }
+    }
+
+    p5.mouseMoved = (e) => {
+        mousePath.addPoint(p5.mouseX, p5.mouseY);
+        if(mousePath.points.length > 20) {
+            mousePath.points.shift();
+            mousePath.angles.shift();
         }
     }
 
@@ -254,7 +270,7 @@ function sketch(p5) {
         if(!slide.freezeScroll) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
-            // TODO hide selected product info
+            hide(selectedProductInfo);
         }
     }
 
