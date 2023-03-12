@@ -37,19 +37,16 @@ export default class Butterfly {
             this.points.push([v.x, v.y]);
         }
         for(let a = -this.p5.PI/2; a <= -this.p5.PI/2+0.27; a += this.da) {
-            let r = this.p5.sin(2 * a) * 120;
+            let n = this.p5.noise(this.xoff, this.yoff);
+            let r = this.p5.sin(2 * a) * this.p5.map(n, 0, 1, 120, 200);
             let x = r * this.p5.cos(a);
             let y = r * this.p5.sin(a);
             let v = this.p5.createVector(x, y);
             v.rotate(heading - this.p5.PI/2);
             v.add(offset);
             this.antenna0.push([v.x, v.y]);
-        }
-        for(let a = -this.p5.PI/2; a <= -this.p5.PI/2+0.27; a += this.da) {
-            let r = this.p5.sin(2 * a) * 120;
-            let x = -r * this.p5.cos(a);
-            let y = r * this.p5.sin(a);
-            let v = this.p5.createVector(x, y);
+            x = -x;
+            v = this.p5.createVector(x, y);
             v.rotate(heading - this.p5.PI/2);
             v.add(offset);
             this.antenna1.push([v.x, v.y]);
