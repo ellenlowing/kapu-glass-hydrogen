@@ -8,6 +8,7 @@ import Butterfly from './Butterfly';
 import Ladder from './Ladder';
 import {hide, show} from './Utility';
 import Path from './Path';
+import Flower from './Flower';
 
 export default function Sketch() {
 
@@ -48,8 +49,10 @@ function sketch(p5) {
 
     // butterfly
     let butterfly;
-
     let mousePath;
+
+    // flower
+    let flowers = [];
 
     // ladder
     let ladder;
@@ -228,17 +231,13 @@ function sketch(p5) {
             if(p5.frameCount % roughFPS == 0) {
                 p5.background(colors.palekingblue);
                 drawRoughSlide();
-                // for(let i = 0; i < flower.positions.length; i++) {
-                //     drawRoughFlower(i);
-                // }
+                for(let flower of flowers) {
+                    flower.show();
+                }
 
                 // *uncomment if want to freeze after scrolling stop
                 // p5.noLoop();
 
-                // frame rate debug
-                p5.stroke(0);
-                p5.noFill();
-                p5.text(p5.round(p5.frameRate()), 100, 200);
             }
 
         } else if(page == 'products') {
@@ -257,6 +256,11 @@ function sketch(p5) {
                 butterfly.update(mousePath.points[0], mousePath.angles[0]);
                 butterfly.show();
             }
+
+            // frame rate debug
+            p5.stroke(0);
+            p5.noFill();
+            p5.text(p5.round(p5.frameRate()), 100, 200);
         }
     }
 
@@ -269,7 +273,14 @@ function sketch(p5) {
     }
 
     p5.mousePressed = (e) => {
-        setupRoughFlower();
+        let flower = new Flower(p5.createVector(p5.mouseX, p5.mouseY), {
+            stroke: colors.orange,
+            strokeWidth: 1,
+            roughness: 0.3,
+            fill: colors.orange,
+            fillStyle: 'cross-hatch'
+        }, p5, rc);
+        flowers.push(flower);
     }
 
     p5.mouseWheel = (e) => {
@@ -340,35 +351,6 @@ function sketch(p5) {
         });
     }
 
-    function setupRoughFlower() {
-        flower.positions.push(p5.createVector(p5.mouseX, p5.mouseY));
-        let n = p5.floor(p5.random(2, 8));
-        let d = p5.floor(p5.random(1, n-1));
-        flower.ns.push(n);
-        flower.ds.push(d);
-    }
-
-    function drawRoughFlower(index) {
-        let flowerPoints = [];
-        let d = flower.ds[index];
-        let n = flower.ns[index];
-        let center = flower.positions[index];
-        let k = n/d;
-        for(let a = 0; a < p5.TWO_PI * d; a += 0.02) {
-            let r = 50 * p5.cos(k * a);
-            let x = r * p5.cos(a);
-            let y = r * p5.sin(a);
-            flowerPoints.push([x + center.x, y + center.y]);
-        }
-        rc.curve(flowerPoints, {
-            stroke: colors.orange,
-            strokeWidth: 1,
-            roughness: 0.3,
-            fill: colors.orange,
-            fillStyle: 'cross-hatch'
-        });
-    }
-
     function lerpColor(colorA, colorB, t) {
         let r = p5.lerp(p5.red(colorA), p5.red(colorB), t);
         let g = p5.lerp(p5.green(colorA), p5.green(colorB), t);
@@ -401,10 +383,4 @@ const slide = {
     attrH: null,
     freezeScroll: false,
     scrollProgress: -1
-}
-
-const flower = {
-    positions: [],
-    ns: [],
-    ds: []
 }
