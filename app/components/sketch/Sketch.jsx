@@ -4,6 +4,9 @@ const ReactP5Wrapper = lazy(() =>
     default: module.ReactP5Wrapper
   }))
 );
+import Butterfly from './Butterfly';
+import Ladder from './Ladder';
+import {hide, show} from './Utility';
 
 export default function Sketch() {
 
@@ -40,11 +43,12 @@ function sketch(p5) {
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
-    let caterpillarHeadPos;
-    let caterpillarActiveIndex = 0;
-    let numCaterpillar = 7; 
-    let debounceTimeout;
-    let debounceTime = 50;
+
+    // butterfly
+    let butterfly;
+
+    // ladder
+    let ladder;
 
     // rough 
     let rc;
@@ -62,7 +66,7 @@ function sketch(p5) {
 
         rc = rough.canvas(document.getElementById('defaultCanvas0'));
 
-        setupRoughLadder();
+        ladder = new Ladder(p5, rc);
 
         if(urlPath.length == 0) {
             // homepage
@@ -145,6 +149,22 @@ function sketch(p5) {
                 } else {
                     hide(product);
                 }
+
+                butterfly = new Butterfly(
+                    p5.createVector(p5.width/2, p5.height/2),
+                    p5.random(0.01, 0.1),
+                    {
+                        stroke: colors.red,
+                        strokeWidth: 1,
+                        roughness: 0.5,
+                        fill: colors.red,
+                        fillStyle: 'dots',
+                        fillWeight: 1,
+                        simplification: 0.1
+                    },
+                    p5,
+                    rc
+                );
             }
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             page = 'products';
@@ -199,37 +219,42 @@ function sketch(p5) {
 
             // draw slide w/ rough
             if(p5.frameCount % roughFPS == 0) {
-                p5.background(255, 255, 255, 255);
+                p5.background(colors.lightgreen);
                 drawRoughSlide();
+                for(let i = 0; i < flower.positions.length; i++) {
+                    drawRoughFlower(i);
+                }
+                if(butterfly) {
+                    butterfly.update();
+                    butterfly.show();
+                }
+
+                // *uncomment if want to freeze after scrolling stop
                 // p5.noLoop();
 
                 // frame rate debug
-                p5.stroke(0);
-                p5.noFill();
-                p5.text(p5.round(p5.frameRate()), 100, 200);
+                // p5.stroke(0);
+                // p5.noFill();
+                // p5.text(p5.round(p5.frameRate()), 100, 200);
             }
         } else if(page == 'products') {
 
         } 
 
         if(p5.frameCount % roughFPS == 0) {
-            drawRoughLadder();
+            ladder.show();
         }
+    }
+
+    p5.mousePressed = (e) => {
+        setupRoughFlower();
     }
 
     p5.mouseWheel = (e) => {
         if(!slide.freezeScroll) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
-        }
-
-        if(!debounceTimeout) {
-            caterpillarActiveIndex = (caterpillarActiveIndex + Math.sign(e.delta)) % numCaterpillar;
-            if(caterpillarActiveIndex < 0) caterpillarActiveIndex = caterpillarActiveIndex + numCaterpillar;
-            debounceTimeout = setTimeout(() => {
-                clearTimeout(debounceTimeout);
-                debounceTimeout = null;
-            }, debounceTime);
+            // TODO hide selected product info
         }
     }
 
@@ -249,99 +274,14 @@ function sketch(p5) {
     }
 
     p5.windowResized = () => {
-        p5.resizeCanvas(p5.windowWidth, p5.windowHeight - 64);
+        p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
         if(page == 'home') {
             drawRoughCaterpillar();
         } else {
             drawRoughSlide();
         }
-        resizeRoughLadder();
-        drawRoughLadder();
-    }
-
-    function setupRoughLadder() {
-        ladder.marginRight = p5.width * 0.05;
-        ladder.endX = p5.width - ladder.marginRight;
-        ladder.startX = ladder.endX - ladder.width;
-        ladder.height = ladder.stepHeight * (ladder.numSteps + 1);
-        for(let i = 0; i < ladder.numSteps; i++) {
-            const navLink = document.getElementById(`nav-link-${i}`);
-            navLink.addEventListener('mouseover', (e) => {
-                ladder.activeIndex.push(i);
-                p5.loop();
-            })
-            navLink.addEventListener('mouseleave', (e) => {
-                let index = ladder.activeIndex.indexOf(i);
-                ladder.activeIndex.splice(index, 1);
-                p5.loop();
-            })
-        }
-        ladder.startY = -ladder.stepHeight * ladder.numSteps;
-        ladder.menuLength = -ladder.stepHeight * ladder.numSteps;
-        ladder.menuSpeed = 20;
-
-        // menu
-        const menuSwitch = document.getElementById('menu-switch');
-        const nav = document.getElementById('nav');
-        menuSwitch.addEventListener('mouseover', (e) => {
-            if(!menuSwitch.menuActive) {
-                menuSwitch.innerHTML = 'open';
-            }
-        })
-        menuSwitch.addEventListener('click', (e) => {
-            if(!menuSwitch.menuActive) {
-                menuSwitch.menuActive = true;
-                menuSwitch.innerHTML = 'close';
-                hide(nav);
-                ladder.interval = setInterval(() => {
-                    if(ladder.startY < 0) {
-                        ladder.startY += 10;
-                        nav.style.transform = `translateY(${ladder.startY}px)`;
-                    } else {
-                        clearInterval(ladder.interval);
-                        show(nav);
-                    }
-                }, ladder.menuSpeed);
-            } else {
-                menuSwitch.menuActive = false;
-                menuSwitch.innerHTML = 'open';
-                hide(nav);
-                ladder.interval = setInterval(() => {
-                    if(ladder.startY > ladder.menuLength) {
-                        ladder.startY -= 10;
-                        nav.style.transform = `translateY(${ladder.startY}px)`;
-                    } else {
-                        clearInterval(ladder.interval);
-                        show(nav);
-                    }
-                }, ladder.menuSpeed);
-            }
-        })
-        menuSwitch.addEventListener('mouseleave', (e) => {
-            if(!menuSwitch.menuActive) {
-                menuSwitch.innerHTML = 'menu';
-            }
-        })
-    }
-
-    function drawRoughLadder() {
-        rc.line(ladder.startX, ladder.startY, ladder.startX, ladder.height + ladder.startY, ladder.lineStyle );
-        rc.line(ladder.endX, ladder.startY, ladder.endX, ladder.height + ladder.startY, ladder.lineStyle );
-        for(let i = 0; i < ladder.numSteps; i++) {
-            let y = i * ladder.stepHeight + ladder.startY;
-            if(ladder.activeIndex.indexOf(i) < 0) {
-                ladder.hoverStyle.fill = `${colors.orange}00`;
-            } else {
-                ladder.hoverStyle.fill = colors.orange;
-            }
-            rc.rectangle(ladder.startX, y, ladder.width, ladder.stepHeight, ladder.hoverStyle);
-        }
-    }
-
-    function resizeRoughLadder() {
-        ladder.marginRight = p5.width * 0.05;
-        ladder.endX = p5.width - ladder.marginRight;
-        ladder.startX = ladder.endX - ladder.width;
+        ladder.resize();
+        ladder.show();
     }
 
     function drawRoughCaterpillar() {
@@ -377,32 +317,33 @@ function sketch(p5) {
         });
     }
 
-    function show (el, delay=50) {
-        if(delay == 0) {
-            el.style.display = 'block';
-        } else {
-            setTimeout(() => {
-                el.style.display = 'block';
-            }, delay);
+    function setupRoughFlower() {
+        flower.positions.push(p5.createVector(p5.mouseX, p5.mouseY));
+        let n = p5.floor(p5.random(2, 8));
+        let d = p5.floor(p5.random(1, n-1));
+        flower.ns.push(n);
+        flower.ds.push(d);
+    }
+
+    function drawRoughFlower(index) {
+        let flowerPoints = [];
+        let d = flower.ds[index];
+        let n = flower.ns[index];
+        let center = flower.positions[index];
+        let k = n/d;
+        for(let a = 0; a < p5.TWO_PI * d; a += 0.02) {
+            let r = 50 * p5.cos(k * a);
+            let x = r * p5.cos(a);
+            let y = r * p5.sin(a);
+            flowerPoints.push([x + center.x, y + center.y]);
         }
-    }
-
-    function hide (el) {
-        el.style.display = 'none';
-    }
-
-    function map(x, in_min, in_max, out_min, out_max) {
-        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-    }
-
-    function drawGradientStep(x, y, radius, colorA, colorB=p5.color(255, 255, 255, 0)) {
-        radius *= 1.5;
-        for(let r = radius; r > 0; --r) {
-            let t = r/radius;
-            let gradientStep = lerpColor(colorA, colorB, t);
-            p5.fill(gradientStep);
-            p5.circle(x, y, r);
-        }
+        rc.curve(flowerPoints, {
+            stroke: colors.orange,
+            strokeWidth: 1,
+            roughness: 0.3,
+            fill: colors.orange,
+            fillStyle: 'cross-hatch'
+        });
     }
 
     function lerpColor(colorA, colorB, t) {
@@ -427,16 +368,6 @@ const caterpillar = {
     bodyRadius: 120,
 };
 
-const ladder = {
-    activeIndex: [],
-    width: 160,
-    stepHeight: 40,
-    numSteps: 7,
-    lineStyle: {fill: 'black', roughness: 1.5, strokeWidth: 0.5 },
-    hoverStyle: {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'cross-hatch', roughness: 1.4, fillWeight: 0.3 },
-    menuActive: false
-};
-
 const slide = {
     svg: null,
     path: null,
@@ -446,4 +377,10 @@ const slide = {
     attrH: null,
     freezeScroll: false,
     scrollProgress: -1
+}
+
+const flower = {
+    positions: [],
+    ns: [],
+    ds: []
 }
