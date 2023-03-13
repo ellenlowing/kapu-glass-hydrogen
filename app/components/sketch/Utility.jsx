@@ -2,7 +2,7 @@ function hide (el) {
     el.style.display = 'none';
 }
 
-function show (el, delay=50) {
+function show (el, delay=0) {
     if(delay == 0) {
         el.style.display = 'block';
     } else {

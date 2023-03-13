@@ -1,6 +1,7 @@
 import Sketch from "./sketch/Sketch";
 import {Image} from '@shopify/hydrogen';
 import logo from '../../public/logo.png';
+import {Link} from '@remix-run/react';
 
 export function Layout({children, title}) {
     return (
@@ -9,18 +10,18 @@ export function Layout({children, title}) {
           role="banner"
           className={`flex items-center h-16 z-40 top-0 justify-between w-full leading-none gap-4 antialiased transition`}
         >
-          <a className="h-full p-2" href="/">
+          <Link className="h-full p-2" to="/">
             <img className="h-full" src={logo}></img>
-          </a>
+          </Link>
 
           <nav id="nav" className="fixed">
-            <a id="nav-link-0" href="/collections/vessels" className="px-3 cursor-pointer nav-link">vessels</a>
-            <a id="nav-link-1" href="/collections/accessories" className="px-3 cursor-pointer nav-link">accessories</a>
-            <a id="nav-link-2" href="/" className="line-through px-3 cursor-pointer nav-link">magazine</a>
-            <a id="nav-link-3" href="/collections/workshops" className="line-through px-3 cursor-pointer nav-link">workshop</a>
-            <a id="nav-link-4" href="/collections/archive" className="px-3 cursor-pointer nav-link">archive</a>
-            <a id="nav-link-5" href="/about" className="px-3 cursor-pointer nav-link">about</a>
-            <a id="nav-link-6" href="/cart" className="px-3 cursor-pointer line-through nav-link">cart</a>
+            <Link id="nav-link-0" to="/collections/vessels" className="px-3 cursor-pointer nav-link">vessels</Link>
+            <Link id="nav-link-1" to="/collections/accessories" className="px-3 cursor-pointer nav-link">accessories</Link>
+            <Link id="nav-link-2" to="/" className="line-through px-3 cursor-pointer nav-link">magazine</Link>
+            <Link id="nav-link-3" to="/collections/workshops" className="px-3 cursor-pointer nav-link">workshop</Link>
+            <Link id="nav-link-4" to="/collections/archive" className="px-3 cursor-pointer nav-link">archive</Link>
+            <Link id="nav-link-5" to="/about" className="px-3 cursor-pointer nav-link">about</Link>
+            <Link id="nav-link-6" to="/cart" className="px-3 cursor-pointer nav-link">cart</Link>
             <a id="menu-switch" className="px-3 cursor-pointer nav-link">menu</a>
           </nav>
         </header>

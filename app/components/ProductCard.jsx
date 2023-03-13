@@ -7,7 +7,7 @@ export default function ProductCard({product, dataIndex}) {
   const availableForSale = product.variants?.nodes[0].availableForSale;
 
   return (
-    <a id={dataIndex} href={`/products/${product.handle}`} 
+    <Link id={dataIndex} to={`/products/${product.handle}`} 
       className={`product relative group hover:col-unset hover:bg-unset w-[120px] md:w-[140px] lg:w-[16vw] max-w-[160px] offset-0 absolute hover:scale-[2.0] hover:z-50 z-1 transition ease-in-out duration-50`}>
       <div className="grid gap-2 relative">
         <div className="hover:shadow rounded relative">
@@ -59,6 +59,6 @@ export default function ProductCard({product, dataIndex}) {
           
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

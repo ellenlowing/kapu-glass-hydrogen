@@ -9,6 +9,7 @@ import Ladder from './Ladder';
 import {hide, show} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
+import Slide from './Slide';
 
 export default function Sketch() {
 
@@ -33,16 +34,8 @@ export default function Sketch() {
 }
 
 function sketch(p5) {
-    let page;
-
-    // collections/$ page variables
-    let productsContainer;
-    let productsNodeList = [];
-    let productsDisplayCountList = [];
-    let leadingProductIndex, lastProductIndex;
-    let maxNumProductsDisplayed = 3;
-    let totalToMaxNumDisplayRatio;
-    let selectedProductInfo;
+    // let page;
+    let lastURLPath;
 
     // caterpillar qt menu
     let caterpillarRadius = 30;
@@ -57,6 +50,9 @@ function sketch(p5) {
     // ladder
     let ladder;
 
+    // slide
+    let slide;
+
     // rough 
     let rc;
     let roughFPS = 5;
@@ -64,12 +60,24 @@ function sketch(p5) {
     // touch
     let startTouch;
 
+    const colors = {
+        red: '#EC1E24',
+        orange: '#FF8C00',
+        green: '#23C17C',
+        blue: '#3300FF',
+        lightblue: '#4F8FE6',
+        lightgreen: '#A6D40D',
+        palekingblue: '#96bfe6'
+    };
+
+    const caterpillar = {
+        bodyRadius: 120,
+    };
+
     p5.setup = () => {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight); // before: p5.createCanvas(p5.windowWidth, p5.windowHeight - 64px)
+        p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
         p5.noStroke();
-
-        const urlPath = p5.getURLPath();
 
         rc = rough.canvas(document.getElementById('defaultCanvas0'));
 
@@ -94,90 +102,26 @@ function sketch(p5) {
 
         mousePath = new Path(p5);
 
+        slide = new Slide(p5, rc);
+
+        const urlPath = p5.getURLPath();
+        lastURLPath = urlPath;
+
         if(urlPath.length == 0) {
             // homepage
-            page = 'home';
 
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
-            // other pages
-            page = 'collections';
+            // collections pages
+            const collectionName = urlPath[1];
  
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
 
             // slide layout things
-            const collectionName = urlPath[1];
-            const svgs = document.getElementsByClassName('svg-slide');
-            slide.svg = document.getElementById(`slide-${collectionName}`);
-            if(!slide.svg) {
-                slide.svg = document.getElementById(`slide-vessels`);
-            }
-            slide.path = slide.svg.firstChild;
-            for(let svg of svgs) {
-                if(svg !== slide.svg) {
-                    svg.style.display = 'none';
-                } else {
-                    svg.style.display = 'block';
-                }
-            }
-            slide.attrW = Number(slide.svg.getAttribute("width"));
-            slide.attrH = Number(slide.svg.getAttribute("height"));
-            productsContainer = document.getElementById('products-container');
-            const numProducts = Number(productsContainer.getAttribute("data-collection-length"));
-            if(numProducts < maxNumProductsDisplayed) {
-                maxNumProductsDisplayed = numProducts;
-            }
-            slide.pathLength = slide.path.getTotalLength();
-            slide.pathLengthOffset = slide.pathLength / maxNumProductsDisplayed;
-            slide.scrollProgress = slide.pathLength / maxNumProductsDisplayed * (maxNumProductsDisplayed - 1) + 10;
-            totalToMaxNumDisplayRatio = numProducts / maxNumProductsDisplayed;
-            leadingProductIndex = 0;
-            lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed - 1) % numProducts;
-
-            selectedProductInfo = document.getElementById('selected-product-info');
-            const selectedProductTitle = document.getElementById('selected-product-title');
-            const selectedProductPrice = document.getElementById('selected-product-price');
-            for(let i = 0; i < numProducts; i++) {
-                const product = document.getElementById(`product-${i}`);
-                product.style.position = 'absolute';
-                productsNodeList.push(product);
-                productsDisplayCountList.push(0);
-
-                product.addEventListener('mouseenter', (e) => {
-                    slide.freezeScroll = true;
-                    for(let product of productsNodeList) {
-                        if(product != e.target) {
-                            product.classList.add('product-blur');
-                        } else {
-                            selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
-                            selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
-
-                            if(Number(e.target.querySelector('#product-price').getAttribute('data-price')) == 0) {
-                                hide(selectedProductPrice);
-                            } else {
-                                show(selectedProductPrice);
-                            }
-                        }
-                    }
-                    show(selectedProductInfo);
-                })
-
-                product.addEventListener('mouseleave', (e) => {
-                    slide.freezeScroll = false;
-                    for(let product of productsNodeList) {
-                        product.classList.remove('product-blur');
-                    }
-                    hide(selectedProductInfo);
-                })
-                
-                if(i >= leadingProductIndex && i < (leadingProductIndex + maxNumProductsDisplayed)) {
-                    show(product);
-                } else {
-                    hide(product);
-                }
-            }
+            slide.setup(collectionName);
+            
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
-            page = 'products';
+            // products pages
         }
     }
 
@@ -185,76 +129,43 @@ function sketch(p5) {
 
         if(p5.frameCount < 5) {
             roughFPS = p5.constrain(p5.round(p5.frameRate() / 6), 0, 10);
+            console.log(roughFPS);
         }
 
-        if(page == 'home') {
-
-            // rough: caterpillar body
-            if(p5.frameCount % roughFPS == 0) {
-                p5.background(255, 255, 255, 255);
-                drawRoughCaterpillar();
+        // if page change
+        const urlPath = p5.getURLPath();
+        if(lastURLPath !== urlPath) {
+            if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
+                const collectionName = urlPath[1];
+                slide.setup(collectionName);
+                console.log(collectionName);
             }
 
-        } else if (page == 'collections') {
-
-            // slide layout things
-            for(let i = 0; i < productsNodeList.length; i++) {
-                let offsetScrollProgress = (slide.scrollProgress - i * slide.pathLengthOffset - productsDisplayCountList[i] * totalToMaxNumDisplayRatio * slide.pathLength);
-                let slidePoint = slide.path.getPointAtLength(offsetScrollProgress);
-                const product = productsNodeList[i];
-                const productOffset = p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
-                slidePoint = mapSlidePoint(slidePoint, productOffset);
-                product.style.top = `${slidePoint.y}px`;
-                product.style.left = `${slidePoint.x}px`;
+            const body = document.getElementsByTagName('body')[0];
+            if(urlPath[0] == 'products') {
+                body.style.overflow = 'auto';
+            } else {
+                body.style.overflow = 'hidden';
             }
-
-            const scrollThreshold = (slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[leadingProductIndex]) + leadingProductIndex * slide.pathLengthOffset);
-            const reverseScrollThreshold = slide.pathLength * (1 + totalToMaxNumDisplayRatio * productsDisplayCountList[lastProductIndex]) + slide.pathLengthOffset * (lastProductIndex - maxNumProductsDisplayed);
-
-            if( slide.scrollProgress >= scrollThreshold) {
-                hide(productsNodeList[leadingProductIndex]);
-                productsDisplayCountList[leadingProductIndex] += 1;
-                lastProductIndex = (leadingProductIndex + maxNumProductsDisplayed) % productsNodeList.length;
-                show(productsNodeList[lastProductIndex]);
-                leadingProductIndex = (leadingProductIndex + 1) % productsNodeList.length;
-            } 
-            if ( slide.scrollProgress < reverseScrollThreshold + 1) {
-                hide(productsNodeList[lastProductIndex]);
-                lastProductIndex = (lastProductIndex - 1) % productsNodeList.length;
-                if(lastProductIndex < 0) lastProductIndex = productsNodeList.length + lastProductIndex;
-                leadingProductIndex = (leadingProductIndex - 1) % productsNodeList.length < 0 ? productsNodeList.length + (leadingProductIndex - 1) % productsNodeList.length : (leadingProductIndex - 1) % productsNodeList.length;
-                productsDisplayCountList[leadingProductIndex] -= 1;
-                show(productsNodeList[leadingProductIndex]);
-            }
-
-            // draw slide w/ rough
-            if(p5.frameCount % roughFPS == 0) {
-                p5.background(colors.palekingblue);
-                drawRoughSlide();
-                for(let flower of flowers) {
-                    flower.show();
-                }
-
-                // *uncomment if want to freeze after scrolling stop
-                // p5.noLoop();
-
-            }
-
-        } else if(page == 'products') {
-            if(p5.frameCount % roughFPS == 0) {
-                p5.background(colors.palekingblue);
-            }
-        } else {
-            if(p5.frameCount % roughFPS == 0) {
-                p5.background(colors.palekingblue);
-            }
+            lastURLPath = urlPath;
         }
 
+        if(!slide.freezeScroll && slide.svg) {
+            slide.update();
+        }
         if(p5.frameCount % roughFPS == 0) {
+
+            p5.background(colors.palekingblue);
             ladder.show();
             if(mousePath.points.length > 2) {
                 butterfly.update(mousePath.points[0], mousePath.angles[0]);
                 butterfly.show();
+            }
+
+            if(urlPath.length == 0) {
+                drawRoughCaterpillar();
+            } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
+                slide.show();
             }
 
             // frame rate debug
@@ -273,22 +184,21 @@ function sketch(p5) {
     }
 
     p5.mousePressed = (e) => {
-        let flower = new Flower(p5.createVector(p5.mouseX, p5.mouseY), {
-            stroke: colors.orange,
-            strokeWidth: 1,
-            roughness: 0.3,
-            fill: colors.orange,
-            fillStyle: 'cross-hatch'
-        }, p5, rc);
-        flowers.push(flower);
+        // let flower = new Flower(p5.createVector(p5.mouseX, p5.mouseY), {
+        //     stroke: colors.orange,
+        //     strokeWidth: 1,
+        //     roughness: 0.3,
+        //     fill: colors.orange,
+        //     fillStyle: 'cross-hatch'
+        // }, p5, rc);
+        // flowers.push(flower);
     }
 
     p5.mouseWheel = (e) => {
-        // TODO add condition to ignore this if slide is not present
         if(!slide.freezeScroll && slide.svg) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
-            hide(selectedProductInfo);
+            hide(slide.selectedProductInfo);
         }
     }
 
@@ -309,10 +219,13 @@ function sketch(p5) {
 
     p5.windowResized = () => {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
-        if(page == 'home') {
+        if(lastURLPath.length == 0) {
             drawRoughCaterpillar();
-        } else if (page == 'collections') {
-            drawRoughSlide();
+        } else if (lastURLPath.indexOf('collections') != -1 && lastURLPath.length > 1) {
+            p5.background(colors.palekingblue);
+            slide.resize();
+            slide.update();
+            slide.show();
         }
         ladder.resize();
         ladder.show();
@@ -328,29 +241,6 @@ function sketch(p5) {
 
     }
 
-    function mapSlidePoint(point, offset=p5.createVector(0, 0)) {
-        point.x = point.x / slide.attrW * slide.svg.clientWidth + offset.x + (p5.width - slide.svg.clientWidth) / 2;
-        point.y = point.y / slide.attrH * slide.svg.clientHeight + offset.y + (p5.height - slide.svg.clientHeight) / 2;
-        return point;
-    }
-
-    function drawRoughSlide() {
-        let slideCurvepoints = [];
-        let slideSteps = 40;
-        for(let i = 0; i < slideSteps; i++) {
-            let slidePoint = slide.path.getPointAtLength(i * slide.pathLength / slideSteps);
-            slidePoint = mapSlidePoint(slidePoint);
-            slideCurvepoints.push([slidePoint.x, slidePoint.y]);
-        }
-        rc.curve(slideCurvepoints, {
-            stroke: colors.blue,
-            strokeWidth: 1,
-            roughness: 2.5,
-            strokeLineDash: [15, 15],
-            simplification: 0.1
-        });
-    }
-
     function lerpColor(colorA, colorB, t) {
         let r = p5.lerp(p5.red(colorA), p5.red(colorB), t);
         let g = p5.lerp(p5.green(colorA), p5.green(colorB), t);
@@ -358,29 +248,4 @@ function sketch(p5) {
         let a = p5.lerp(p5.alpha(colorA), p5.alpha(colorB), t)
         return p5.color(r, g, b, a);
     }
-}
-
-const colors = {
-    red: '#EC1E24',
-    orange: '#FF8C00',
-    green: '#23C17C',
-    blue: '#3300FF',
-    lightblue: '#4F8FE6',
-    lightgreen: '#A6D40D',
-    palekingblue: '#96bfe6'
-};
-
-const caterpillar = {
-    bodyRadius: 120,
-};
-
-const slide = {
-    svg: null,
-    path: null,
-    pathLength: null,
-    pathLengthOffset: null,
-    attrW: null,
-    attrH: null,
-    freezeScroll: false,
-    scrollProgress: -1
 }
