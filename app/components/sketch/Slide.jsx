@@ -1,11 +1,16 @@
-import {hide, show} from './Utility';
+import {hide, show, colors} from './Utility';
 
 export default class Slide {
     constructor(p5, rc) {
         this.p5 = p5;
         this.rc = rc;
+        this.numProductsDisplayed = 3;
         this.maxNumProductsDisplayed = 3;
-
+        this.roughStyle = {
+            stroke: '#4f8fe6',
+            strokeWidth: 1,
+            roughness: 2,
+        };
     }
 
     setup(collectionName) {
@@ -30,14 +35,16 @@ export default class Slide {
         this.productsContainer = document.getElementById('products-container');
         this.numProducts = Number(this.productsContainer.getAttribute("data-collection-length"));
         if(this.numProducts < this.maxNumProductsDisplayed) {
-            this.maxNumProductsDisplayed = this.numProducts;
+            this.numProductsDisplayed = this.numProducts;
+        } else {
+            this.numProductsDisplayed = this.maxNumProductsDisplayed;
         }
         this.pathLength = this.path.getTotalLength();
-        this.pathLengthOffset = this.pathLength / this.maxNumProductsDisplayed;
-        this.scrollProgress = this.pathLength / this.maxNumProductsDisplayed * (this.maxNumProductsDisplayed - 1) + 10;
-        this.totalToMaxNumDisplayRatio = this.numProducts / this.maxNumProductsDisplayed;
+        this.pathLengthOffset = this.pathLength / this.numProductsDisplayed;
+        this.scrollProgress = this.pathLength / this.numProductsDisplayed * (this.numProductsDisplayed - 1) + 10;
+        this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
         this.leadingProductIndex = 0;
-        this.lastProductIndex = (this.leadingProductIndex + this.maxNumProductsDisplayed - 1) % this.numProducts;
+        this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
         for(let i = 0; i < this.numProducts; i++) {
@@ -73,7 +80,7 @@ export default class Slide {
                 hide(this.selectedProductInfo);
             })
 
-            if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.maxNumProductsDisplayed)) {
+            if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
                 show(product);
             } else {
                 hide(product);
@@ -94,12 +101,12 @@ export default class Slide {
         }
 
         const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
-        const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.maxNumProductsDisplayed);
+        const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
 
         if( this.scrollProgress >= scrollThreshold) {
             hide(this.productsNodeList[this.leadingProductIndex]);
             this.productsDisplayCountList[this.leadingProductIndex] += 1;
-            this.lastProductIndex = (this.leadingProductIndex + this.maxNumProductsDisplayed) % this.productsNodeList.length;
+            this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
             show(this.productsNodeList[this.lastProductIndex]);
             this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
         } 
@@ -113,14 +120,9 @@ export default class Slide {
         }
     }
 
-    show() {
-        this.rc.curve(this.points, {
-            stroke: '#000000',
-            strokeWidth: 1,
-            roughness: 2.5,
-            strokeLineDash: [15, 15],
-            simplification: 0.1
-        });
+    show(color) {
+        if(color) this.roughStyle.stroke = color;
+        this.rc.curve(this.points, this.roughStyle);
     }
 
     resize() {

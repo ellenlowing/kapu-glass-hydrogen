@@ -6,7 +6,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show} from './Utility';
+import {hide, show, colors, pathNameList} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -55,20 +55,14 @@ function sketch(p5) {
 
     // rough 
     let rc;
-    let roughFPS = 5;
+    let roughFPS = 10;
 
     // touch
     let startTouch;
 
-    const colors = {
-        red: '#EC1E24',
-        orange: '#FF8C00',
-        green: '#23C17C',
-        blue: '#3300FF',
-        lightblue: '#4F8FE6',
-        lightgreen: '#A6D40D',
-        palekingblue: '#96bfe6'
-    };
+    let bgColor = '#FFF';
+    let mainColor;
+
 
     const caterpillar = {
         bodyRadius: 120,
@@ -86,16 +80,6 @@ function sketch(p5) {
         butterfly = new Butterfly(
             p5.createVector(p5.width/2, p5.height/2),
             p5.random(0.01, 0.1),
-            {
-                stroke: colors.red,
-                strokeWidth: 1,
-                roughness: 0.5,
-                fill: colors.red,
-                fillStyle: 'hachure', 
-                hachureGap: 2,
-                // fillWeight: 0.2,
-                simplification: 0.1
-            },
             p5,
             rc
         );
@@ -127,10 +111,10 @@ function sketch(p5) {
 
     p5.draw = () => {
 
-        if(p5.frameCount < 5) {
-            roughFPS = p5.constrain(p5.round(p5.frameRate() / 6), 0, 10);
-            console.log(roughFPS);
-        }
+        // if(p5.frameCount < 5) {
+        //     roughFPS = p5.constrain(p5.round(p5.frameRate() / 6), 0, 10);
+        //     console.log(roughFPS);
+        // }
 
         // if page change
         const urlPath = p5.getURLPath();
@@ -138,8 +122,9 @@ function sketch(p5) {
             if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
                 const collectionName = urlPath[1];
                 slide.setup(collectionName);
-                console.log(collectionName);
             }
+
+            mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
 
             const body = document.getElementsByTagName('body')[0];
             if(urlPath[0] == 'products') {
@@ -155,23 +140,32 @@ function sketch(p5) {
         }
         if(p5.frameCount % roughFPS == 0) {
 
-            p5.background(colors.palekingblue);
-            ladder.show();
+            p5.background(bgColor);
+            ladder.show(mainColor);
             if(mousePath.points.length > 2) {
-                butterfly.update(mousePath.points[0], mousePath.angles[0]);
-                butterfly.show();
+                // butterfly.update(mousePath.points[0], mousePath.angles[0]);
+                // butterfly.show();
             }
 
             if(urlPath.length == 0) {
                 drawRoughCaterpillar();
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
-                slide.show();
+                slide.show(mainColor);
+
+                // rc.circle(300, p5.height - 300, 300, {
+                //     stroke: colors.red,
+                //     strokeWidth: 1,
+                //     roughness: 0,
+                //     fill: colors.red,
+                //     // fillWeight: 0.2,
+                //     simplification: 0.1
+                // },);
             }
 
             // frame rate debug
             p5.stroke(0);
             p5.noFill();
-            p5.text(p5.round(p5.frameRate()), 100, 200);
+            // p5.text(p5.round(p5.frameRate()), 100, 200);
         }
     }
 
@@ -222,7 +216,7 @@ function sketch(p5) {
         if(lastURLPath.length == 0) {
             drawRoughCaterpillar();
         } else if (lastURLPath.indexOf('collections') != -1 && lastURLPath.length > 1) {
-            p5.background(colors.palekingblue);
+            p5.background(bgColor);
             slide.resize();
             slide.update();
             slide.show();

@@ -19,6 +19,7 @@
 
   #mainContent {
     height: calc(100vh - 4rem);
+    width: calc(100vw - 160px - 5vw);
   }
 
   .svg-slide {
@@ -155,4 +156,8 @@
     filter: blur(6px);
   }
 
+  .bubble {
+    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 50.52%, rgba(166, 212, 13, 0.68) 100%);
+    /* background: radial-gradient(50% 50% at 50% 50%, #003E83 80.19%, #96bfe600 100%); */
+  }
 }

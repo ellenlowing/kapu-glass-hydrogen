@@ -1,5 +1,5 @@
 export default class Butterfly {
-    constructor(center, dx, roughStyle, p5, rc) {
+    constructor(center, dx, p5, rc) {
         this.p5 = p5;
         this.rc = rc;
         this.shapePoints = [];
@@ -9,7 +9,16 @@ export default class Butterfly {
         this.center = center;
         this.xoff = 0;
         this.yoff = 0;
-        this.roughStyle = roughStyle;
+        this.roughStyle = {
+            stroke: '#ff0000',
+            strokeWidth: 1,
+            roughness: 0.5,
+            fill: '#ff0000',
+            fillStyle: 'hachure', 
+            hachureGap: 2,
+            // fillWeight: 0.2,
+            simplification: 0.1
+        };
         this.heading = 0;
         this.antenna0 = [];
         this.antenna1 = [];
