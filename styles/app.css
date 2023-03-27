@@ -20,6 +20,7 @@
   #mainContent {
     height: calc(100vh - 4rem);
     width: calc(100vw - 160px - 5vw);
+    position: relative;
   }
 
   .svg-slide {
@@ -146,10 +147,16 @@
   }
 
   .nav-link {
+    font-family: "fa";
+    font-size: 1.1em;
     text-align: center;
     display: block;
     height: 40px;
-    padding: 12px 0;
+    width: 160px;
+    padding: 10px 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
   }
 
   .product-blur {

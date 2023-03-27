@@ -12,7 +12,7 @@ function show (el, delay=0) {
     }
 }
 
-const colors = ['#FF1119', '#FBAC00', '#FFE600', '#40c945', '#a6ff47', '#4f8fe6', '#b875eb'];
+const colors = ['#ff616b', '#FBAC00', '#FFFF19', '#40c945', '#a6ff47', '#abf5ed', '#b875eb'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 
 export {hide, show, colors, pathNameList};

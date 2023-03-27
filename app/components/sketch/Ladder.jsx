@@ -8,8 +8,8 @@ export default class Ladder {
         this.width = 160;
         this.stepHeight = 40;
         this.numSteps = 7;
-        this.lineStyle = {fill: 'black', roughness: 0.5, strokeWidth: 0.5 };
-        this.hoverStyle = {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', hachureGap: 0.5, roughness: 0.8, fillWeight: 0.3, disableMultiStrokeFill: true };
+        this.lineStyle = {fill: 'black', roughness: 0.5, strokeWidth: 0.75 };
+        this.hoverStyle = {fill: 'rgba(255, 0, 0, 0)', strokeWidth: 0.25, fillStyle: 'hachure', hachureGap: 0.5, roughness: 0.8, fillWeight: 0.1, disableMultiStrokeFill: true };
         this.menuActive = false;
         this.marginRight = this.p5.width * 0.05;
         this.endX = this.p5.width - this.marginRight;
@@ -83,10 +83,10 @@ export default class Ladder {
     }
 
     show(color) {
-        // if(color) {
-        //     this.lineStyle.stroke = color;
-        //     this.hoverStyle.stroke = color;
-        // }
+        if(color) {
+            this.lineStyle.stroke = color;
+            this.hoverStyle.stroke = color;
+        }
         if(this.activeIndex.length > 0) {
             this.lineStyle.stroke = this.ladderHoverColor[this.activeIndex[0]];
             this.hoverStyle.stroke = this.ladderHoverColor[this.activeIndex[0]];

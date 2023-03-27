@@ -8,8 +8,15 @@ export default class Slide {
         this.maxNumProductsDisplayed = 3;
         this.roughStyle = {
             stroke: '#4f8fe6',
-            strokeWidth: 1,
+            strokeWidth: 1.5,
             roughness: 2,
+        };
+        this.roughBboxStyle = {
+            stroke: '#00000000',
+            fill: '#FFF',
+            roughness: 3,
+            // fillWeight: 1.2,
+            fillStyle: 'solid'
         };
     }
 
@@ -47,6 +54,7 @@ export default class Slide {
         this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
+        this.selectedProductBbox = null;
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
@@ -54,10 +62,19 @@ export default class Slide {
             this.productsDisplayCountList.push(0);
 
             product.addEventListener('mouseenter', (e) => {
-                // slide.freezeScroll = true; // TODO
+                this.freezeScroll = true; 
+
+                // let bbox;
+                // if(i !== this.lastProductIndex && i !== this.leadingProductIndex) {
+                //     bbox = this.productsNodeList[this.leadingProductIndex].getBoundingClientRect();
+                // } else {    
+                //     bbox = this.productsNodeList[(this.leadingProductIndex + this.numProductsDisplayed - 2) % this.numProducts].getBoundingClientRect();
+                // }
+                // this.selectedProductBbox = bbox;
+
                 for(let node of this.productsNodeList) {
-                    if(node != e.target) {
-                        node.classList.add('product-blur');
+                    if(node != e.target && node.classList.contains('active')) {
+                        hide(node);
                     } else {
                         this.selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
                         this.selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
@@ -67,23 +84,30 @@ export default class Slide {
                         } else {
                             show(this.selectedProductPrice);
                         }
+
+                        show(this.selectedProductInfo);
+                        this.selectedProductBbox = this.selectedProductInfo.getBoundingClientRect();
                     }
                 }
-                show(this.selectedProductInfo);
             })
 
             product.addEventListener('mouseleave', (e) => {
-                // slide.freezeScroll = false; // TODO
+                this.freezeScroll = false; 
+                this.selectedProductBbox = null;
                 for(let node of this.productsNodeList) {
-                    node.classList.remove('product-blur');
+                    if(node.classList.contains('active')) {
+                        show(node);
+                    }
                 }
                 hide(this.selectedProductInfo);
             })
 
             if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
                 show(product);
+                product.classList.add('active');
             } else {
                 hide(product);
+                product.classList.remove('active');
             }
         }
         this.resize();
@@ -105,24 +129,38 @@ export default class Slide {
 
         if( this.scrollProgress >= scrollThreshold) {
             hide(this.productsNodeList[this.leadingProductIndex]);
+            this.productsNodeList[this.leadingProductIndex].classList.remove('active');
             this.productsDisplayCountList[this.leadingProductIndex] += 1;
             this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
             show(this.productsNodeList[this.lastProductIndex]);
+            this.productsNodeList[this.lastProductIndex].classList.add('active');
             this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
         } 
         if ( this.scrollProgress < reverseScrollThreshold + 1) {
             hide(this.productsNodeList[this.lastProductIndex]);
+            this.productsNodeList[this.lastProductIndex].classList.remove('active');
             this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
             if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
             this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
             this.productsDisplayCountList[this.leadingProductIndex] -= 1;
             show(this.productsNodeList[this.leadingProductIndex]);
+            this.productsNodeList[this.leadingProductIndex].classList.add('active');
         }
     }
 
     show(color) {
-        if(color) this.roughStyle.stroke = color;
+        if(color) {
+            this.roughStyle.stroke = color;
+            this.roughBboxStyle.stroke = color;
+        }
         this.rc.curve(this.points, this.roughStyle);
+        if(this.selectedProductBbox) {
+            let w = this.selectedProductBbox.width * 1.2;
+            let h = this.selectedProductBbox.height * 2;
+            let x = this.selectedProductBbox.x + this.selectedProductBbox.width/2;
+            let y = this.selectedProductBbox.y + this.selectedProductBbox.height/2;
+            this.rc.ellipse(x, y, w, h, this.roughBboxStyle);
+        }
     }
 
     resize() {
@@ -136,7 +174,7 @@ export default class Slide {
     }
 
     mapPoint(point, offset = this.p5.createVector(0,0)) {
-        point.x = point.x / this.attrW * this.svg.clientWidth + offset.x + (this.p5.width - this.svg.clientWidth) / 2;
+        point.x = point.x / this.attrW * this.svg.clientWidth + offset.x + 80;
         point.y = point.y / this.attrH * this.svg.clientHeight + offset.y + (this.p5.height - this.svg.clientHeight) / 2;
         return point;
     }

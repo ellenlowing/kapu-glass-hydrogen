@@ -8,7 +8,7 @@ export default function ProductCard({product, dataIndex}) {
 
   return (
     <Link id={dataIndex} to={`/products/${product.handle}`} 
-      className={`product relative group hover:col-unset hover:bg-unset w-[120px] md:w-[140px] lg:w-[16vw] max-w-[160px] offset-0 absolute hover:scale-[2.0] hover:z-50 z-1 transition ease-in-out duration-50`}>
+      className={`product relative group hover:col-unset hover:bg-unset w-[160px] md:w-[180px] lg:w-[15vw] offset-0 absolute hover:scale-[1.3] hover:z-50 z-1 transition ease-in-out duration-50`}>
       <div className="grid gap-2 relative">
         <div className="hover:shadow rounded relative">
           {/* {isDiscounted && (

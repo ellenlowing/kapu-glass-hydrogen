@@ -15,14 +15,14 @@ export function Layout({children, title}) {
           </Link>
 
           <nav id="nav" className="fixed">
-            <Link id="nav-link-0" to="/collections/vessels" className="px-3 cursor-pointer nav-link">vessels</Link>
-            <Link id="nav-link-1" to="/collections/accessories" className="px-3 cursor-pointer nav-link">accessories</Link>
-            <Link id="nav-link-2" to="/" className="line-through px-3 cursor-pointer nav-link">magazine</Link>
-            <Link id="nav-link-3" to="/collections/workshops" className="px-3 cursor-pointer nav-link">workshop</Link>
-            <Link id="nav-link-4" to="/collections/archive" className="px-3 cursor-pointer nav-link">archive</Link>
-            <Link id="nav-link-5" to="/about" className="px-3 cursor-pointer nav-link">about</Link>
-            <Link id="nav-link-6" to="/cart" className="px-3 cursor-pointer nav-link">cart</Link>
-            <a id="menu-switch" className="px-3 cursor-pointer nav-link">menu</a>
+            <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
+            <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
+            <Link id="nav-link-2" to="/" className=" cursor-pointer nav-link">magazine</Link>
+            <Link id="nav-link-3" to="/collections/workshops" className=" cursor-pointer nav-link">workshop</Link>
+            <Link id="nav-link-4" to="/collections/archive" className=" cursor-pointer nav-link">archive</Link>
+            <Link id="nav-link-5" to="/about" className=" cursor-pointer nav-link">about</Link>
+            <Link id="nav-link-6" to="/cart" className=" cursor-pointer nav-link">cart</Link>
+            <a id="menu-switch" className=" cursor-pointer nav-link">menu</a>
           </nav>
         </header>
 

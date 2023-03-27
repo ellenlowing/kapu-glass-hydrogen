@@ -10,6 +10,7 @@ import {hide, show, colors, pathNameList} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
+import Caterpillar from './Caterpillar';
 
 export default function Sketch() {
 
@@ -37,12 +38,11 @@ function sketch(p5) {
     // let page;
     let lastURLPath;
 
-    // caterpillar qt menu
-    let caterpillarRadius = 30;
-
     // butterfly
     let butterfly;
     let mousePath;
+
+    let caterpillar;
 
     // flower
     let flowers = [];
@@ -63,11 +63,6 @@ function sketch(p5) {
     let bgColor = '#FFF';
     let mainColor;
 
-
-    const caterpillar = {
-        bodyRadius: 120,
-    };
-
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
@@ -84,12 +79,15 @@ function sketch(p5) {
             rc
         );
 
+        caterpillar = new Caterpillar(p5, rc);
+
         mousePath = new Path(p5);
 
         slide = new Slide(p5, rc);
 
         const urlPath = p5.getURLPath();
         lastURLPath = urlPath;
+        mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
 
         if(urlPath.length == 0) {
             // homepage
@@ -110,11 +108,6 @@ function sketch(p5) {
     }
 
     p5.draw = () => {
-
-        // if(p5.frameCount < 5) {
-        //     roughFPS = p5.constrain(p5.round(p5.frameRate() / 6), 0, 10);
-        //     console.log(roughFPS);
-        // }
 
         // if page change
         const urlPath = p5.getURLPath();
@@ -147,25 +140,24 @@ function sketch(p5) {
                 // butterfly.show();
             }
 
+            // for(let flower of flowers) {
+            //     flower.show();
+            // }
+
             if(urlPath.length == 0) {
-                drawRoughCaterpillar();
+                if(caterpillar) {
+                    caterpillar.update();
+                    caterpillar.show();
+                }                
+
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
-
-                // rc.circle(300, p5.height - 300, 300, {
-                //     stroke: colors.red,
-                //     strokeWidth: 1,
-                //     roughness: 0,
-                //     fill: colors.red,
-                //     // fillWeight: 0.2,
-                //     simplification: 0.1
-                // },);
             }
 
             // frame rate debug
             p5.stroke(0);
             p5.noFill();
-            // p5.text(p5.round(p5.frameRate()), 100, 200);
+            p5.text(p5.round(p5.frameRate()), 100, 200);
         }
     }
 
@@ -179,10 +171,10 @@ function sketch(p5) {
 
     p5.mousePressed = (e) => {
         // let flower = new Flower(p5.createVector(p5.mouseX, p5.mouseY), {
-        //     stroke: colors.orange,
+        //     stroke: colors[1],
         //     strokeWidth: 1,
-        //     roughness: 0.3,
-        //     fill: colors.orange,
+        //     roughness: 1,
+        //     fill: colors[1],
         //     fillStyle: 'cross-hatch'
         // }, p5, rc);
         // flowers.push(flower);
@@ -214,7 +206,11 @@ function sketch(p5) {
     p5.windowResized = () => {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
         if(lastURLPath.length == 0) {
-            drawRoughCaterpillar();
+            p5.background(bgColor);
+            if(caterpillar) {
+                caterpillar.update();
+                caterpillar.show();
+            }
         } else if (lastURLPath.indexOf('collections') != -1 && lastURLPath.length > 1) {
             p5.background(bgColor);
             slide.resize();
@@ -223,16 +219,6 @@ function sketch(p5) {
         }
         ladder.resize();
         ladder.show();
-    }
-
-    function drawRoughCaterpillar() {
-        for(let i = -2; i < 3; i++) {
-            rc.circle(p5.width / 2 + i * caterpillar.bodyRadius, p5.height / 2, caterpillar.bodyRadius, 
-                { fill: 'red', fillStyle: 'hachure', roughness: 2.4, fillWeight: 1 }
-            );
-        }
-        rc.circle(p5.width / 2 , p5.height / 2 + caterpillarRadius * 3, 30);
-
     }
 
     function lerpColor(colorA, colorB, t) {
