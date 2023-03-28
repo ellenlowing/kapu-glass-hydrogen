@@ -22,7 +22,7 @@ export default function ProductGrid({collection}) {
         </div> */}
       </section>
 
-      <div id="selected-product-info" className="hidden absolute text-center p-1 max-w-[320px] top-0 left-0 border-solid border-black border-0">
+      <div id="selected-product-info" className="hidden absolute text-center max-w-[320px] border-solid border-black border-0">
         <h1 id="selected-product-title" className="text-2xl align-top text-left">Product title</h1>
         <span id="selected-product-price" className="text-md text-left">AUD$ 44.44</span>
       </div>

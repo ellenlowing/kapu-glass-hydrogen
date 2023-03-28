@@ -20,7 +20,6 @@
   #mainContent {
     height: calc(100vh - 4rem);
     width: calc(100vw - 160px - 5vw);
-    position: relative;
   }
 
   .svg-slide {

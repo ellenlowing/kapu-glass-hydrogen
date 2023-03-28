@@ -64,31 +64,48 @@ export default class Slide {
             product.addEventListener('mouseenter', (e) => {
                 this.freezeScroll = true; 
 
-                // let bbox;
-                // if(i !== this.lastProductIndex && i !== this.leadingProductIndex) {
-                //     bbox = this.productsNodeList[this.leadingProductIndex].getBoundingClientRect();
-                // } else {    
-                //     bbox = this.productsNodeList[(this.leadingProductIndex + this.numProductsDisplayed - 2) % this.numProducts].getBoundingClientRect();
-                // }
-                // this.selectedProductBbox = bbox;
-
                 for(let node of this.productsNodeList) {
                     if(node != e.target && node.classList.contains('active')) {
                         hide(node);
-                    } else {
-                        this.selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
-                        this.selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
-
-                        if(Number(e.target.querySelector('#product-price').getAttribute('data-price')) == 0) {
-                            hide(this.selectedProductPrice);
-                        } else {
-                            show(this.selectedProductPrice);
-                        }
-
-                        show(this.selectedProductInfo);
-                        this.selectedProductBbox = this.selectedProductInfo.getBoundingClientRect();
                     }
                 }
+
+                this.selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
+                this.selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
+
+                if(Number(e.target.querySelector('#product-price').getAttribute('data-price')) == 0) {
+                    hide(this.selectedProductPrice);
+                } else {
+                    show(this.selectedProductPrice);
+                }
+
+                show(this.selectedProductInfo);
+
+                let productBbox = e.target.getBoundingClientRect();
+
+                console.log(productBbox);
+
+                let infoOffset = {x: 0, y: 0};
+                if((productBbox.x + productBbox.width) < this.p5.width / 2) {
+                    infoOffset.x = this.p5.random(productBbox.x + productBbox.width, this.p5.width * 0.95 - 160 * 2);
+                    console.log('< width')
+                } else {
+                    infoOffset.x = this.p5.random(160, productBbox.x);
+                    console.log('> width');
+                }
+                if((productBbox.y + productBbox.height) < this.p5.height / 2) {
+                    infoOffset.y = this.p5.random(productBbox.y + productBbox.height, this.p5.height - 160);
+                } else {
+                    infoOffset.y = this.p5.random(160, productBbox.y);
+                }
+
+                infoOffset.x -= this.selectedProductInfo.getBoundingClientRect().width/2;
+                infoOffset.y -= this.selectedProductInfo.getBoundingClientRect().height/2;
+
+                this.selectedProductInfo.style.top = `${infoOffset.y}px`;
+                this.selectedProductInfo.style.left = `${infoOffset.x}px`;
+                this.selectedProductBbox = this.selectedProductInfo.getBoundingClientRect();
+
             })
 
             product.addEventListener('mouseleave', (e) => {
