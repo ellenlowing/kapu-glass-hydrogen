@@ -15,7 +15,12 @@ export default class Slide {
             stroke: '#00000000',
             fill: '#FFF',
             roughness: 3,
-            // fillWeight: 1.2,
+            fillStyle: 'solid'
+        };
+        this.roughBubbleStyle = {
+            stroke: '#00000000',
+            fill: '#FFF',
+            roughness: 1,
             fillStyle: 'solid'
         };
     }
@@ -54,7 +59,7 @@ export default class Slide {
         this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
-        this.selectedProductBbox = null;
+        this.selectedProductInfoBbox = null;
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
@@ -82,19 +87,15 @@ export default class Slide {
                 show(this.selectedProductInfo);
 
                 let productBbox = e.target.getBoundingClientRect();
-
-                console.log(productBbox);
-
+                this.selectedProductBbox = productBbox;
                 let infoOffset = {x: 0, y: 0};
                 if((productBbox.x + productBbox.width) < this.p5.width / 2) {
-                    infoOffset.x = this.p5.random(productBbox.x + productBbox.width, this.p5.width * 0.95 - 160 * 2);
-                    console.log('< width')
+                    infoOffset.x = this.p5.random(productBbox.x + productBbox.width + this.selectedProductInfo.getBoundingClientRect().width/2, this.p5.width * 0.95 - 160 * 2);
                 } else {
                     infoOffset.x = this.p5.random(160, productBbox.x);
-                    console.log('> width');
                 }
                 if((productBbox.y + productBbox.height) < this.p5.height / 2) {
-                    infoOffset.y = this.p5.random(productBbox.y + productBbox.height, this.p5.height - 160);
+                    infoOffset.y = this.p5.random(productBbox.y + productBbox.height + this.selectedProductInfo.getBoundingClientRect().height/2, this.p5.height - 160);
                 } else {
                     infoOffset.y = this.p5.random(160, productBbox.y);
                 }
@@ -104,13 +105,32 @@ export default class Slide {
 
                 this.selectedProductInfo.style.top = `${infoOffset.y}px`;
                 this.selectedProductInfo.style.left = `${infoOffset.x}px`;
-                this.selectedProductBbox = this.selectedProductInfo.getBoundingClientRect();
+                this.selectedProductInfoBbox = this.selectedProductInfo.getBoundingClientRect();
 
+                this.p1 = {x: this.p5.random(0, infoOffset.x), y: this.p5.random(0, infoOffset.y)};
+                this.p4 = {x: this.p5.random(infoOffset.x, this.p5.width), y: this.p5.random(infoOffset.y, this.p5.height)};
+
+                this.p5.curveTightness(this.p5.map(infoOffset.x, 0, this.p5.width, -2, 2));
+
+                let curveSteps = 12;
+                this.productToInfoPoints = [];
+                for(let i = 0; i <= curveSteps; i++) {
+                    let t = i / curveSteps;
+                    let x = this.p5.curvePoint(this.p1.x, 
+                                this.selectedProductInfoBbox.x + this.selectedProductInfoBbox.width/2,
+                                this.selectedProductBbox.x, 
+                                this.p4.x, t);
+                    let y = this.p5.curvePoint(this.p1.y, 
+                                this.selectedProductInfoBbox.y + this.selectedProductInfoBbox.height/2,
+                                this.selectedProductBbox.y, 
+                                this.p4.y, t);
+                    this.productToInfoPoints.push({x: x, y: y});
+                }
             })
 
             product.addEventListener('mouseleave', (e) => {
                 this.freezeScroll = false; 
-                this.selectedProductBbox = null;
+                this.selectedProductInfoBbox = null;
                 for(let node of this.productsNodeList) {
                     if(node.classList.contains('active')) {
                         show(node);
@@ -169,14 +189,19 @@ export default class Slide {
         if(color) {
             this.roughStyle.stroke = color;
             this.roughBboxStyle.stroke = color;
+            this.roughBubbleStyle.stroke = color;
+            this.p5.stroke(color);
         }
         this.rc.curve(this.points, this.roughStyle);
-        if(this.selectedProductBbox) {
-            let w = this.selectedProductBbox.width * 1.2;
-            let h = this.selectedProductBbox.height * 2;
-            let x = this.selectedProductBbox.x + this.selectedProductBbox.width/2;
-            let y = this.selectedProductBbox.y + this.selectedProductBbox.height/2;
-            this.rc.ellipse(x, y, w, h, this.roughBboxStyle);
+        if(this.selectedProductInfoBbox) {
+            let w = this.selectedProductInfoBbox.width * 1.2;
+            let h = this.selectedProductInfoBbox.height * 2;
+            let x = this.selectedProductInfoBbox.x + this.selectedProductInfoBbox.width/2;
+            let y = this.selectedProductInfoBbox.y + this.selectedProductInfoBbox.height/2;
+            for(let pt of this.productToInfoPoints) {
+                this.rc.circle(pt.x, pt.y, 15, this.roughBubbleStyle);
+            }
+            this.rc.ellipse(x, y, w, h, this.roughBboxStyle);            
         }
     }
 

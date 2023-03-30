@@ -1024,12 +1024,6 @@ nav {
   z-index: 50;
 }
 
-.hover\:scale-\[1\.3\]:hover {
-  --tw-scale-x: 1.3;
-  --tw-scale-y: 1.3;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .hover\:bg-black:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
