@@ -20,12 +20,13 @@ export default class Slide {
         this.roughBubbleStyle = {
             stroke: '#00000000',
             fill: '#FFF',
-            roughness: 1,
+            roughness: 0.8,
             fillStyle: 'solid'
         };
     }
 
     setup(collectionName) {
+        this.freezeScroll = false;
         this.svgSlides = document.getElementsByClassName('svg-slide');
         this.selectedProductInfo = document.getElementById('selected-product-info');
         this.selectedProductTitle = document.getElementById('selected-product-title');
@@ -110,7 +111,7 @@ export default class Slide {
                 this.p1 = {x: this.p5.random(0, infoOffset.x), y: this.p5.random(0, infoOffset.y)};
                 this.p4 = {x: this.p5.random(infoOffset.x, this.p5.width), y: this.p5.random(infoOffset.y, this.p5.height)};
 
-                this.p5.curveTightness(this.p5.map(infoOffset.x, 0, this.p5.width, -2, 2));
+                this.p5.curveTightness(this.p5.map(infoOffset.y, 0, this.p5.height, -2, 2));
 
                 let curveSteps = 12;
                 this.productToInfoPoints = [];
