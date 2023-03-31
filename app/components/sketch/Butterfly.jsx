@@ -10,11 +10,11 @@ export default class Butterfly {
         this.xoff = 0;
         this.yoff = 0;
         this.roughStyle = {
-            stroke: '#ff0000',
+            stroke: '#abf5ed',
             strokeWidth: 1,
             roughness: 0.5,
-            fill: '#ff0000',
-            fillStyle: 'hachure', 
+            fill: '#abf5ed',
+            fillStyle: 'zigzag', 
             hachureGap: 2,
             // fillWeight: 0.2,
             simplification: 0.1
@@ -66,13 +66,13 @@ export default class Butterfly {
     show() {
         this.rc.curve(this.points, this.roughStyle);
         this.rc.curve(this.antenna0, {
-            stroke: '#EC1E24',
+            stroke: '#abf5ed',
             strokeWidth: 0.3,
             roughness: 0.5,
             simplification: 0.1
         });
         this.rc.curve(this.antenna1, {
-            stroke: '#EC1E24',
+            stroke: '#abf5ed',
             strokeWidth: 0.3,
             roughness: 0.5,
             simplification: 0.1

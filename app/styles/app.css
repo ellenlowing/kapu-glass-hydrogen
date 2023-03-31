@@ -534,6 +534,11 @@ video {
     top: 0;
     left: 0;
     z-index: -1;
+    background-image: url('../img/KAPU8_1296x.webp');
+    background-size: cover;
+  }
+#defaultCanvas0 {
+    /* mix-blend-mode: exclusion; */
   }
 .product-hover {
     background-color: var(--product-hover-bgcolor);
@@ -612,8 +617,8 @@ nav {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
-.mr-\[120px\] {
-  margin-right: 120px;
+.mr-\[60px\] {
+  margin-right: 60px;
 }
 .mt-2 {
   margin-top: 0.5rem;
@@ -1059,6 +1064,10 @@ nav {
 
   .md\:sticky {
     position: sticky;
+  }
+
+  .md\:mr-\[0\] {
+    margin-right: 0;
   }
 
   .md\:w-\[180px\] {

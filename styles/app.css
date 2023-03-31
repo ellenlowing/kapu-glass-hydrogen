@@ -126,6 +126,12 @@
     top: 0;
     left: 0;
     z-index: -1;
+    background-image: url('../img/KAPU8_1296x.webp');
+    background-size: cover;
+  }
+
+  #defaultCanvas0 {
+    /* mix-blend-mode: exclusion; */
   }
 
   .product-hover {

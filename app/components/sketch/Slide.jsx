@@ -199,8 +199,10 @@ export default class Slide {
             let h = this.selectedProductInfoBbox.height * 2;
             let x = this.selectedProductInfoBbox.x + this.selectedProductInfoBbox.width/2;
             let y = this.selectedProductInfoBbox.y + this.selectedProductInfoBbox.height/2;
-            for(let pt of this.productToInfoPoints) {
-                this.rc.circle(pt.x, pt.y, 15, this.roughBubbleStyle);
+            for(let i = this.productToInfoPoints.length - 1; i >= 0 ; i--) {
+                let pt = this.productToInfoPoints[i];
+                let r = this.p5.map(this.productToInfoPoints.length - i, 0, this.productToInfoPoints.length, 4, 30);
+                this.rc.circle(pt.x, pt.y, r, this.roughBubbleStyle);
             }
             this.rc.ellipse(x, y, w, h, this.roughBboxStyle);            
         }

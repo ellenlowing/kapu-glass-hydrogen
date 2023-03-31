@@ -29,7 +29,6 @@ export default function Sketch() {
                     </Suspense>
                 )
             }
-            
         </>
     );
 }
@@ -135,10 +134,6 @@ function sketch(p5) {
 
             p5.background(bgColor);
             ladder.show(mainColor);
-            if(mousePath.points.length > 2) {
-                // butterfly.update(mousePath.points[0], mousePath.angles[0]);
-                // butterfly.show();
-            }
 
             // for(let flower of flowers) {
             //     flower.show();
@@ -149,9 +144,13 @@ function sketch(p5) {
                     caterpillar.update();
                     caterpillar.show();
                 }                
-
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
+            } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
+                if(mousePath.points.length > 2) {
+                    butterfly.update(mousePath.points[0], mousePath.angles[0]);
+                    butterfly.show();
+                }
             }
 
             // frame rate debug
@@ -163,7 +162,7 @@ function sketch(p5) {
 
     p5.mouseMoved = (e) => {
         mousePath.addPoint(p5.mouseX, p5.mouseY);
-        if(mousePath.points.length > 20) {
+        if(mousePath.points.length > 10) {
             mousePath.points.shift();
             mousePath.angles.shift();
         }
@@ -178,6 +177,7 @@ function sketch(p5) {
         //     fillStyle: 'cross-hatch'
         // }, p5, rc);
         // flowers.push(flower);
+        caterpillar.pressed();
     }
 
     p5.mouseWheel = (e) => {
@@ -208,6 +208,7 @@ function sketch(p5) {
         if(lastURLPath.length == 0) {
             p5.background(bgColor);
             if(caterpillar) {
+                caterpillar.resize();
                 caterpillar.update();
                 caterpillar.show();
             }

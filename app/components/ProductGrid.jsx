@@ -7,7 +7,7 @@ export default function ProductGrid({collection}) {
   return (
     <>
       <section 
-        className="gap-8 grid mr-[120px] relative h-full"
+        className="gap-8 grid mr-[60px] md:mr-[0] relative h-full"
       >
         <SVGSlide/>
 
