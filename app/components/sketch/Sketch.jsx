@@ -95,6 +95,7 @@ function sketch(p5) {
 
         if(urlPath.length == 0) {
             // homepage
+            caterpillar.setup();
 
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             // collections pages
@@ -124,6 +125,7 @@ function sketch(p5) {
                 for(let link of navLinks) {
                     link.style.color = '#FFF';
                 }
+                caterpillar.setup();
             } else {
                 bgColor = '#FFF';
                 mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];

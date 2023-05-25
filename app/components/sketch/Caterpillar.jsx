@@ -6,7 +6,7 @@ export default class Caterpillar {
         this.rc = rc;
         this.roughStyle = {
             strokeWidth: 1,
-            roughness: 2.5,
+            roughness: 5,
             fillStyle: 'hachure', 
             hachureGap: 2,
             // fillWeight: 0.2,
@@ -26,8 +26,12 @@ export default class Caterpillar {
         this.ripples = [];
     }
 
+    setup() {
+        this.featuredImages = document.getElementsByClassName('featured-image');
+    }
+
     update() {
-        if(this.ripples.length > 10) {
+        if(this.ripples.length > 20) {
             this.ripples.shift();
         }
         for(let i = 0; i < this.ripples.length; i++) {
@@ -35,9 +39,6 @@ export default class Caterpillar {
             if(ripple.r < 200) {
                 ripple.r *= 1.44;
             } 
-            // else {
-            //     this.ripples.s
-            // }
         }
     }
 
@@ -67,8 +68,9 @@ export default class Caterpillar {
         if(minIndex != -1) {
             this.pointsTapped[minIndex] = true;
             this.ripples.push({x: this.p5.random(0, this.p5.width), y: this.p5.random(0, this.p5.height), r: 20, fromIndex: minIndex});
+            this.featuredImages[minIndex].style.display = "block";
+
         }
-        console.log(minIndex);
     }
 
     resize() {

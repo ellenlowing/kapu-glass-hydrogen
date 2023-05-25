@@ -19,9 +19,8 @@ export async function loader({context}) {
 
 export default function Index() {
     const {product} = useLoaderData();
-    console.log(product.media.nodes);
     return (
-        <section className="h-[calc(100vh-64px)] w-[auto] gap-4" id="home-featured-images">
+        <section className="h-[calc(100vh-64px)] w-[auto] gap-4">
             {product.media.nodes.map((media, idx) => {
                 return (
                     <Image
@@ -30,6 +29,8 @@ export default function Index() {
                         loaderOptions={{
                             scale: 2,
                         }}
+                        className="h-[30%] w-[auto] min-h-[180px] absolute featured-image rounded hidden"
+                        id={`featured-image-${idx}`}
                     ></Image>
                 );
             })}

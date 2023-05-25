@@ -160,6 +160,13 @@ const PRODUCT_QUERY = `#graphql
           }
         }
       }
+      collections(first: 1) {
+        nodes {
+          handle
+          id
+          title
+        }
+      }
       options {
         name,
         values

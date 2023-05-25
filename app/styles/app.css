@@ -534,7 +534,8 @@ video {
     top: 0;
     left: 0;
     z-index: -1;
-    background-image: url('../img/KAPU8_1296x.webp');
+    /* background-image: url('../img/KAPU8_1296x.webp'); */
+    /* background-color: #000; */
     background-size: cover;
   }
 #defaultCanvas0 {
@@ -569,6 +570,44 @@ nav {
 .bubble {
     background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 50.52%, rgba(166, 212, 13, 0.68) 100%);
     /* background: radial-gradient(50% 50% at 50% 50%, #003E83 80.19%, #96bfe600 100%); */
+  }
+.featured-image {
+    /* mix-blend-mode: multiply; */
+  }
+#featured-image-0 {
+    top: 80px;
+    left: 120px;
+    transform: rotate(-2deg);
+  }
+#featured-image-1 {
+    bottom: 30px;
+    left: 30px;
+    transform: rotate(-6deg);
+  }
+#featured-image-2 {
+    left: -4px;
+    top: 40%;
+    transform: rotate(5deg);
+  }
+#featured-image-3 {
+    top: -4px;
+    left: 60%;
+    transform: rotate(-1deg);
+  }
+#featured-image-4 {
+    right: -10px;
+    top: 20%;
+    transform: rotate(1deg);
+  }
+#featured-image-5 {
+    bottom: 40px;
+    right: 10px;
+    transform: rotate(-2deg);
+  }
+#featured-image-6 {
+    bottom: 10px;
+    left: 270px;
+    transform: rotate(1deg);
   }
 .fixed {
   position: fixed;
@@ -641,14 +680,17 @@ nav {
 .h-10 {
   height: 2.5rem;
 }
-.h-32 {
-  height: 8rem;
+.h-24 {
+  height: 6rem;
 }
 .h-5 {
   height: 1.25rem;
 }
 .h-\[250px\] {
   height: 250px;
+}
+.h-\[30\%\] {
+  height: 30%;
 }
 .h-\[calc\(100vh-64px\)\] {
   height: calc(100vh - 64px);
@@ -659,8 +701,8 @@ nav {
 .h-screen {
   height: 100vh;
 }
-.h-24 {
-  height: 6rem;
+.min-h-\[180px\] {
+  min-height: 180px;
 }
 .min-h-screen {
   min-height: 100vh;
