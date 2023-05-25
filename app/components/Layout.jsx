@@ -8,11 +8,11 @@ export function Layout({children, title}) {
       <div className="flex flex-col min-h-screen antialiased">
         <header
           role="banner"
-          className={`absolute items-center h-32 z-40 bottom-0 justify-between w-full leading-none p-2 antialiased transition`}
+          className={`absolute items-center h-24 z-40 top-0 justify-between w-full leading-none p-2 antialiased transition`}
         >
-          {/* <Link className="h-full" to="/">
+          <Link className="h-full" to="/">
             <img className="h-full" src={logo}></img>
-          </Link> */}
+          </Link>
 
           <nav id="nav" className={`fixed`}>
             <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>

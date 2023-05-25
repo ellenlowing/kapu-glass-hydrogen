@@ -161,6 +161,7 @@ export default class Slide {
             let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
             const product = this.productsNodeList[i];
             const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
+            productOffset.add(this.displayOffset);
             slidePoint = this.mapPoint(slidePoint, productOffset);
             product.style.top = `${slidePoint.y}px`;
             product.style.left = `${slidePoint.x}px`;
@@ -215,15 +216,16 @@ export default class Slide {
     resize() {
         this.points = [];
         let slideSteps = 40;
+        this.displayOffset = this.p5.createVector(this.p5.width/2 - this.svg.clientWidth/2);
         for(let i = 0; i < slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);
-            slidePoint = this.mapPoint(slidePoint);
+            slidePoint = this.mapPoint(slidePoint, this.displayOffset);
             this.points.push([slidePoint.x, slidePoint.y]);
         }
     }
 
     mapPoint(point, offset = this.p5.createVector(0,0)) {
-        point.x = point.x / this.attrW * this.svg.clientWidth + offset.x + 80;
+        point.x = point.x / this.attrW * this.svg.clientWidth + offset.x;
         point.y = point.y / this.attrH * this.svg.clientHeight + offset.y + (this.p5.height - this.svg.clientHeight) / 2;
         return point;
     }
