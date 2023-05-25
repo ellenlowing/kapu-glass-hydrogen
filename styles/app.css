@@ -153,16 +153,16 @@
   }
 
   .nav-link {
-    font-family: "fa";
-    font-size: 1.1em;
+    font-family: "Director-Light";
+    font-size: 1em;
     text-align: center;
     display: block;
     height: 40px;
     width: 160px;
     padding: 10px 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
+    /* font-weight: 600; */
+    text-transform: lowercase;
+    /* letter-spacing: -0.05em; */
   }
 
   .product-blur {
@@ -220,5 +220,18 @@
     transform: rotate(1deg);
   }
 
+  #selected-product-info {
+    font-family: "fa", "super_notoruous_v2-laser";
+  }
+
+  #selected-product-title {
+    font-size: 4em;
+    text-transform: uppercase;
+  }
+  
+  #selected-product-price {
+    font-size: 3em;
+    text-transform: uppercase;
+  }
 
 }

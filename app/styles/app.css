@@ -556,16 +556,16 @@ nav {
     transform: translateY(-280px);
   }
 .nav-link {
-    font-family: "fa";
-    font-size: 1.1em;
+    font-family: "Director-Light";
+    font-size: 1em;
     text-align: center;
     display: block;
     height: 40px;
     width: 160px;
     padding: 10px 4px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: -0.05em;
+    /* font-weight: 600; */
+    text-transform: lowercase;
+    /* letter-spacing: -0.05em; */
   }
 .bubble {
     background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 50.52%, rgba(166, 212, 13, 0.68) 100%);
@@ -609,6 +609,17 @@ nav {
     left: 270px;
     transform: rotate(1deg);
   }
+#selected-product-info {
+    font-family: "fa", "super_notoruous_v2-laser";
+  }
+#selected-product-title {
+    font-size: 4em;
+    text-transform: uppercase;
+  }
+#selected-product-price {
+    font-size: 3em;
+    text-transform: uppercase;
+  }
 .fixed {
   position: fixed;
 }
@@ -623,6 +634,9 @@ nav {
 }
 .bottom-\[0px\] {
   bottom: 0px;
+}
+.bottom-\[40px\] {
+  bottom: 40px;
 }
 .left-0 {
   left: 0px;
@@ -733,9 +747,6 @@ nav {
 }
 .max-w-\[1200px\] {
   max-width: 1200px;
-}
-.max-w-\[320px\] {
-  max-width: 320px;
 }
 .max-w-\[400px\] {
   max-width: 400px;

@@ -12,6 +12,7 @@ import Flower from './Flower';
 import Slide from './Slide';
 import Caterpillar from './Caterpillar';
 import bg from '../../img/KAPU8_1296x.webp';
+import FallingStar from './FallingStar';
 
 export default function Sketch() {
 
@@ -60,6 +61,9 @@ function sketch(p5) {
     // touch
     let startTouch;
 
+    // star
+    let fallingStars;
+
     let wrapper;
 
     let bgColor = '#000';
@@ -89,6 +93,15 @@ function sketch(p5) {
 
         slide = new Slide(p5, rc);
 
+        fallingStars = [];
+        for(let i = 0; i < 2; i++) {
+            let x = p5.random(p5.width);
+            let y = p5.random(p5.height);
+            let radius1 = p5.random(20);
+            let radius2 = p5.random(radius1, 40);
+            fallingStars.push(new FallingStar(p5, rc, x, y, radius1, radius2, 5));
+        }
+
         const urlPath = p5.getURLPath();
         lastURLPath = urlPath;
         mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
@@ -106,6 +119,11 @@ function sketch(p5) {
 
             // slide layout things
             slide.setup(collectionName);
+
+            // star
+            for(let star of fallingStars) {
+                star.setup();
+            }
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             // products pages
@@ -138,6 +156,10 @@ function sketch(p5) {
             if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
                 const collectionName = urlPath[1];
                 slide.setup(collectionName);
+
+                for(let star of fallingStars) {
+                    star.setup();
+                }
             }
 
             const body = document.getElementsByTagName('body')[0];
@@ -168,6 +190,10 @@ function sketch(p5) {
                 }                
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
+                for(let star of fallingStars) {
+                    star.update();
+                    star.show();
+                }
             } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
                 if(mousePath.points.length > 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
