@@ -131,7 +131,7 @@
   }
 
   #defaultCanvas0 {
-    /* mix-blend-mode: exclusion; */
+    mix-blend-mode: multiply;
   }
 
   .product-hover {

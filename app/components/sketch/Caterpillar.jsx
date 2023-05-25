@@ -10,20 +10,42 @@ export default class Caterpillar {
             fillStyle: 'hachure', 
             hachureGap: 2,
             // fillWeight: 0.2,
-            // stroke: '#ff0000',
-            // fill: '#ff0000',
+            stroke: '#fff',
+            fill: '#fff',
+        };
+        this.roughRippleStyle = {
+            strokeWidth: 0,
+            roughness: 1.2,
+            hachureGap: 1.5,
+            stroke: '#00000000',
+            // fillWeight: 0.2,
+            fillStyle: 'hachure',
+            fill: '#fff',
         };
         this.resize();
-        for(let i = 0; i < this.points.length; i++) {
-            this.pointsTapped.push(false);
-        }
+        this.ripples = [];
     }
 
     update() {
-        
+        if(this.ripples.length > 10) {
+            this.ripples.shift();
+        }
+        for(let i = 0; i < this.ripples.length; i++) {
+            let ripple = this.ripples[i];
+            if(ripple.r < 200) {
+                ripple.r *= 1.44;
+            } 
+            // else {
+            //     this.ripples.s
+            // }
+        }
     }
 
     show() {
+        // for(let i = 0; i < this.ripples.length; i++) {
+        //     let ripple = this.ripples[i];
+        //     this.rc.circle(ripple.x, ripple.y, ripple.r, this.roughRippleStyle);
+        // }
         for(let i = 0; i < this.points.length; i++) {
             this.rc.circle(this.points[i].x, this.points[i].y, this.points[i].r, this.roughStyle);
         }
@@ -32,13 +54,21 @@ export default class Caterpillar {
     }
 
     pressed() {
+        let minIndex = -1;
+        let minDist = 999999;
         for(let i = 0; i < this.points.length; i++) {
             let point = this.points[i];
-            if(this.p5.sqrt(this.p5.pow(this.p5.mouseX - point.x, 2) + this.p5.pow(this.p5.mouseY - point.y, 2)) < point.r) {
-                this.pointsTapped[i] = true;
-                console.log(i); // TODO compare circles and get the circle with the shortest distance
+            let dist = this.p5.sqrt(this.p5.pow(this.p5.mouseX - point.x, 2) + this.p5.pow(this.p5.mouseY - point.y, 2));
+            if(dist < point.r && dist < minDist) {
+                minDist = dist;
+                minIndex = i;
             }
         }
+        if(minIndex != -1) {
+            this.pointsTapped[minIndex] = true;
+            this.ripples.push({x: this.p5.random(0, this.p5.width), y: this.p5.random(0, this.p5.height), r: 20, fromIndex: minIndex});
+        }
+        console.log(minIndex);
     }
 
     resize() {
@@ -54,6 +84,9 @@ export default class Caterpillar {
         this.points.push({x: this.center.x - 1.72 * this.radius, y: this.center.y - 0.1 * this.radius, r: this.radius});
         this.points.push({x: this.center.x - 1.5 * this.radius, y: this.center.y - 1.5 * this.radius, r: this.radius * 0.4});
         this.points.push({x: this.center.x - 2.2 * this.radius, y: this.center.y - 1.5 * this.radius, r: this.radius * 0.4});
-
+        
+        for(let i = 0; i < this.points.length; i++) {
+            this.pointsTapped.push(false);
+        }
     }
 }

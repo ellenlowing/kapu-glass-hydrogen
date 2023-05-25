@@ -538,7 +538,7 @@ video {
     background-size: cover;
   }
 #defaultCanvas0 {
-    /* mix-blend-mode: exclusion; */
+    mix-blend-mode: multiply;
   }
 .product-hover {
     background-color: var(--product-hover-bgcolor);
@@ -641,8 +641,8 @@ nav {
 .h-10 {
   height: 2.5rem;
 }
-.h-16 {
-  height: 4rem;
+.h-32 {
+  height: 8rem;
 }
 .h-5 {
   height: 1.25rem;
@@ -1106,10 +1106,6 @@ nav {
 
   .lg\:top-\[8rem\] {
     top: 8rem;
-  }
-
-  .lg\:w-\[15vw\] {
-    width: 15vw;
   }
 
   .lg\:gap-6 {

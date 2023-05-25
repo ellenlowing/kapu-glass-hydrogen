@@ -11,6 +11,7 @@ import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
 import Caterpillar from './Caterpillar';
+import bg from '../../img/KAPU8_1296x.webp';
 
 export default function Sketch() {
 
@@ -59,7 +60,9 @@ function sketch(p5) {
     // touch
     let startTouch;
 
-    let bgColor = '#FFF';
+    let wrapper;
+
+    let bgColor = '#000';
     let mainColor;
 
     p5.setup = () => {
@@ -68,6 +71,8 @@ function sketch(p5) {
         p5.noStroke();
 
         rc = rough.canvas(document.getElementById('defaultCanvas0'));
+        
+        wrapper = document.getElementsByClassName('react-p5-wrapper')[0];
 
         ladder = new Ladder(p5, rc);
 
@@ -111,12 +116,27 @@ function sketch(p5) {
         // if page change
         const urlPath = p5.getURLPath();
         if(lastURLPath !== urlPath) {
+            const navLinks = document.getElementsByClassName('nav-link');
+            if(urlPath.length == 0) {
+                bgColor = '#000';
+                mainColor = '#FFF';
+                wrapper.style.backgroundImage = bg;
+                for(let link of navLinks) {
+                    link.style.color = '#FFF';
+                }
+            } else {
+                bgColor = '#FFF';
+                mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
+                wrapper.style.backgroundImage = "unset";
+                for(let link of navLinks) {
+                    link.style.color = '#000';
+                }
+            }
+
             if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
                 const collectionName = urlPath[1];
                 slide.setup(collectionName);
             }
-
-            mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
 
             const body = document.getElementsByTagName('body')[0];
             if(urlPath[0] == 'products') {

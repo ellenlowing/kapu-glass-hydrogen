@@ -8,19 +8,21 @@ export default class Slide {
         this.maxNumProductsDisplayed = 3;
         this.roughStyle = {
             stroke: '#4f8fe6',
-            strokeWidth: 1.5,
+            strokeWidth: 0.8,
             roughness: 2,
         };
         this.roughBboxStyle = {
             stroke: '#00000000',
             fill: '#FFF',
-            roughness: 3,
+            roughness: 8,
+            strokeWidth: 0.8,
             fillStyle: 'solid'
         };
         this.roughBubbleStyle = {
             stroke: '#00000000',
             fill: '#FFF',
-            roughness: 0.8,
+            roughness: 4,
+            strokeWidth: 0.8,
             fillStyle: 'solid'
         };
     }
@@ -69,6 +71,7 @@ export default class Slide {
 
             product.addEventListener('mouseenter', (e) => {
                 this.freezeScroll = true; 
+                this.roughStyle.roughness = Math.random() * 5 + 3;
 
                 for(let node of this.productsNodeList) {
                     if(node != e.target && node.classList.contains('active')) {
@@ -131,6 +134,7 @@ export default class Slide {
 
             product.addEventListener('mouseleave', (e) => {
                 this.freezeScroll = false; 
+                this.roughStyle.roughness = 2;
                 this.selectedProductInfoBbox = null;
                 for(let node of this.productsNodeList) {
                     if(node.classList.contains('active')) {
