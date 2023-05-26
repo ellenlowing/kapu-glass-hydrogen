@@ -61,7 +61,7 @@ export default function ProductHandle() {
                         {(price?.amount > 0 && availableForSale) && 
                           <div className="flex gap-2">
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
-                              {price.currencyCode}$
+                              $
                               <Money 
                                 withoutCurrency 
                                 withoutTrailingZeros 

@@ -22,6 +22,21 @@
   src: url("../../public/fonts/FA_TEEQGAFPBI_cleaned.ttf") format("truetype");
 }
 
+@font-face {
+  font-family: "iota-book";
+  src: url("../../public/fonts/IotaDisplayA-Book.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "iota-medium";
+  src: url("../../public/fonts/IotaDisplayA-Medium.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "iota-sb";
+  src: url("../../public/fonts/IotaDisplayA-SemiBold.otf") format("opentype");
+}
+
 html, body {
     font-family: 'Director-Light';
 }

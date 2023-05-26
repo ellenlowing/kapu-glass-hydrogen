@@ -1,3 +1,5 @@
+import { randomHex, secondaryColors } from "./Utility";
+
 export default class FallingStar {
     constructor(p5, rc, x, y, radius1, radius2, npoints) {
         this.p5 = p5;
@@ -7,21 +9,21 @@ export default class FallingStar {
         this.radius1 = radius1;
         this.radius2 = radius2;
         this.npoints = npoints;
+        this.c = secondaryColors[0];
         this.roughStyle = {
             strokeWidth: 1,
             roughness: 2,
             fillStyle: 'hachure', 
             hachureGap: 2,
-            fillWeight: 1,
-            // stroke: '#fff',
-            fill: '#0000ff',
+            stroke: this.c,
+            fill: this.c,
         };
 
         this.rx = this.x - this.p5.width/2;
         this.ry = this.y - this.p5.height/2;
         this.angle = this.p5.atan2(this.ry, this.rx);
         this.rmag = this.p5.constrain(Math.sqrt(Math.pow(this.rx, 2) + Math.pow(this.ry, 2)), 0, 600);
-        this.speed = this.p5.map(this.rmag, 100, 600, 0, 0.015) * Math.sign(this.rx);
+        this.speed = this.p5.map(this.rmag, 100, 600, 0.005, 0.015) * Math.sign(this.rx);
     }
 
     setup() {

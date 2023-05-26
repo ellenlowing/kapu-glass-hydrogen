@@ -556,7 +556,7 @@ nav {
     transform: translateY(-280px);
   }
 .nav-link {
-    font-family: "Director-Light";
+    font-family: "iota-sb";
     font-size: 1em;
     text-align: center;
     display: block;
@@ -566,10 +566,6 @@ nav {
     /* font-weight: 600; */
     text-transform: lowercase;
     /* letter-spacing: -0.05em; */
-  }
-.bubble {
-    background: radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0) 50.52%, rgba(166, 212, 13, 0.68) 100%);
-    /* background: radial-gradient(50% 50% at 50% 50%, #003E83 80.19%, #96bfe600 100%); */
   }
 .featured-image {
     /* mix-blend-mode: multiply; */
@@ -610,15 +606,18 @@ nav {
     transform: rotate(1deg);
   }
 #selected-product-info {
-    font-family: "fa", "super_notoruous_v2-laser";
+    font-family: "fa", "iota-book";
+  }
+#selected-product-title, #selected-product-price {
+    text-transform: uppercase;
   }
 #selected-product-title {
     font-size: 4em;
-    text-transform: uppercase;
+    letter-spacing: -0.1em;
   }
 #selected-product-price {
-    font-size: 3em;
-    text-transform: uppercase;
+    font-size: 2.5em;
+    letter-spacing: -0.04em;
   }
 .fixed {
   position: fixed;
@@ -635,8 +634,8 @@ nav {
 .bottom-\[0px\] {
   bottom: 0px;
 }
-.bottom-\[40px\] {
-  bottom: 40px;
+.bottom-\[20px\] {
+  bottom: 20px;
 }
 .left-0 {
   left: 0px;
@@ -644,17 +643,23 @@ nav {
 .left-\[150px\] {
   left: 150px;
 }
+.left-\[20px\] {
+  left: 20px;
+}
 .right-0 {
   right: 0px;
+}
+.right-\[20px\] {
+  right: 20px;
 }
 .top-0 {
   top: 0px;
 }
-.top-\[38\%\] {
-  top: 38%;
-}
 .top-\[6rem\] {
   top: 6rem;
+}
+.z-10 {
+  z-index: 10;
 }
 .z-40 {
   z-index: 40;
@@ -700,9 +705,6 @@ nav {
 .h-5 {
   height: 1.25rem;
 }
-.h-\[250px\] {
-  height: 250px;
-}
 .h-\[30\%\] {
   height: 30%;
 }
@@ -729,9 +731,6 @@ nav {
 }
 .w-\[160px\] {
   width: 160px;
-}
-.w-\[250px\] {
-  width: 250px;
 }
 .w-\[80\%\] {
   width: 80%;
@@ -859,9 +858,6 @@ nav {
 .rounded {
   border-radius: 0.25rem;
 }
-.rounded-full {
-  border-radius: 9999px;
-}
 .rounded-md {
   border-radius: 0.375rem;
 }
@@ -871,14 +867,8 @@ nav {
 .border {
   border-width: 1px;
 }
-.border-0 {
-  border-width: 0px;
-}
 .border-\[1\.5px\] {
   border-width: 1.5px;
-}
-.border-solid {
-  border-style: solid;
 }
 .border-black {
   --tw-border-opacity: 1;
@@ -891,6 +881,10 @@ nav {
 .bg-gray-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.bg-red-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
 }
 .bg-white {
   --tw-bg-opacity: 1;
@@ -950,19 +944,9 @@ nav {
 .text-right {
   text-align: right;
 }
-.align-top {
-  vertical-align: top;
-}
-.align-bottom {
-  vertical-align: bottom;
-}
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
-}
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
 }
 .text-4xl {
   font-size: 2.25rem;
@@ -1024,6 +1008,9 @@ nav {
 }
 .opacity-50 {
   opacity: 0.5;
+}
+.opacity-70 {
+  opacity: 0.7;
 }
 .opacity-\[0\] {
   opacity: 0;

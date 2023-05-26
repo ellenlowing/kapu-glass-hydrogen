@@ -13,6 +13,7 @@ import Slide from './Slide';
 import Caterpillar from './Caterpillar';
 import bg from '../../img/KAPU8_1296x.webp';
 import FallingStar from './FallingStar';
+import Spiral from './Spiral';
 
 export default function Sketch() {
 
@@ -64,6 +65,10 @@ function sketch(p5) {
     // star
     let fallingStars;
 
+    // spiral
+    let spirals;
+    let activeSpiralIndex = -1;
+
     let wrapper;
 
     let bgColor = '#000';
@@ -102,6 +107,16 @@ function sketch(p5) {
             fallingStars.push(new FallingStar(p5, rc, x, y, radius1, radius2, 5));
         }
 
+        spirals = [];
+        for(let i = 0; i < 10; i++) {
+            let x = p5.random(p5.width);
+            let y = p5.random(p5.height);
+            let stepSize = p5.random(3, 20);
+            let stepCount = p5.random(5, 18);
+            let spiral = new Spiral(p5, rc, x, y, stepSize, stepCount);
+            spirals.push(spiral);
+        }
+
         const urlPath = p5.getURLPath();
         lastURLPath = urlPath;
         mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
@@ -120,9 +135,17 @@ function sketch(p5) {
             // slide layout things
             slide.setup(collectionName);
 
-            // star
-            for(let star of fallingStars) {
-                star.setup();
+            // diff animations per collection page
+            if(urlPath.indexOf('vessels') != -1) {
+                // star
+                for(let star of fallingStars) {
+                    star.setup();
+                }
+            } else if (urlPath.indexOf('accessories') != -1) {
+                // spiral
+                for(let spiral of spirals){
+                    spiral.setup();
+                }
             }
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
@@ -157,8 +180,16 @@ function sketch(p5) {
                 const collectionName = urlPath[1];
                 slide.setup(collectionName);
 
-                for(let star of fallingStars) {
-                    star.setup();
+                // diff animations per collection page
+                if(urlPath.indexOf('vessels') != -1) {
+                    for(let star of fallingStars) {
+                        star.setup();
+                    }
+                } else if (urlPath.indexOf('accessories') != -1) {
+                    // spiral
+                    for(let spiral of spirals) {
+                        spiral.setup();
+                    }
                 }
             }
 
@@ -190,9 +221,28 @@ function sketch(p5) {
                 }                
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
-                for(let star of fallingStars) {
-                    if(!slide.freezeScroll) star.update();
-                    star.show();
+                if(urlPath.indexOf('vessels') != -1) {
+                    for(let star of fallingStars) {
+                        if(!slide.freezeScroll) star.update();
+                        star.show();
+                    }
+                } else if (urlPath.indexOf('accessories') != -1) {
+                    // spiral
+                    // for(let spiral of spirals) {
+                    //     if(!slide.freezeScroll) spiral.update();
+                    //     spiral.show();
+                    // }
+
+                    if(slide.freezeScroll) {
+                        if(activeSpiralIndex == -1) {
+                            activeSpiralIndex = Math.floor(p5.random(0, spirals.length));
+                        }
+                        spirals[activeSpiralIndex].update();
+                        spirals[activeSpiralIndex].show();
+                    } else {
+                        activeSpiralIndex = -1;
+                    }
+
                 }
             } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
                 if(mousePath.points.length > 2) {
@@ -205,7 +255,6 @@ function sketch(p5) {
             p5.stroke(0);
             p5.noFill();
             p5.text(p5.round(p5.frameRate()), 100, 200);
-            p5.text(`${slide.freezeScroll}`, 100, 300);
         }
     }
 

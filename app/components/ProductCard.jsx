@@ -8,7 +8,7 @@ export default function ProductCard({product, dataIndex}) {
 
   return (
     <Link id={dataIndex} to={`/products/${product.handle}`} 
-      className={`product relative group hover:col-unset hover:bg-unset w-[160px] md:w-[180px] offset-0 absolute hover:z-50 z-1 transition ease-in-out duration-50`}>
+      className={`product relative group hover:col-unset hover:bg-unset w-[160px] md:w-[180px] offset-0 absolute hover:z-50 z-10 transition ease-in-out duration-50`}>
       <div className="grid gap-2 relative">
         <div className="hover:shadow rounded relative">
           {/* {isDiscounted && (
@@ -32,7 +32,7 @@ export default function ProductCard({product, dataIndex}) {
           {availableForSale && 
             <div data-price={price.amount} id="product-price" className={` absolute flex gap-4 p-[0.1rem] product-hover w-fit-content h-fit-content left-[150px] bottom-0`}>
               <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
-                {price.currencyCode}$
+                $
                 <Money 
                   withoutCurrency 
                   withoutTrailingZeros 
@@ -40,12 +40,13 @@ export default function ProductCard({product, dataIndex}) {
                 />
                 {isDiscounted && (
                   <Money
-                    className="line-through opacity-50"
+                    className="line-through opacity-70"
                     withoutTrailingZeros
                     withoutCurrency
                     data={compareAtPrice}
                   />
                 )}
+                
               </span>
             </div>
           }
