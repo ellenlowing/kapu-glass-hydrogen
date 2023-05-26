@@ -46,14 +46,14 @@ export default function ProductHandle() {
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
 
     return (
-        <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto">
+        <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative">
             <div className="grid items-start gap-6">
-                <div className="mx-auto grid max-w-[600px] w-[80%] py-8 md:p-4">
+                <div className="mx-auto grid max-w-[500px] w-[80%] pt-24 ">
                     <div className="snap-center shadow">
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
-                <div className="md:sticky max-w-xl grid gap-8 px-0 py-8 md:p-6 md:px-0 top-[6rem] lg:top-[8rem] xl:top-[10rem]">
+                <div className="md:sticky max-w-xl grid gap-8 px-0 py-8 md:p-6 md:px-0">
                     <div className="grid gap-2">
                         <h1 className="text-2xl font-bold whitespace-normal">
                             {product.title}

@@ -67,7 +67,8 @@ function sketch(p5) {
 
     // spiral
     let spirals;
-    let activeSpiralIndex = -1;
+    // let activeSpiralIndex = -1;
+    let activeSpiralIndices = [];
 
     let wrapper;
 
@@ -108,7 +109,7 @@ function sketch(p5) {
         }
 
         spirals = [];
-        for(let i = 0; i < 10; i++) {
+        for(let i = 0; i < 20; i++) {
             let x = p5.random(p5.width);
             let y = p5.random(p5.height);
             let stepSize = p5.random(3, 20);
@@ -227,20 +228,17 @@ function sketch(p5) {
                         star.show();
                     }
                 } else if (urlPath.indexOf('accessories') != -1) {
-                    // spiral
-                    // for(let spiral of spirals) {
-                    //     if(!slide.freezeScroll) spiral.update();
-                    //     spiral.show();
-                    // }
-
                     if(slide.freezeScroll) {
-                        if(activeSpiralIndex == -1) {
-                            activeSpiralIndex = Math.floor(p5.random(0, spirals.length));
+                        if(activeSpiralIndices.length == 0) {
+                            activeSpiralIndices.push(Math.floor(p5.random(0, spirals.length/2)));
+                            activeSpiralIndices.push(Math.floor(p5.random(spirals.length/2, spirals.length)));
                         }
-                        spirals[activeSpiralIndex].update();
-                        spirals[activeSpiralIndex].show();
+                        for(let idx of activeSpiralIndices) {
+                            spirals[idx].update();
+                            spirals[idx].show();
+                        }
                     } else {
-                        activeSpiralIndex = -1;
+                        activeSpiralIndices = [];
                     }
 
                 }

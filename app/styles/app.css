@@ -480,8 +480,8 @@ video {
     display: none;
   }
 #mainContent {
-    height: calc(100vh - 4rem);
-    width: calc(100vw - 160px - 5vw);
+    height: 100vh;
+    width: 100vw;
   }
 .svg-slide {
     margin: 0 auto;
@@ -664,6 +664,9 @@ nav {
 .z-40 {
   z-index: 40;
 }
+.z-50 {
+  z-index: 50;
+}
 .m-4 {
   margin: 1rem;
 }
@@ -717,6 +720,15 @@ nav {
 .h-screen {
   height: 100vh;
 }
+.h-\[60\%\] {
+  height: 60%;
+}
+.max-h-\[600px\] {
+  max-height: 600px;
+}
+.max-h-\[200px\] {
+  max-height: 200px;
+}
 .min-h-\[180px\] {
   min-height: 180px;
 }
@@ -758,6 +770,9 @@ nav {
 }
 .max-w-xl {
   max-width: 36rem;
+}
+.max-w-\[500px\] {
+  max-width: 500px;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -929,11 +944,30 @@ nav {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+.py-32 {
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+.py-0 {
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
 .pb-12 {
   padding-bottom: 3rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
+}
+.pt-24 {
+  padding-top: 6rem;
 }
 .text-left {
   text-align: left;
@@ -1068,6 +1102,13 @@ nav {
     cursor: w-resize;
   }
 
+@media (min-width: 768px) {
+
+  .md\:p-2 {
+    padding: 0.5rem;
+  }
+}
+
 .hover\:z-50:hover {
   z-index: 50;
 }
@@ -1127,6 +1168,10 @@ nav {
 
   .md\:p-6 {
     padding: 1.5rem;
+  }
+
+  .md\:p-2 {
+    padding: 0.5rem;
   }
 
   .md\:px-0 {
