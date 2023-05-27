@@ -64,15 +64,15 @@ function LineItem({lineItem}) {
       >
         <Image data={merchandise.image} width={110} height={110} />
       </Link>
-      <div className="flex-1">
+      <div className="flex-1 flex flex-col">
         <Link
           to={`/products/${merchandise.product.handle}`}
-          className="no-underline hover:text-black text-lg flex pb-4"
+          className="no-underline hover:text-black text-lg flex grow"
         >
           {merchandise.product.title}
         </Link>
         <div className="text-gray-800 text-sm">Qty: {quantity}</div>
-        <ItemRemoveButton lineIds={[lineItem.id]} />
+        <ItemRemoveButton className="self-end" lineIds={[lineItem.id]} />
       </div>
       <Money className="" withoutTrailingZeros data={lineItem.cost.totalAmount} />
     </div>

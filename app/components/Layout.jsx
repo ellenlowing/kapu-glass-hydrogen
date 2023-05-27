@@ -17,7 +17,7 @@ export function Layout({children, title}) {
           <nav id="nav" className={`fixed`}>
             <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
             <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
-            <Link id="nav-link-2" to="/" className=" cursor-pointer nav-link">magazine</Link>
+            <Link id="nav-link-2" to="/collections/magazine" className=" cursor-pointer nav-link">magazine</Link>
             <Link id="nav-link-3" to="/collections/workshops" className=" cursor-pointer nav-link">workshop</Link>
             <Link id="nav-link-4" to="/collections/archive" className=" cursor-pointer nav-link">archive</Link>
             <Link id="nav-link-5" to="/about" className=" cursor-pointer nav-link">about</Link>

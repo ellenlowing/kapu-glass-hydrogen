@@ -14,6 +14,7 @@ import Caterpillar from './Caterpillar';
 import bg from '../../img/KAPU8_1296x.webp';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
+import RoughContainer from "./RoughContainer";
 
 export default function Sketch() {
 
@@ -69,6 +70,9 @@ function sketch(p5) {
     let spirals;
     let activeSpiralIndices = [];
 
+    // rough containers
+    let roughContainer;
+
     let wrapper;
 
     let bgColor = '#000';
@@ -117,6 +121,8 @@ function sketch(p5) {
             spirals.push(spiral);
         }
 
+        roughContainer = new RoughContainer(p5, rc);
+
         const urlPath = p5.getURLPath();
         lastURLPath = urlPath;
         mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
@@ -150,6 +156,13 @@ function sketch(p5) {
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             // products pages
+        } else if (urlPath.indexOf('cart') != -1) {
+            // cart
+            roughContainer.setup(document.getElementById('cartSummary'), {
+                stroke: '#4f8fe6',
+                strokeWidth: 0.8,
+                roughness: 2,
+            });
         }
     }
 
@@ -246,12 +259,16 @@ function sketch(p5) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
                     butterfly.show();
                 }
+            } else if (urlPath.indexOf('cart') != -1) {
+                // cart
+                // roughContainer.update();
+                // roughContainer.show();
             }
 
             // frame rate debug
             p5.stroke(0);
             p5.noFill();
-            p5.text(p5.round(p5.frameRate()), 100, 200);
+            // p5.text(p5.round(p5.frameRate()), 100, 200);
         }
     }
 

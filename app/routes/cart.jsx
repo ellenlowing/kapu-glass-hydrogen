@@ -113,8 +113,8 @@ export default function Cart() {
         <div className="flex-grow ">
           <CartLineItems linesObj={cart.lines} />
         </div>
-        <div className="left-0 right-0 bottom-0 grid gap-6 p-4 bg-gray-100 rounded-md w-full">
-          <div className="left-0 right-0 bottom-0 grid gap-6 p-4 bg-gray-100 rounded-md w-full">
+        <div id="cartSummary" className="left-0 right-0 bottom-0 grid gap-6 p-4 rounded-md w-full">
+          <div className="left-0 right-0 bottom-0 grid gap-6 p-4 rounded-md w-full">
             <CartSummary cost={cart.cost} />
             <CartActions checkoutUrl={cart.checkoutUrl} />
           </div>

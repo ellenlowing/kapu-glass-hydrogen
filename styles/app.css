@@ -220,17 +220,9 @@
     transform: rotate(1deg);
   }
 
-  #selected-product-info {
-    font-family: "fa", "iota-light";
-  }
-
-  #selected-product-title, #selected-product-price {
-    text-transform: uppercase;
-  }
-
   #selected-product-title {
     font-size: 4em;
-    letter-spacing: -0.1em;
+    /* letter-spacing: -0.1em; */
   }
   
   #selected-product-price {
@@ -241,7 +233,7 @@
   .fa {
     font-family: "fa", "iota-light";
     text-transform: uppercase;
-    letter-spacing: -0.1em;
+    /* letter-spacing: -0.1em; */
   }
 
   .iota-light {
