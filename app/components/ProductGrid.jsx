@@ -19,7 +19,7 @@ export default function ProductGrid({collection}) {
       </section>
 
       <div id="selected-product-info" className="hidden absolute text-center bottom-[20px] w-full bg-red-800 fa">
-        <h1 id="selected-product-title" className="fa absolute text-left left-[20px] bottom-0">Product title</h1>
+        <h1 id="selected-product-title" className="fa absolute text-left left-[20px] bottom-0 leading-none max-w-[70%]">Product title</h1>
         <span id="selected-product-price" className="fa absolute text-right right-[20px] bottom-0">44.44</span>
       </div>
     </>

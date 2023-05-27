@@ -48,9 +48,9 @@ export default function ProductHandle() {
     console.log(product.collections.nodes[0])
 
     return (
-        <section data-collection-handle={product.collections.nodes[0].handle} className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative">
+        <section data-collection-handle={product.collections.nodes[0].handle} className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative py-24">
             <div className="grid items-start gap-6">
-                <div className="mx-auto grid max-w-[500px] w-[80%] pt-24 ">
+                <div className="mx-auto grid max-w-[500px] w-[80%]">
                     <div className="snap-center shadow">
                         <ProductGallery media={product.media.nodes}/>
                     </div>

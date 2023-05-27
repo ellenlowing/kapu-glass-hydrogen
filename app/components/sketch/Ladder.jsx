@@ -86,6 +86,7 @@ export default class Ladder {
         if(color) {
             this.lineStyle.stroke = color;
             this.hoverStyle.stroke = color;
+            this.hoverStyle.fill = color;
         }
         if(this.activeIndex.length > 0) {
             this.lineStyle.stroke = this.ladderHoverColor[this.activeIndex[0]];

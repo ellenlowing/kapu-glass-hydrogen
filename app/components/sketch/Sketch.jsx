@@ -48,7 +48,7 @@ function sketch(p5) {
     let caterpillar;
 
     // flower
-    let flowers = [];
+    let flowers;
 
     // ladder
     let ladder;
@@ -73,8 +73,6 @@ function sketch(p5) {
     // rough containers
     let roughContainer;
 
-    let wrapper;
-
     let bgColor = '#000';
     let mainColor;
 
@@ -85,8 +83,6 @@ function sketch(p5) {
 
         rc = rough.canvas(document.getElementById('defaultCanvas0'));
         
-        wrapper = document.getElementsByClassName('react-p5-wrapper')[0];
-
         ladder = new Ladder(p5, rc);
 
         butterfly = new Butterfly(
@@ -121,6 +117,14 @@ function sketch(p5) {
             spirals.push(spiral);
         }
 
+        flowers = [];
+        for(let i = 0; i < 15; i++) {
+            let x = p5.random(p5.width);
+            let y = p5.random(p5.height);
+            let flower = new Flower(p5.createVector(x, y), p5, rc);
+            flowers.push(flower);
+        }
+
         roughContainer = new RoughContainer(p5, rc);
 
         const urlPath = p5.getURLPath();
@@ -152,6 +156,11 @@ function sketch(p5) {
                 for(let spiral of spirals){
                     spiral.setup();
                 }
+            } else if (urlPath.indexOf('workshops') != -1) {
+                // flower
+                for(let flower of flowers) {
+                    flower.setup();
+                }
             }
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
@@ -175,7 +184,6 @@ function sketch(p5) {
             if(urlPath.length == 0) {
                 bgColor = '#000';
                 mainColor = '#FFF';
-                wrapper.style.backgroundImage = bg;
                 for(let link of navLinks) {
                     link.style.color = '#FFF';
                 }
@@ -183,7 +191,6 @@ function sketch(p5) {
             } else {
                 bgColor = '#FFF';
                 mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
-                wrapper.style.backgroundImage = "unset";
                 for(let link of navLinks) {
                     link.style.color = '#000';
                 }
@@ -202,6 +209,11 @@ function sketch(p5) {
                     // spiral
                     for(let spiral of spirals) {
                         spiral.setup();
+                    }
+                } else if (urlPath.indexOf('workshops') != -1) {
+                    // flower
+                    for(let flower of flowers) {
+                        flower.setup();
                     }
                 }
             }
@@ -222,10 +234,6 @@ function sketch(p5) {
 
             p5.background(bgColor);
             ladder.show(mainColor);
-
-            // for(let flower of flowers) {
-            //     flower.show();
-            // }
 
             if(urlPath.length == 0) {
                 if(caterpillar) {
@@ -252,7 +260,12 @@ function sketch(p5) {
                     } else {
                         activeSpiralIndices = [];
                     }
-
+                } else if (urlPath.indexOf('workshops') != -1) {
+                    // flower
+                    for(let flower of flowers) {
+                        if(!slide.freezeScroll) flower.update();
+                        flower.show();
+                    }
                 }
             } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
                 if(mousePath.points.length > 2) {
@@ -268,7 +281,7 @@ function sketch(p5) {
             // frame rate debug
             p5.stroke(0);
             p5.noFill();
-            // p5.text(p5.round(p5.frameRate()), 100, 200);
+            p5.text(p5.round(p5.frameRate()), 100, 200);
         }
     }
 
@@ -281,14 +294,6 @@ function sketch(p5) {
     }
 
     p5.mousePressed = (e) => {
-        // let flower = new Flower(p5.createVector(p5.mouseX, p5.mouseY), {
-        //     stroke: colors[1],
-        //     strokeWidth: 1,
-        //     roughness: 1,
-        //     fill: colors[1],
-        //     fillStyle: 'cross-hatch'
-        // }, p5, rc);
-        // flowers.push(flower);
         caterpillar.pressed();
     }
 
@@ -329,6 +334,14 @@ function sketch(p5) {
             slide.resize();
             slide.update();
             slide.show();
+
+            if (lastURLPath.indexOf('workshops') != -1) {
+                // flower
+                for(let flower of flowers) {
+                    flower.resize();
+                    flower.transform();
+                }
+            }
         }
         ladder.resize();
         ladder.show();

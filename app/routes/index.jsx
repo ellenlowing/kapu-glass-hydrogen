@@ -1,6 +1,5 @@
 import { useLoaderData, Link } from "@remix-run/react";
 import {Image} from '@shopify/hydrogen';
-import bg from '../../public/bg_placeholder.png';
 import {json} from '@shopify/remix-oxygen';
 
 export const meta = () => {
@@ -40,7 +39,7 @@ export default function Index() {
 
 const FEATURED_PRODUCT_QUERY = `#graphql
     query FeaturedProduct {
-        product(handle: "test-feature-1") {
+        product(handle: "featured-page") {
                 id
                 title
                 media(first: 10) {

@@ -9,7 +9,7 @@ export const meta = () => {
 
 export default function About() {
     return (
-        <section className="px-6 w-full gap-4 pt-24 w-[calc(95vw-160px)]">
+        <section className="px-6 w-full max-w-3xl mx-auto gap-4 pt-24 ">
             <h2 className="font-bold text-lead py-6 fa text-4xl">
                 About kapu
             </h2>
@@ -23,6 +23,13 @@ export default function About() {
             <div className="">
                 Site by Ellen Lo <br></br>
                 Logo by Roshan Ramesh
+            </div>
+
+            <h2 className="font-bold text-lead pt-24 pb-6 fa text-4xl">
+                newsletter signup
+            </h2>
+            <div className="text-red-400">
+                Add mailchimp signup form here
             </div>
         </section>
     );

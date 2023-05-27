@@ -71,7 +71,7 @@ export default class Slide {
 
             product.addEventListener('mouseenter', (e) => {
                 this.freezeScroll = true; 
-                this.roughStyle.roughness = Math.random() * 5 + 3;
+                this.roughStyle.roughness = Math.random() * 5 + 4;
 
                 for(let node of this.productsNodeList) {
                     if(node != e.target && node.classList.contains('active')) {
