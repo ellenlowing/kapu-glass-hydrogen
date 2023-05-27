@@ -606,7 +606,7 @@ nav {
     transform: rotate(1deg);
   }
 #selected-product-info {
-    font-family: "fa", "iota-book";
+    font-family: "fa", "iota-light";
   }
 #selected-product-title, #selected-product-price {
     text-transform: uppercase;
@@ -618,6 +618,14 @@ nav {
 #selected-product-price {
     font-size: 2.5em;
     letter-spacing: -0.04em;
+  }
+.fa {
+    font-family: "fa", "iota-light";
+    text-transform: uppercase;
+    letter-spacing: -0.1em;
+  }
+.iota-book {
+    font-family: 'iota-book';
   }
 .fixed {
   position: fixed;
@@ -655,12 +663,6 @@ nav {
 .top-0 {
   top: 0px;
 }
-.top-\[6rem\] {
-  top: 6rem;
-}
-.z-10 {
-  z-index: 10;
-}
 .z-40 {
   z-index: 40;
 }
@@ -683,6 +685,9 @@ nav {
 }
 .mt-2 {
   margin-top: 0.5rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
 }
 .block {
   display: block;
@@ -720,14 +725,11 @@ nav {
 .h-screen {
   height: 100vh;
 }
-.h-\[60\%\] {
-  height: 60%;
+.h-\[18px\] {
+  height: 18px;
 }
-.max-h-\[600px\] {
-  max-height: 600px;
-}
-.max-h-\[200px\] {
-  max-height: 200px;
+.h-16 {
+  height: 4rem;
 }
 .min-h-\[180px\] {
   min-height: 180px;
@@ -753,8 +755,8 @@ nav {
 .w-full {
   width: 100%;
 }
-.max-w-6xl {
-  max-width: 72rem;
+.max-w-3xl {
+  max-width: 48rem;
 }
 .max-w-\[1200px\] {
   max-width: 1200px;
@@ -762,17 +764,14 @@ nav {
 .max-w-\[400px\] {
   max-width: 400px;
 }
-.max-w-\[600px\] {
-  max-width: 600px;
+.max-w-\[500px\] {
+  max-width: 500px;
 }
 .max-w-prose {
   max-width: 65ch;
 }
 .max-w-xl {
   max-width: 36rem;
-}
-.max-w-\[500px\] {
-  max-width: 500px;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -932,6 +931,10 @@ nav {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
 }
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -944,30 +947,20 @@ nav {
   padding-top: 2rem;
   padding-bottom: 2rem;
 }
-.py-16 {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-}
-.py-32 {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-}
-.py-24 {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
-}
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
 .pb-12 {
   padding-bottom: 3rem;
+}
+.pt-24 {
+  padding-top: 6rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
 }
-.pt-24 {
-  padding-top: 6rem;
+.pb-2 {
+  padding-bottom: 0.5rem;
+}
+.pb-4 {
+  padding-bottom: 1rem;
 }
 .text-left {
   text-align: left;
@@ -994,6 +987,10 @@ nav {
   font-size: 0.75rem;
   line-height: 1rem;
 }
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
 .font-bold {
   font-weight: 700;
 }
@@ -1014,10 +1011,6 @@ nav {
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
-.text-green-600 {
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
-}
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
@@ -1025,6 +1018,9 @@ nav {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.underline {
+  text-decoration-line: underline;
 }
 .line-through {
   text-decoration-line: line-through;
@@ -1102,15 +1098,10 @@ nav {
     cursor: w-resize;
   }
 
-@media (min-width: 768px) {
-
-  .md\:p-2 {
-    padding: 0.5rem;
-  }
-}
-
-.hover\:z-50:hover {
-  z-index: 50;
+.hover\:scale-\[2\]:hover {
+  --tw-scale-x: 2;
+  --tw-scale-y: 2;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .hover\:bg-black:hover {
@@ -1123,8 +1114,9 @@ nav {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.hover\:underline:hover {
-  text-decoration-line: underline;
+.hover\:text-black:hover {
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
 .hover\:shadow:hover {
@@ -1162,16 +1154,8 @@ nav {
     gap: 1rem;
   }
 
-  .md\:p-4 {
-    padding: 1rem;
-  }
-
   .md\:p-6 {
     padding: 1.5rem;
-  }
-
-  .md\:p-2 {
-    padding: 0.5rem;
   }
 
   .md\:px-0 {
@@ -1192,18 +1176,7 @@ nav {
 
 @media (min-width: 1024px) {
 
-  .lg\:top-\[8rem\] {
-    top: 8rem;
-  }
-
   .lg\:gap-6 {
     gap: 1.5rem;
-  }
-}
-
-@media (min-width: 1280px) {
-
-  .xl\:top-\[10rem\] {
-    top: 10rem;
   }
 }

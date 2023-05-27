@@ -221,7 +221,7 @@
   }
 
   #selected-product-info {
-    font-family: "fa", "iota-book";
+    font-family: "fa", "iota-light";
   }
 
   #selected-product-title, #selected-product-price {
@@ -238,4 +238,21 @@
     letter-spacing: -0.04em;
   }
 
+  .fa {
+    font-family: "fa", "iota-light";
+    text-transform: uppercase;
+    letter-spacing: -0.1em;
+  }
+
+  .iota-light {
+    font-family: 'iota-light';
+  }
+
+  .iota-md {
+    font-family: 'iota-medium';
+  }
+
+  .iota-book {
+    font-family: 'iota-book';
+  }
 }

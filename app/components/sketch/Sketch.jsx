@@ -67,7 +67,6 @@ function sketch(p5) {
 
     // spiral
     let spirals;
-    // let activeSpiralIndex = -1;
     let activeSpiralIndices = [];
 
     let wrapper;
@@ -195,7 +194,7 @@ function sketch(p5) {
             }
 
             const body = document.getElementsByTagName('body')[0];
-            if(urlPath[0] == 'products') {
+            if(urlPath[0] == 'products' || urlPath[0] == 'cart') {
                 body.style.overflow = 'auto';
             } else {
                 body.style.overflow = 'hidden';

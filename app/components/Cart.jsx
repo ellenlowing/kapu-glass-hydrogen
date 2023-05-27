@@ -20,7 +20,7 @@ export function CartSummary({cost}) {
             <dt>Subtotal</dt>
             <dd>
               {cost?.subtotalAmount?.amount ? (
-                <Money data={cost?.subtotalAmount} />
+                <Money withoutTrailingZeros data={cost?.subtotalAmount} />
               ) : (
                 '-'
               )}
@@ -30,7 +30,7 @@ export function CartSummary({cost}) {
             <dt className="flex items-center">
               <span>Shipping estimate</span>
             </dt>
-            <dd className="text-green-600">Free and carbon neutral</dd>
+            <dd className="">Calculated at checkout</dd>
           </div>
         </dl>
       </>
@@ -67,14 +67,14 @@ function LineItem({lineItem}) {
       <div className="flex-1">
         <Link
           to={`/products/${merchandise.product.handle}`}
-          className="no-underline hover:underline"
+          className="no-underline hover:text-black text-lg flex pb-4"
         >
           {merchandise.product.title}
         </Link>
         <div className="text-gray-800 text-sm">Qty: {quantity}</div>
         <ItemRemoveButton lineIds={[lineItem.id]} />
       </div>
-      <Money data={lineItem.cost.totalAmount} />
+      <Money className="" withoutTrailingZeros data={lineItem.cost.totalAmount} />
     </div>
   );
 }
@@ -87,10 +87,10 @@ function ItemRemoveButton({lineIds}) {
         <input type="hidden" name="cartAction" value="REMOVE_FROM_CART" />
         <input type="hidden" name="linesIds" value={JSON.stringify(lineIds)} />
         <button
-          className="bg-white border-black text-black hover:text-white hover:bg-black rounded-md font-small text-center my-2 max-w-xl leading-none border w-10 h-10 flex items-center justify-center"
+          className="text-black text-sm my-2 max-w-xl leading-none underline flex items-center justify-center"
           type="submit"
         >
-          <IconRemove />
+          Remove
         </button>
       </fetcher.Form>
     );

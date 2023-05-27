@@ -45,8 +45,10 @@ export default function ProductHandle() {
     const isDiscounted = compareAtPrice?.amount > price?.amount;
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
 
+    console.log(product.collections.nodes[0])
+
     return (
-        <section className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative">
+        <section data-collection-handle={product.collections.nodes[0].handle} className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative">
             <div className="grid items-start gap-6">
                 <div className="mx-auto grid max-w-[500px] w-[80%] pt-24 ">
                     <div className="snap-center shadow">

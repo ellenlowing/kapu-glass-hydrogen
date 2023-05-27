@@ -28,6 +28,11 @@
 }
 
 @font-face {
+  font-family: "iota-light";
+  src: url("../../public/fonts/IotaDisplayA-Light.otf") format("opentype");
+}
+
+@font-face {
   font-family: "iota-medium";
   src: url("../../public/fonts/IotaDisplayA-Medium.otf") format("opentype");
 }
