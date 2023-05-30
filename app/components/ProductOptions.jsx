@@ -44,14 +44,14 @@ export default function ProductOptions({options, selectedVariant}) {
         return (
           <div
             key={option.name}
-            className="gap-y-2 border-[1.5px] border-black-500 text-md w-fit-content"
+            className="gap-y-2 border-[1px] border-[#000000] text-md w-fit-content"
           >
             <Dropdown>
               <Dropdown.Toggle className="p-1 cursor-pointer" as="div">
                 {currentOptionVal}
               </Dropdown.Toggle>
 
-              <Dropdown.Menu className="non-rounded border-black-500 border-[1.5px] p-1 w-fit-content">
+              <Dropdown.Menu className="non-rounded border-[#000000] border-[1px] p-1 w-fit-content">
                 {option.values.map((value) => {
                   const linkParams = new URLSearchParams(searchParams);
                   const isSelected = currentOptionVal === value;

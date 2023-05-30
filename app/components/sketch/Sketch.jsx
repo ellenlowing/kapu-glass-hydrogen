@@ -11,7 +11,6 @@ import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
 import Caterpillar from './Caterpillar';
-import bg from '../../img/KAPU8_1296x.webp';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import RoughContainer from "./RoughContainer";
@@ -167,11 +166,11 @@ function sketch(p5) {
             // products pages
         } else if (urlPath.indexOf('cart') != -1) {
             // cart
-            roughContainer.setup(document.getElementById('cartSummary'), {
-                stroke: '#4f8fe6',
-                strokeWidth: 0.8,
-                roughness: 2,
-            });
+            // roughContainer.setup(document.getElementById('cartSummary'), {
+            //     stroke: '#4f8fe6',
+            //     strokeWidth: 0.8,
+            //     roughness: 2,
+            // });
         }
     }
 
@@ -268,6 +267,7 @@ function sketch(p5) {
                     }
                 }
             } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
+                // slide.show(mainColor);
                 if(mousePath.points.length > 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
                     butterfly.show();

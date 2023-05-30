@@ -51,45 +51,45 @@ export async function action({request, context}) {
     : null;
 
     switch (cartAction) {
-    case 'ADD_TO_CART':
-        const lines = formData.get('lines')
-        ? JSON.parse(String(formData.get('lines')))
-        : [];
+      case 'ADD_TO_CART':
+          const lines = formData.get('lines')
+          ? JSON.parse(String(formData.get('lines')))
+          : [];
 
-        if (!cartId) {
-        result = await cartCreate({
-            input: countryCode ? {lines, buyerIdentity: {countryCode}} : {lines},
-            storefront,
-        });
-        } else {
-        result = await cartAdd({
-            cartId,
-            lines,
-            storefront,
-        });
-        }
+          if (!cartId) {
+          result = await cartCreate({
+              input: countryCode ? {lines, buyerIdentity: {countryCode}} : {lines},
+              storefront,
+          });
+          } else {
+          result = await cartAdd({
+              cartId,
+              lines,
+              storefront,
+          });
+          }
 
-        cartId = result.cart.id;
-        break;
-    case 'REMOVE_FROM_CART':
-        const lineIds = formData.get('linesIds')
-        ? JSON.parse(String(formData.get('linesIds')))
-        : [];
+          cartId = result.cart.id;
+          break;
+      case 'REMOVE_FROM_CART':
+          const lineIds = formData.get('linesIds')
+          ? JSON.parse(String(formData.get('linesIds')))
+          : [];
 
-        if (!lineIds.length) {
-        throw new Error('No lines to remove');
-        }
+          if (!lineIds.length) {
+          throw new Error('No lines to remove');
+          }
 
-        result = await cartRemove({
-        cartId,
-        lineIds,
-        storefront,
-        });
+          result = await cartRemove({
+          cartId,
+          lineIds,
+          storefront,
+          });
 
-        cartId = result.cart.id;
-        break;
-    default:
-        throw new Error('Invalid cart action');
+          cartId = result.cart.id;
+          break;
+      default:
+          throw new Error('Invalid cart action');
     }
 
     /**
@@ -123,13 +123,13 @@ export default function Cart() {
     );
 
   return (
-    <div className="flex flex-col space-y-7 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen relative">
-      <h2 className="whitespace-pre-wrap max-w-prose font-bold text-4xl">
+    <div className="flex flex-col space-y-12 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen relative">
+      <h2 className="whitespace-pre-wrap max-w-prose text-5xl fa">
         Your cart is empty
       </h2>
       <Link
         to="/"
-        className="inline-block rounded-sm font-medium text-center py-3 px-6 max-w-xl leading-none bg-black text-white w-full"
+        className="border-[#000000] border-[1px] py-1 px-2 font-medium hover:bg-black hover:text-white"
       >
         Continue shopping
       </Link>

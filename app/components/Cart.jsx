@@ -26,12 +26,6 @@ export function CartSummary({cost}) {
               )}
             </dd>
           </div>
-          <div className="flex items-center justify-between">
-            <dt className="flex items-center">
-              <span>Shipping estimate</span>
-            </dt>
-            <dd className="">Calculated at checkout</dd>
-          </div>
         </dl>
       </>
     );
@@ -41,10 +35,11 @@ export function CartSummary({cost}) {
     if (!checkoutUrl) return null;
   
     return (
-      <div className="flex flex-col mt-2">
+      <div className="flex flex-col mx-auto">
         <a
+        target='_blank'
           href={checkoutUrl}
-          className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium"
+          className="border-[#000000] border-[1px] py-1 px-2 font-medium hover:bg-black hover:text-white"
         >
           Continue to Checkout
         </a>

@@ -4,6 +4,7 @@ import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
 import {useMatches, useFetcher} from '@remix-run/react';
+import SVGSlide from '../../components/SVGSlide';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -45,23 +46,21 @@ export default function ProductHandle() {
     const isDiscounted = compareAtPrice?.amount > price?.amount;
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
 
-    console.log(product.collections.nodes[0])
-
     return (
-        <section data-collection-handle={product.collections.nodes[0].handle} className="w-full gap-4 grid px-6 max-w-[1200px] mx-auto relative py-24">
-            <div className="grid items-start gap-6">
-                <div className="mx-auto grid max-w-[500px] w-[80%]">
+        <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 ">
+            <div className="grid items-start gap-6 lg:grid-flow-col grid-flow-row lg:gap-24 lg:grid-cols-[400px_auto]">
+                <div className="mx-auto grid max-w-lg z-50">
                     <div className="snap-center shadow">
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
-                <div className="md:sticky max-w-xl grid gap-8 px-0 py-8 md:p-6 md:px-0">
-                    <div className="grid gap-2">
-                        <h1 className="text-2xl font-bold whitespace-normal">
+                <div className="sticky grid gap-8 lg:gap-12 lg:px-8 py-8">
+                    <div className="grid lg:gap-8 lg:grid-flow-row grid-flow-col">
+                        <h1 className="text-5xl whitespace-normal fa">
                             {product.title}
                         </h1>
                         {(price?.amount > 0 && availableForSale) && 
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 self-end place-self-end lg:self-start lg:place-self-start">
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                               $
                               <Money 
@@ -81,24 +80,26 @@ export default function ProductHandle() {
                           </div>
                         }
                         {(price?.amount > 0 && !availableForSale) && 
-                          <div className="flex gap-2">
+                          <div className="flex gap-2 self-end place-self-end lg:self-start lg:place-self-start">
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                               Sold out
                             </span>
                           </div>
                         }
-                        
                     </div>
                     {product.options[0].values.length > 1 && <ProductOptions options={product.options} selectedVariant={selectedVariant} />}
-                    <div
-                      className="prose pt-6 text-black text-sm"
-                      dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
-                    />
-                    {(price?.amount > 0 && availableForSale) && 
-                      <div className="space-y-2">
-                        <ProductForm variantId={selectedVariant?.id} />
-                      </div>
-                    }
+                    <div className="grid lg:grid-flow-row grid-flow-col">
+                      <div
+                        className="prose pt-6 text-black text-sm"
+                        dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                      />
+                      {(price?.amount > 0 && availableForSale) && 
+                        <div className="py-[0px] lg:py-16 self-end place-self-end lg:self-start lg:place-self-start">
+                          <ProductForm variantId={selectedVariant?.id} />
+                        </div>
+                      }
+                    </div>
+                    
 
                 </div>
             </div>
@@ -122,8 +123,8 @@ function ProductForm({variantId}) {
         value={selectedLocale?.country ?? 'US'}
       />
       <input type="hidden" name="lines" value={JSON.stringify(lines)} />
-      <button className="bg-black text-white px-6 py-3 w-full rounded-md text-center font-medium max-w-[400px]">
-        Add to Bag
+      <button className="border-[#000000] border-[1px] py-1 px-2 font-medium max-w-[400px] hover:bg-black hover:text-white">
+        Add to Cart
       </button>
     </fetcher.Form>
   );
