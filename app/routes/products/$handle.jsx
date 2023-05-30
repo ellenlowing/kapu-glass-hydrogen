@@ -4,7 +4,6 @@ import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
 import {useMatches, useFetcher} from '@remix-run/react';
-import SVGSlide from '../../components/SVGSlide';
 
 const seo = ({data}) => ({
   title: data?.product?.title,

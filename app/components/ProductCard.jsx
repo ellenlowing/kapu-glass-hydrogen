@@ -11,16 +11,12 @@ export default function ProductCard({product, dataIndex}) {
       className={`product group hover:col-unset hover:bg-unset w-[160px] md:w-[180px] offset-0 absolute hover:scale-[2] z-50 transition ease-in-out duration-50`}>
       <div className="grid gap-2 relative">
         <div className="hover:shadow rounded relative">
-          {/* {isDiscounted && (
-            <label className="subpixel-antialiased absolute top-0 right-0 m-4 text-right text-notice text-red-600 text-xs">
-              Sale
-            </label>
-          )} */}
           {product.variants.nodes[0].image && 
             <Image
               data={product.variants.nodes[0].image}
               alt={product.title}
               className="rounded"
+              loading="eager"
             />
           }
           

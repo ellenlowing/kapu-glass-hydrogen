@@ -10,7 +10,6 @@ export default function ProductGrid({collection}) {
         className="gap-8 grid mr-[60px] md:mr-[0] relative h-full"
       >
         <SVGSlide/>
-
         <div id="products-container" data-collection-length={collection.products.nodes.length} className="grid-flow-row grid gap-6 gap-y-20">
           {collection.products.nodes.map((product, index) => (
             <ProductCard dataIndex={`product-${index}`} key={product.id} product={product} />

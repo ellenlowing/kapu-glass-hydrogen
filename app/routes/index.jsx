@@ -28,8 +28,9 @@ export default function Index() {
                         loaderOptions={{
                             scale: 2,
                         }}
-                        className="h-[30%] w-[auto] min-h-[180px] absolute featured-image rounded hidden"
+                        className="h-[30%] w-[auto] min-h-[180px] absolute featured-image rounded hidden z-50"
                         id={`featured-image-${idx}`}
+                        loading="eager"
                     ></Image>
                 );
             })}
