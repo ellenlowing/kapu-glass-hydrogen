@@ -29,7 +29,4 @@ export default class Path {
             d -= this.stepSize;
         }
     }
-
-
-    
 }

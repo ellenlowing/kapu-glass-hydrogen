@@ -46,7 +46,7 @@ export default function ProductHandle() {
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
 
     return (
-        <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 ">
+        <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 cursor-none">
             <div className="grid items-start gap-6 lg:grid-flow-col grid-flow-row lg:gap-24 lg:grid-cols-[400px_auto]">
                 <div className="mx-auto grid max-w-lg z-50">
                     <div className="snap-center shadow">

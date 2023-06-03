@@ -1,3 +1,5 @@
+import { randomHex } from "./Utility";
+
 export default class Butterfly {
     constructor(center, dx, p5, rc) {
         this.p5 = p5;
@@ -9,19 +11,41 @@ export default class Butterfly {
         this.center = center;
         this.xoff = 0;
         this.yoff = 0;
-        this.roughStyle = {
-            stroke: '#abf5ed',
-            strokeWidth: 1,
-            roughness: 0.5,
-            fill: '#abf5ed',
-            fillStyle: 'zigzag', 
-            hachureGap: 2,
-            // fillWeight: 0.2,
-            simplification: 0.1
-        };
+        this.t = 0;
         this.heading = 0;
         this.antenna0 = [];
         this.antenna1 = [];
+        this.roughStyle = {
+            strokeWidth: 1,
+            roughness: 1.3,
+            fillWeight: 0.5,
+            hachureGap: 3
+        };
+        this.roughAntennaStyle = {
+            strokeWidth: 0.5,
+            roughness: 0.5,
+            simplification: 0.1
+        };
+        this.colorA = this.p5.color(randomHex());
+        this.colorB = this.p5.color(randomHex());
+        this.updateColor();
+    }
+
+    updateColor() {
+        let lerped = this.lerpColor(this.colorA, this.colorB, this.t);
+        let lerpedString = lerped.toString();
+        this.roughStyle.fill = lerpedString;
+
+        let reversed = this.lerpColor(this.colorB, this.colorA, this.t);
+        let reversedString = reversed.toString();
+        this.roughStyle.stroke = reversedString;
+        this.roughAntennaStyle.stroke = reversedString;
+        this.t += 0.001;
+        if(this.t >= 1) {
+            this.t = 0;
+            this.colorA = this.colorB;
+            this.colorB = this.p5.color(randomHex());
+        }
     }
 
     update(offset, heading) {
@@ -30,9 +54,10 @@ export default class Butterfly {
         this.antenna1 = [];
         this.center = offset;
         this.heading = heading;
+        this.roughStyle.hachureAngle = (heading) / this.p5.PI * 180;
         for(let a = 0; a <= this.p5.TWO_PI; a += this.da) {
             let n = this.p5.noise(this.xoff, this.yoff);
-            let r = this.p5.sin(2 * a) * this.p5.map(n, 0, 1, 20, 120);
+            let r = this.p5.sin(2 * a) * this.p5.map(n, 0, 1, 20, 100);
             let x = this.p5.sin(this.yoff * 5) * r * this.p5.cos(a);
             let y = r * this.p5.sin(a);
             let v = this.p5.createVector(x, y);
@@ -65,17 +90,31 @@ export default class Butterfly {
 
     show() {
         this.rc.curve(this.points, this.roughStyle);
-        this.rc.curve(this.antenna0, {
-            stroke: '#abf5ed',
-            strokeWidth: 0.3,
-            roughness: 0.5,
-            simplification: 0.1
-        });
-        this.rc.curve(this.antenna1, {
-            stroke: '#abf5ed',
-            strokeWidth: 0.3,
-            roughness: 0.5,
-            simplification: 0.1
-        });
+        this.rc.curve(this.antenna0, this.roughAntennaStyle);
+        this.rc.curve(this.antenna1, this.roughAntennaStyle);
+
+        // debug colors
+        // this.rc.rectangle(10, 100, 100, 100, {
+        //     strokeWidth: 1,
+        //     roughness: 1.3,
+        //     fillWeight: 1,
+        //     hachureGap: 3,
+        //     fill: this.colorA.toString()
+        // });
+        // this.rc.rectangle(140, 100, 100, 100, {
+        //     strokeWidth: 1,
+        //     roughness: 1.3,
+        //     fillWeight: 1,
+        //     hachureGap: 3,
+        //     fill: this.colorB.toString()
+        // });
+    }
+
+    lerpColor(colorA, colorB, t) {
+        let r = this.p5.lerp(this.p5.red(colorA), this.p5.red(colorB), t);
+        let g = this.p5.lerp(this.p5.green(colorA), this.p5.green(colorB), t);
+        let b = this.p5.lerp(this.p5.blue(colorA), this.p5.blue(colorB), t);
+        let a = this.p5.lerp(this.p5.alpha(colorA), this.p5.alpha(colorB), t)
+        return this.p5.color(r, g, b, a);
     }
 }

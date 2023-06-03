@@ -267,8 +267,7 @@ function sketch(p5) {
                     }
                 }
             } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
-                // slide.show(mainColor);
-                if(mousePath.points.length > 2) {
+                if(mousePath.points.length >= 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
                     butterfly.show();
                 }
@@ -286,8 +285,9 @@ function sketch(p5) {
     }
 
     p5.mouseMoved = (e) => {
+        butterfly.updateColor();
         mousePath.addPoint(p5.mouseX, p5.mouseY);
-        if(mousePath.points.length > 10) {
+        if(mousePath.points.length > 2) {
             mousePath.points.shift();
             mousePath.angles.shift();
         }
