@@ -8,7 +8,7 @@ import {
 } from '@remix-run/react';
 import styles from './styles/app.css';
 import customStyles from './styles/custom.css';
-import favicon from '../public/favicon.svg';
+import favicon from '../public/favicon.png';
 import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,7 +26,7 @@ export const links = () => {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/png', href: favicon},
     {rel: 'stylesheet', href: styles},
     {rel: 'stylesheet', href: customStyles},
   ];

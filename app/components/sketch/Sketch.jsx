@@ -75,6 +75,9 @@ function sketch(p5) {
     let bgColor = '#000';
     let mainColor;
 
+    let logo;
+    let logoAngle = 0;
+
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
@@ -125,6 +128,8 @@ function sketch(p5) {
         }
 
         roughContainer = new RoughContainer(p5, rc);
+
+        logo = document.getElementById('logo');
 
         const urlPath = p5.getURLPath();
         lastURLPath = urlPath;
@@ -266,7 +271,8 @@ function sketch(p5) {
                         flower.show();
                     }
                 }
-            } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
+            } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1) {
+                // butterfly
                 if(mousePath.points.length >= 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
                     butterfly.show();
@@ -285,11 +291,15 @@ function sketch(p5) {
     }
 
     p5.mouseMoved = (e) => {
-        butterfly.updateColor();
-        mousePath.addPoint(p5.mouseX, p5.mouseY);
-        if(mousePath.points.length > 2) {
-            mousePath.points.shift();
-            mousePath.angles.shift();
+        // butterfly
+        const urlPath = p5.getURLPath();
+        if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1) {
+            butterfly.updateColor();
+            mousePath.addPoint(p5.mouseX, p5.mouseY);
+            if(mousePath.points.length > 2) {
+                mousePath.points.shift();
+                mousePath.angles.shift();
+            }
         }
     }
 
@@ -302,6 +312,8 @@ function sketch(p5) {
             p5.loop();
             slide.scrollProgress += p5.constrain(e.delta, -30, 30);
             hide(slide.selectedProductInfo);
+            logo.style.transform = `rotate(${logoAngle}deg)`;
+            logoAngle += Math.sign(e.delta) * 0.5;
         }
     }
 

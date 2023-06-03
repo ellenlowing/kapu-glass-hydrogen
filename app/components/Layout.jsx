@@ -8,10 +8,10 @@ export function Layout({children, title}) {
       <div className="flex flex-col min-h-screen antialiased">
         <header
           role="banner"
-          className={`absolute items-center h-16 z-40 top-0 justify-between w-full leading-none p-2 antialiased transition`}
+          className={`absolute items-center h-20 z-40 top-0 justify-between leading-none p-1 antialiased transition`}
         >
           <Link className="h-full" to="/">
-            <img className="h-full" src={logo}></img>
+            <img id="logo" className="h-full" src={logo}></img>
           </Link>
 
           <nav id="nav" className={`fixed`}>
