@@ -14,11 +14,13 @@ export default class Flower {
         this.k = this.n/this.d;
         this.r = this.p5.random(4, 60);
         this.angleStep = this.p5.random(0.1, 0.5);
-        this.roughStyle.roughness = this.p5.map(this.r, 4, 60, 0, 4);
+        this.roughStyle.roughness = this.p5.map(this.r, 4, 60, 0, 3);
         this.startAngle = this.p5.random(0, this.p5.TWO_PI);
-        this.speed = this.p5.random(-0.4, 0.4);
+        this.speed = this.p5.random(-0.1, 0.1);
         this.ogW = this.p5.width;
         this.ogH = this.p5.height;
+        this.growRate = 0.5;
+        this.growSpeed = this.p5.random(0.001, 0.05);
     }
 
     setup() {
@@ -50,10 +52,13 @@ export default class Flower {
             let y = point[1];
             let xx = x * this.p5.cos(this.startAngle) - y * this.p5.sin(this.startAngle);
             let yy = x * this.p5.sin(this.startAngle) + y * this.p5.cos(this.startAngle);
+            xx *= this.growRate;
+            yy *= this.growRate;
             xx += this.center.x;
             yy += this.center.y;
             this.points.push([xx, yy]);
         }
+        if(this.growRate <= 3) this.growRate += this.growSpeed;
     }
     
     resize() {

@@ -18,7 +18,7 @@ function randomHex() {
 }
 
 const colors = ['#ff616b', '#FBAC00', '#fbe106', '#40c945', '#a6ff47', '#abf5ed', '#b875eb'];
-const secondaryColors = ['#202d85', '#19cc33', '#000000', '#ffcfc4'];
+const secondaryColors = ['#202d85', '#19cc33', '#000000', '#c9aced'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 
 export {hide, show, randomHex, colors, secondaryColors, pathNameList};

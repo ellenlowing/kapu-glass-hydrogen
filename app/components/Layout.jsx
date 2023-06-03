@@ -1,5 +1,4 @@
 import Sketch from "./sketch/Sketch";
-import {Image} from '@shopify/hydrogen';
 import logo from '../../public/logo.png';
 import {Link} from '@remix-run/react';
 

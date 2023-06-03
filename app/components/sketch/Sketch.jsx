@@ -120,7 +120,7 @@ function sketch(p5) {
         }
 
         flowers = [];
-        for(let i = 0; i < 15; i++) {
+        for(let i = 0; i < 9; i++) {
             let x = p5.random(p5.width);
             let y = p5.random(p5.height);
             let flower = new Flower(p5.createVector(x, y), p5, rc);
