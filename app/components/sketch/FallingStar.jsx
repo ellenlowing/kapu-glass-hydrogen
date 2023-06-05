@@ -17,6 +17,8 @@ export default class FallingStar {
             hachureGap: 2,
             stroke: this.c,
             fill: this.c,
+            // disableMultiStroke: true,
+            disableMultiStrokeFill: true
         };
 
         this.rx = this.x - this.p5.width/2;

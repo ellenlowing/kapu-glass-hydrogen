@@ -10,6 +10,7 @@ export default class Slide {
             stroke: '#4f8fe6',
             strokeWidth: 0.8,
             roughness: 2,
+            // disableMultiStroke: true
         };
         this.roughBboxStyle = {
             stroke: '#00000000',

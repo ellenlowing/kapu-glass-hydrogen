@@ -13,6 +13,7 @@ import Slide from './Slide';
 import Caterpillar from './Caterpillar';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
+import Cloud from './Cloud';
 import RoughContainer from "./RoughContainer";
 
 export default function Sketch() {
@@ -68,6 +69,9 @@ function sketch(p5) {
     // spiral
     let spirals;
     let activeSpiralIndices = [];
+
+    // cloud
+    let clouds;
 
     // rough containers
     let roughContainer;
@@ -127,6 +131,14 @@ function sketch(p5) {
             flowers.push(flower);
         }
 
+        clouds = [];
+        for(let i = 0; i < 10; i++) {
+            let x = p5.random(0, p5.width*2);
+            let y = p5.random(0, p5.height);
+            let cloud = new Cloud(p5, rc, p5.createVector(x, y));
+            clouds.push(cloud);
+        }
+
         roughContainer = new RoughContainer(p5, rc);
 
         logo = document.getElementById('logo');
@@ -164,6 +176,11 @@ function sketch(p5) {
                 // flower
                 for(let flower of flowers) {
                     flower.setup();
+                }
+            } else if (urlPath.indexOf('archive') != -1) {
+                // cloud
+                for(let cloud of clouds) {
+                    cloud.setup();
                 }
             }
             
@@ -219,6 +236,11 @@ function sketch(p5) {
                     for(let flower of flowers) {
                         flower.setup();
                     }
+                } else if (urlPath.indexOf('archive') != -1) {
+                    // cloud
+                    for(let cloud of clouds) {
+                        cloud.setup();
+                    }
                 }
             }
 
@@ -270,6 +292,12 @@ function sketch(p5) {
                         if(!slide.freezeScroll) flower.update();
                         flower.show();
                     }
+                } else if (urlPath.indexOf('archive') != -1) {
+                    // cloud
+                    for(let cloud of clouds) {
+                        if(!slide.freezeScroll) cloud.update();
+                        cloud.show();
+                    }
                 }
             } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1) {
                 // butterfly
@@ -304,7 +332,10 @@ function sketch(p5) {
     }
 
     p5.mousePressed = (e) => {
-        caterpillar.pressed();
+        const urlPath = p5.getURLPath();
+        if(urlPath.length == 0) {
+            caterpillar.pressed();
+        }
     }
 
     p5.mouseWheel = (e) => {
@@ -352,6 +383,11 @@ function sketch(p5) {
                 for(let flower of flowers) {
                     flower.resize();
                     flower.transform();
+                }
+            } else if (lastURLPath.indexOf('archive') != -1) {
+                // cloud
+                for(let cloud of clouds) {
+                    cloud.show();
                 }
             }
         }

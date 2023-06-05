@@ -10,6 +10,8 @@ export default class Spiral {
             roughness: 3,
             hachureGap: 2,
             stroke: this.c,
+            disableMultiStroke: true,
+            disableMultiStrokeFill: true
         };
         this.x = x;
         this.y = y;

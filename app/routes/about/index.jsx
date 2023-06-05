@@ -9,7 +9,7 @@ export const meta = () => {
 
 export default function About() {
     return (
-        <section className="px-6 w-full max-w-3xl mx-auto gap-4 pt-24 ">
+        <section className="cursor-none px-6 w-full max-w-3xl mx-auto gap-4 pt-24 ">
             <h2 className="font-bold text-lead py-6 fa text-4xl">
                 About kapu
             </h2>

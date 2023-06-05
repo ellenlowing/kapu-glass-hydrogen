@@ -17,14 +17,17 @@ export default class Butterfly {
         this.antenna1 = [];
         this.roughStyle = {
             strokeWidth: 1,
-            roughness: 1.3,
+            roughness: 1,
             fillWeight: 0.5,
-            hachureGap: 3
+            hachureGap: 3,
+            disableMultiStroke: true,
+            disableMultiStrokeFill: true
         };
         this.roughAntennaStyle = {
             strokeWidth: 0.5,
             roughness: 0.5,
-            simplification: 0.1
+            simplification: 0.1,
+            disableMultiStroke: true
         };
         this.colorA = this.p5.color(randomHex());
         this.colorB = this.p5.color(randomHex());
@@ -40,7 +43,7 @@ export default class Butterfly {
         let reversedString = reversed.toString();
         this.roughStyle.stroke = reversedString;
         this.roughAntennaStyle.stroke = reversedString;
-        this.t += 0.001;
+        this.t += 0.005;
         if(this.t >= 1) {
             this.t = 0;
             this.colorA = this.colorB;

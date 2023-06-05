@@ -7,7 +7,8 @@ export default class Flower {
         this.rc = rc;
         this.roughStyle = {
             stroke: secondaryColors[3],
-            strokeWidth: 1
+            strokeWidth: 1,
+            disableMultiStroke: true,
         };
         this.n = this.p5.floor(this.p5.random(2, 8));
         this.d = this.p5.floor(this.p5.random(1, this.n - 1));
