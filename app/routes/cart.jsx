@@ -109,7 +109,7 @@ export default function Cart() {
 
   if (cart?.totalQuantity > 0)
     return (
-      <div className="w-full max-w-3xl mx-auto pt-24 pb-12 px-8 grid gap-8 relative">
+      <div className="cursor-none w-full max-w-3xl mx-auto pt-24 pb-12 px-8 grid gap-8 relative">
         <div className="flex-grow ">
           <CartLineItems linesObj={cart.lines} />
         </div>
@@ -123,7 +123,7 @@ export default function Cart() {
     );
 
   return (
-    <div className="flex flex-col space-y-12 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen relative">
+    <div className="cursor-none flex flex-col space-y-12 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen relative">
       <h2 className="whitespace-pre-wrap max-w-prose text-5xl fa">
         Your cart is empty
       </h2>

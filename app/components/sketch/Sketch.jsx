@@ -299,16 +299,12 @@ function sketch(p5) {
                         cloud.show();
                     }
                 }
-            } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1) {
+            } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
                 // butterfly
                 if(mousePath.points.length >= 2) {
                     butterfly.update(mousePath.points[0], mousePath.angles[0]);
                     butterfly.show();
                 }
-            } else if (urlPath.indexOf('cart') != -1) {
-                // cart
-                // roughContainer.update();
-                // roughContainer.show();
             }
 
             // frame rate debug
@@ -321,7 +317,7 @@ function sketch(p5) {
     p5.mouseMoved = (e) => {
         // butterfly
         const urlPath = p5.getURLPath();
-        if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1) {
+        if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
             butterfly.updateColor();
             mousePath.addPoint(p5.mouseX, p5.mouseY);
             if(mousePath.points.length > 2) {
