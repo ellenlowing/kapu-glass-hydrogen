@@ -9,6 +9,7 @@ export default class Flower {
             stroke: secondaryColors[3],
             strokeWidth: 1,
             disableMultiStroke: true,
+            preserveVertices:true
         };
         this.n = this.p5.floor(this.p5.random(2, 8));
         this.d = this.p5.floor(this.p5.random(1, this.n - 1));
@@ -27,7 +28,7 @@ export default class Flower {
     setup() {
         this.flowerPoints = [];
         this.points = [];
-        for(let a = 0; a < this.p5.TWO_PI * this.d; a += this.angleStep) {
+        for(let a = 0; a <= this.p5.TWO_PI * this.d; a += this.angleStep) {
             let r = this.r * this.p5.cos(this.k * a);
             let x = r * this.p5.cos(a);
             let y = r * this.p5.sin(a);

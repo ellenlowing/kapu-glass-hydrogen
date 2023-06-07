@@ -1,9 +1,10 @@
-import {hide, show, colors} from './Utility';
+import {hide, show, colors, secondaryColors, inLine, magazineScrollRanges} from './Utility';
 
 export default class Slide {
-    constructor(p5, rc) {
+    constructor(p5, rc, canvas) {
         this.p5 = p5;
         this.rc = rc;
+        this.canvas = canvas;
         this.numProductsDisplayed = 3;
         this.maxNumProductsDisplayed = 3;
         this.roughStyle = {
@@ -29,6 +30,7 @@ export default class Slide {
     }
 
     setup(collectionName) {
+        this.name = collectionName;
         this.freezeScroll = false;
         this.svgSlides = document.getElementsByClassName('svg-slide');
         this.selectedProductInfo = document.getElementById('selected-product-info');
@@ -64,6 +66,8 @@ export default class Slide {
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
         // this.selectedProductInfoBbox = null;
+        this.magazineScrollRanges = magazineScrollRanges;
+        this.bubbleTriggers = [false, false, false, false];
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
@@ -166,6 +170,21 @@ export default class Slide {
             slidePoint = this.mapPoint(slidePoint, productOffset);
             product.style.top = `${slidePoint.y}px`;
             product.style.left = `${slidePoint.x}px`;
+
+            if(this.name == 'magazine' ) {
+                for(let j = 0; j < this.magazineScrollRanges.length; j++) {
+                    let range = this.magazineScrollRanges[j];
+                    if(Math.abs(offsetScrollProgress - range[0]) < 20 || Math.abs(offsetScrollProgress - range[1]) < 20 ) {
+                        const createNewBubble = new CustomEvent("create-bubble", {
+                            detail: {bubbleIndex: j},
+                            bubbles: true,
+                            cancelable: true,
+                            composed: false
+                        });
+                        this.canvas.dispatchEvent(createNewBubble);
+                    }
+                }
+            }
         }
 
         const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
@@ -198,8 +217,12 @@ export default class Slide {
             this.roughBboxStyle.stroke = color;
             this.roughBubbleStyle.stroke = color;
             this.p5.stroke(color);
+            // for(let i = 0; i < this.points.length; i++) {
+            //     this.p5.text(i, this.points[i][0], this.points[i][1]);
+            // }
         }
         this.rc.curve(this.points, this.roughStyle);
+        
         // if(this.selectedProductInfoBbox) {
         //     let w = this.selectedProductInfoBbox.width * 1.2;
         //     let h = this.selectedProductInfoBbox.height * 2;
@@ -218,7 +241,7 @@ export default class Slide {
         this.points = [];
         let slideSteps = 40;
         this.displayOffset = this.p5.createVector(this.p5.width/2 - this.svg.clientWidth/2);
-        for(let i = 0; i < slideSteps; i++) {
+        for(let i = 0; i <= slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);
             slidePoint = this.mapPoint(slidePoint, this.displayOffset);
             this.points.push([slidePoint.x, slidePoint.y]);
@@ -229,5 +252,9 @@ export default class Slide {
         point.x = point.x / this.attrW * this.svg.clientWidth + offset.x;
         point.y = point.y / this.attrH * this.svg.clientHeight + offset.y + (this.p5.height - this.svg.clientHeight) / 2;
         return point;
+    }
+
+    inRange(progress, min, max) {
+        return progress >= min && progress <= max;
     }
 }

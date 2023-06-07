@@ -6,7 +6,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show, colors, pathNameList} from './Utility';
+import {hide, show, colors, pathNameList, magazineScrollRanges} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -14,6 +14,7 @@ import Caterpillar from './Caterpillar';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
+import Bubble from './Bubble';
 import RoughContainer from "./RoughContainer";
 
 export default function Sketch() {
@@ -73,6 +74,11 @@ function sketch(p5) {
     // cloud
     let clouds;
 
+    // bubble
+    let bubbles;
+    
+    let canvas;
+
     // rough containers
     let roughContainer;
 
@@ -87,7 +93,8 @@ function sketch(p5) {
         p5.pixelDensity(2);
         p5.noStroke();
 
-        rc = rough.canvas(document.getElementById('defaultCanvas0'));
+        canvas = document.getElementById('defaultCanvas0');
+        rc = rough.canvas(canvas);
         
         ladder = new Ladder(p5, rc);
 
@@ -102,7 +109,7 @@ function sketch(p5) {
 
         mousePath = new Path(p5);
 
-        slide = new Slide(p5, rc);
+        slide = new Slide(p5, rc, canvas);
 
         fallingStars = [];
         for(let i = 0; i < 20; i++) {
@@ -140,6 +147,18 @@ function sketch(p5) {
                 clouds.push(cloud);
             }
         }
+
+        bubbles = [];
+
+        canvas.addEventListener('create-bubble', (e) => {
+            let spawnPos = p5.createVector(0, 0);
+            let startPos = slide.points[2 + e.detail.bubbleIndex * 10];
+            let midPos = slide.points[5 + e.detail.bubbleIndex * 10];
+            spawnPos.x = (startPos[0] + midPos[0]) / 2;
+            spawnPos.y = (startPos[1] + midPos[1]) / 2;
+            let bubble = new Bubble(p5, rc, spawnPos);
+            bubbles.push(bubble);
+        })
 
         roughContainer = new RoughContainer(p5, rc);
 
@@ -299,6 +318,12 @@ function sketch(p5) {
                     for(let cloud of clouds) {
                         if(!slide.freezeScroll) cloud.update();
                         cloud.show();
+                    }
+                } else if (urlPath.indexOf('magazine') != -1) {
+                    // bubble
+                    for(let bubble of bubbles) {
+                        if(!slide.freezeScroll) bubble.update();
+                        bubble.show();
                     }
                 }
             } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {

@@ -17,15 +17,17 @@ export default class FallingStar {
             hachureGap: 2,
             stroke: this.c,
             fill: this.c,
-            // disableMultiStroke: true,
+            disableMultiStroke: true,
             disableMultiStrokeFill: true
         };
 
         this.rx = this.x - this.p5.width/2;
         this.ry = this.y - this.p5.height/2;
-        this.angle = this.p5.atan2(this.ry, this.rx);
+        this.angle = this.p5.atan2(this.ry, this.rx); // angle relative to center of universe
         this.rmag = this.p5.constrain(Math.sqrt(Math.pow(this.rx, 2) + Math.pow(this.ry, 2)), 0, 600);
         this.speed = this.p5.map(this.rmag, 100, 600, 0.005, 0.015) * Math.sign(this.rx);
+        this.localRotation = this.p5.random(0, this.p5.TWO_PI); // angle relative to self
+        this.angularSpeed = this.p5.random(-0.1, 0.1); // self spinning speed
     }
 
     setup() {
@@ -37,11 +39,16 @@ export default class FallingStar {
         this.x = this.rx * this.p5.sin(this.angle) + this.p5.width/2;
         this.y = this.ry * this.p5.cos(this.angle) + this.p5.height/2;
         this.angle += this.speed;
+        this.localRotation += this.angularSpeed;
         this.points = [];
-        for(let pt of this.fixedStarPoints) {
-            let x = this.x + pt[0];
-            let y = this.y + pt[1];
-            this.points.push([x, y]);
+        for(let point of this.fixedStarPoints) {
+            let x = point[0];
+            let y = point[1];
+            let xx = x * this.p5.cos(this.localRotation) - y * this.p5.sin(this.localRotation);
+            let yy = x * this.p5.sin(this.localRotation) + y * this.p5.cos(this.localRotation);
+            xx += this.x;
+            yy += this.y;
+            this.points.push([xx, yy]);
         }
     }
     
