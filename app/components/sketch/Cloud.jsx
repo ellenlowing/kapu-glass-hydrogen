@@ -12,9 +12,14 @@ export default class Cloud {
             roughness: 2,
             disableMultiStroke: true,
             disableMultiStrokeFill: true,
+            preserveVertices: true
         };
-        this.roughStyle.roughness = this.p5.random(1, 2.5);
-        this.roughStyle.fillStyle = roughFillStyles[Math.floor(Math.random() * roughFillStyles.length)];
+        this.roughStyle.roughness = this.p5.random(1.2, 4);
+        this.roughStyle.fillStyle = roughFillStyles[Math.floor(this.p5.random(roughFillStyles.length))];
+        this.roughStyle.fillWeight = this.p5.random(0.3, 1);
+        this.roughStyle.strokeWidth = this.roughStyle.fillWeight;
+        this.roughStyle.hachureGap = this.p5.random(2, 8);
+        this.roughStyle.hachureAngle = this.p5.random(-180, 180);
     }
 
     setup() {
@@ -27,7 +32,7 @@ export default class Cloud {
         this.drad = this.p5.random(5, 20);
         this.rxMax = this.p5.random(80, 400);
         this.ryMax = this.p5.random(this.rxMax/4, this.rxMax/1.5);
-        for (let a = 0; a < this.p5.TWO_PI; a += this.p5.radians(this.drad)) {
+        for (let a = 0; a <= this.p5.TWO_PI; a += this.p5.radians(this.drad)) {
             let xoff = this.p5.map(this.p5.cos(a + this.phase), -1, 1, 0, this.noiseMax);
             let yoff = this.p5.map(this.p5.sin(a + this.phase), -1, 1, 0, this.noiseMax);
             let rx = this.p5.map(this.p5.noise(xoff, yoff, this.zoff), 0, 1, 20, this.rxMax);
@@ -46,7 +51,7 @@ export default class Cloud {
             this.points.push([xx, yy]);
         }
         this.center.x += this.speed;
-        this.center.x = this.center.x % (this.p5.width*2);
+        this.center.x = this.center.x % (this.p5.width*4);
     }
 
     show() {

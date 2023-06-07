@@ -132,11 +132,13 @@ function sketch(p5) {
         }
 
         clouds = [];
-        for(let i = 0; i < 10; i++) {
-            let x = p5.random(0, p5.width*2);
-            let y = p5.random(0, p5.height);
-            let cloud = new Cloud(p5, rc, p5.createVector(x, y));
-            clouds.push(cloud);
+        for(let i = 0; i < 4; i++) {
+            for(let j = 0; j < 4; j++) {
+                let x = p5.random(p5.width * i, p5.width * (i+1));
+                let y = p5.random(0, p5.height);
+                let cloud = new Cloud(p5, rc, p5.createVector(x, y));
+                clouds.push(cloud);
+            }
         }
 
         roughContainer = new RoughContainer(p5, rc);
