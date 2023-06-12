@@ -14,7 +14,7 @@ import Caterpillar from './Caterpillar';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
-import Bubble from './Bubble';
+import BubbleEmitter from './BubbleEmitter';
 import RoughContainer from "./RoughContainer";
 
 export default function Sketch() {
@@ -75,7 +75,7 @@ function sketch(p5) {
     let clouds;
 
     // bubble
-    let bubbles;
+    let bubbleEmitters;
     
     let canvas;
 
@@ -148,16 +148,9 @@ function sketch(p5) {
             }
         }
 
-        bubbles = [];
 
         canvas.addEventListener('create-bubble', (e) => {
-            let spawnPos = p5.createVector(0, 0);
-            let startPos = slide.points[2 + e.detail.bubbleIndex * 10];
-            let midPos = slide.points[5 + e.detail.bubbleIndex * 10];
-            spawnPos.x = (startPos[0] + midPos[0]) / 2;
-            spawnPos.y = (startPos[1] + midPos[1]) / 2;
-            let bubble = new Bubble(p5, rc, spawnPos);
-            bubbles.push(bubble);
+            bubbleEmitters[e.detail.bubbleIndex].emit(2);
         })
 
         roughContainer = new RoughContainer(p5, rc);
@@ -202,6 +195,17 @@ function sketch(p5) {
                 // cloud
                 for(let cloud of clouds) {
                     cloud.setup();
+                }
+            } else if (urlPath.indexOf('magazine') != -1) {
+                bubbleEmitters = [];
+                for(let i = 0; i < 4; i++) {
+                    let spawnPos = p5.createVector(0, 0);
+                    let startPos = slide.points[2 + i * 10];
+                    let midPos = slide.points[5 + i * 10];
+                    spawnPos.x = (startPos[0] + midPos[0]) / 2;
+                    spawnPos.y = (startPos[1] + midPos[1]) / 2;
+                    let emitter = new BubbleEmitter(p5, rc, spawnPos);
+                    bubbleEmitters.push(emitter);
                 }
             }
             
@@ -262,6 +266,17 @@ function sketch(p5) {
                     for(let cloud of clouds) {
                         cloud.setup();
                     }
+                } else if (urlPath.indexOf('magazine') != -1) {
+                    bubbleEmitters = [];
+                    for(let i = 0; i < 4; i++) {
+                        let spawnPos = p5.createVector(0, 0);
+                        let startPos = slide.points[2 + i * 10];
+                        let midPos = slide.points[5 + i * 10];
+                        spawnPos.x = (startPos[0] + midPos[0]) / 2;
+                        spawnPos.y = (startPos[1] + midPos[1]) / 2;
+                        let emitter = new BubbleEmitter(p5, rc, spawnPos);
+                        bubbleEmitters.push(emitter);
+                    }
                 }
             }
 
@@ -321,9 +336,14 @@ function sketch(p5) {
                     }
                 } else if (urlPath.indexOf('magazine') != -1) {
                     // bubble
-                    for(let bubble of bubbles) {
-                        if(!slide.freezeScroll) bubble.update();
-                        bubble.show();
+                    // for(let bubble of bubbles) {
+                    //     if(!slide.freezeScroll) bubble.update();
+                    //     bubble.show();
+                    // }
+                    for(let emitter of bubbleEmitters) {
+                        // emitter.emit(1);
+                        emitter.show();
+                        emitter.update();
                     }
                 }
             } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {

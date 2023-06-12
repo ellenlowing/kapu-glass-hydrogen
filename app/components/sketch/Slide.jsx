@@ -68,6 +68,7 @@ export default class Slide {
         // this.selectedProductInfoBbox = null;
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
+        this.lastTriggerTime = 0;
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
@@ -174,7 +175,7 @@ export default class Slide {
             if(this.name == 'magazine' ) {
                 for(let j = 0; j < this.magazineScrollRanges.length; j++) {
                     let range = this.magazineScrollRanges[j];
-                    if(Math.abs(offsetScrollProgress - range[0]) < 20 || Math.abs(offsetScrollProgress - range[1]) < 20 ) {
+                    if( (Math.abs(offsetScrollProgress - range[0]) < 15 || Math.abs(offsetScrollProgress - range[1]) < 15) && ( (Date.now() - this.lastTriggerTime) > 100) ) {
                         const createNewBubble = new CustomEvent("create-bubble", {
                             detail: {bubbleIndex: j},
                             bubbles: true,
@@ -182,6 +183,7 @@ export default class Slide {
                             composed: false
                         });
                         this.canvas.dispatchEvent(createNewBubble);
+                        this.lastTriggerTime = Date.now();
                     }
                 }
             }
