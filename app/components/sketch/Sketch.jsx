@@ -150,7 +150,9 @@ function sketch(p5) {
 
 
         canvas.addEventListener('create-bubble', (e) => {
-            bubbleEmitters[e.detail.bubbleIndex].emit(2);
+            if(bubbleEmitters.length > 0) {
+                bubbleEmitters[e.detail.bubbleIndex].emit(2);
+            }
         })
 
         roughContainer = new RoughContainer(p5, rc);
@@ -197,16 +199,7 @@ function sketch(p5) {
                     cloud.setup();
                 }
             } else if (urlPath.indexOf('magazine') != -1) {
-                bubbleEmitters = [];
-                for(let i = 0; i < 4; i++) {
-                    let spawnPos = p5.createVector(0, 0);
-                    let startPos = slide.points[2 + i * 10];
-                    let midPos = slide.points[5 + i * 10];
-                    spawnPos.x = (startPos[0] + midPos[0]) / 2;
-                    spawnPos.y = (startPos[1] + midPos[1]) / 2;
-                    let emitter = new BubbleEmitter(p5, rc, spawnPos);
-                    bubbleEmitters.push(emitter);
-                }
+                setupBubbleEmitters();
             }
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
@@ -267,16 +260,7 @@ function sketch(p5) {
                         cloud.setup();
                     }
                 } else if (urlPath.indexOf('magazine') != -1) {
-                    bubbleEmitters = [];
-                    for(let i = 0; i < 4; i++) {
-                        let spawnPos = p5.createVector(0, 0);
-                        let startPos = slide.points[2 + i * 10];
-                        let midPos = slide.points[5 + i * 10];
-                        spawnPos.x = (startPos[0] + midPos[0]) / 2;
-                        spawnPos.y = (startPos[1] + midPos[1]) / 2;
-                        let emitter = new BubbleEmitter(p5, rc, spawnPos);
-                        bubbleEmitters.push(emitter);
-                    }
+                    setupBubbleEmitters();
                 }
             }
 
@@ -336,14 +320,9 @@ function sketch(p5) {
                     }
                 } else if (urlPath.indexOf('magazine') != -1) {
                     // bubble
-                    // for(let bubble of bubbles) {
-                    //     if(!slide.freezeScroll) bubble.update();
-                    //     bubble.show();
-                    // }
                     for(let emitter of bubbleEmitters) {
-                        // emitter.emit(1);
                         emitter.show();
-                        emitter.update();
+                        if(!slide.freezeScroll) emitter.update();
                     }
                 }
             } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
@@ -432,10 +411,26 @@ function sketch(p5) {
                 for(let cloud of clouds) {
                     cloud.show();
                 }
+            } else if (lastURLPath.indexOf('magazine') != -1) {
+                // bubble
+                setupBubbleEmitters();
             }
         }
         ladder.resize();
         ladder.show();
+    }
+
+    function setupBubbleEmitters() {
+        bubbleEmitters = [];
+        for(let i = 0; i < 4; i++) {
+            let spawnPos = p5.createVector(0, 0);
+            let startPos = slide.points[2 + i * 10];
+            let midPos = slide.points[5 + i * 10];
+            spawnPos.x = (startPos[0] + midPos[0]) / 2;
+            spawnPos.y = (startPos[1] + midPos[1]) / 2;
+            let emitter = new BubbleEmitter(p5, rc, spawnPos);
+            bubbleEmitters.push(emitter);
+        }
     }
 
     function lerpColor(colorA, colorB, t) {

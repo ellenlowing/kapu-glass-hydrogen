@@ -175,7 +175,7 @@ export default class Slide {
             if(this.name == 'magazine' ) {
                 for(let j = 0; j < this.magazineScrollRanges.length; j++) {
                     let range = this.magazineScrollRanges[j];
-                    if( (Math.abs(offsetScrollProgress - range[0]) < 15 || Math.abs(offsetScrollProgress - range[1]) < 15) && ( (Date.now() - this.lastTriggerTime) > 100) ) {
+                    if( (Math.abs(offsetScrollProgress - range[0]) < 30 || Math.abs(offsetScrollProgress - range[1]) < 30) && ( (Date.now() - this.lastTriggerTime) > 20) ) {
                         const createNewBubble = new CustomEvent("create-bubble", {
                             detail: {bubbleIndex: j},
                             bubbles: true,
