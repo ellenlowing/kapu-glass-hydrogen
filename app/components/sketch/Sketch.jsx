@@ -15,7 +15,6 @@ import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
-import RoughContainer from "./RoughContainer";
 
 export default function Sketch() {
 
@@ -78,9 +77,6 @@ function sketch(p5) {
     let bubbleEmitters;
     
     let canvas;
-
-    // rough containers
-    let roughContainer;
 
     let bgColor = '#000';
     let mainColor;
@@ -148,14 +144,11 @@ function sketch(p5) {
             }
         }
 
-
         canvas.addEventListener('create-bubble', (e) => {
             if(bubbleEmitters.length > 0) {
                 bubbleEmitters[e.detail.bubbleIndex].emit(2);
             }
         })
-
-        roughContainer = new RoughContainer(p5, rc);
 
         logo = document.getElementById('logo');
 
@@ -204,14 +197,7 @@ function sketch(p5) {
             
         } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
             // products pages
-        } else if (urlPath.indexOf('cart') != -1) {
-            // cart
-            // roughContainer.setup(document.getElementById('cartSummary'), {
-            //     stroke: '#4f8fe6',
-            //     strokeWidth: 0.8,
-            //     roughness: 2,
-            // });
-        }
+        } 
     }
 
     p5.draw = () => {
@@ -418,6 +404,61 @@ function sketch(p5) {
         }
         ladder.resize();
         ladder.show();
+    }
+
+    function setupSketch() {
+        const navLinks = document.getElementsByClassName('nav-link');
+        if(urlPath.length == 0) {
+            bgColor = '#000';
+            mainColor = '#FFF';
+            for(let link of navLinks) {
+                link.style.color = '#FFF';
+            }
+            caterpillar.setup();
+        } else {
+            bgColor = '#FFF';
+            mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
+            for(let link of navLinks) {
+                link.style.color = '#000';
+            }
+        }
+
+        if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
+            const collectionName = urlPath[1];
+            slide.setup(collectionName);
+
+            // diff animations per collection page
+            if(urlPath.indexOf('vessels') != -1) {
+                for(let star of fallingStars) {
+                    star.setup();
+                }
+            } else if (urlPath.indexOf('accessories') != -1) {
+                // spiral
+                for(let spiral of spirals) {
+                    spiral.setup();
+                }
+            } else if (urlPath.indexOf('workshops') != -1) {
+                // flower
+                for(let flower of flowers) {
+                    flower.setup();
+                }
+            } else if (urlPath.indexOf('archive') != -1) {
+                // cloud
+                for(let cloud of clouds) {
+                    cloud.setup();
+                }
+            } else if (urlPath.indexOf('magazine') != -1) {
+                setupBubbleEmitters();
+            }
+        }
+
+        const body = document.getElementsByTagName('body')[0];
+        if(urlPath[0] == 'products' || urlPath[0] == 'cart') {
+            body.style.overflow = 'auto';
+        } else {
+            body.style.overflow = 'hidden';
+        }
+        lastURLPath = urlPath;
     }
 
     function setupBubbleEmitters() {

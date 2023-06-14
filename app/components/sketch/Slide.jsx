@@ -69,6 +69,7 @@ export default class Slide {
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
         this.lastTriggerTime = 0;
+        this.roughStyle.roughness = 2;
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
