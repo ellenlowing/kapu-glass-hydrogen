@@ -84,6 +84,8 @@ function sketch(p5) {
     let logo;
     let logoAngle = 0;
 
+    let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
+
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
@@ -194,9 +196,6 @@ function sketch(p5) {
             } else if (urlPath.indexOf('magazine') != -1) {
                 setupBubbleEmitters();
             }
-            
-        } else if (urlPath.indexOf('products') != -1 && urlPath.length > 1) {
-            // products pages
         } 
     }
 
@@ -318,12 +317,13 @@ function sketch(p5) {
                     butterfly.show();
                 }
             }
-
-            // frame rate debug
-            p5.stroke(0);
-            p5.noFill();
-            p5.text(p5.round(p5.frameRate()), 100, 200);
         }
+
+        // frame rate debug
+        getAverageFPS();
+        // p5.stroke(0);
+        // p5.noFill();
+        // p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {
@@ -406,61 +406,6 @@ function sketch(p5) {
         ladder.show();
     }
 
-    function setupSketch() {
-        const navLinks = document.getElementsByClassName('nav-link');
-        if(urlPath.length == 0) {
-            bgColor = '#000';
-            mainColor = '#FFF';
-            for(let link of navLinks) {
-                link.style.color = '#FFF';
-            }
-            caterpillar.setup();
-        } else {
-            bgColor = '#FFF';
-            mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
-            for(let link of navLinks) {
-                link.style.color = '#000';
-            }
-        }
-
-        if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
-            const collectionName = urlPath[1];
-            slide.setup(collectionName);
-
-            // diff animations per collection page
-            if(urlPath.indexOf('vessels') != -1) {
-                for(let star of fallingStars) {
-                    star.setup();
-                }
-            } else if (urlPath.indexOf('accessories') != -1) {
-                // spiral
-                for(let spiral of spirals) {
-                    spiral.setup();
-                }
-            } else if (urlPath.indexOf('workshops') != -1) {
-                // flower
-                for(let flower of flowers) {
-                    flower.setup();
-                }
-            } else if (urlPath.indexOf('archive') != -1) {
-                // cloud
-                for(let cloud of clouds) {
-                    cloud.setup();
-                }
-            } else if (urlPath.indexOf('magazine') != -1) {
-                setupBubbleEmitters();
-            }
-        }
-
-        const body = document.getElementsByTagName('body')[0];
-        if(urlPath[0] == 'products' || urlPath[0] == 'cart') {
-            body.style.overflow = 'auto';
-        } else {
-            body.style.overflow = 'hidden';
-        }
-        lastURLPath = urlPath;
-    }
-
     function setupBubbleEmitters() {
         bubbleEmitters = [];
         for(let i = 0; i < 4; i++) {
@@ -471,6 +416,17 @@ function sketch(p5) {
             spawnPos.y = (startPos[1] + midPos[1]) / 2;
             let emitter = new BubbleEmitter(p5, rc, spawnPos);
             bubbleEmitters.push(emitter);
+        }
+    }
+
+    function getAverageFPS() {
+        duration += p5.deltaTime;
+        frames += 1;
+        if(duration >= sampleDuration) {
+            averageFPS = frames / duration * 1000;
+            roughFPS = Math.floor(averageFPS / 6);
+            duration = 0;
+            frames = 0; 
         }
     }
 
