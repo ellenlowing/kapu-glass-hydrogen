@@ -65,6 +65,7 @@ export default class Slide {
         this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
+        hide(this.selectedProductInfo);
         // this.selectedProductInfoBbox = null;
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];

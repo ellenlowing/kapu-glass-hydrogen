@@ -41,7 +41,6 @@ export const meta = () => ({
 
 export async function loader({context}) {
   const layout = await context.storefront.query(LAYOUT_QUERY);
-
   const cartId = await context.session.get('cartId');
   const cart = cartId
     ? (
@@ -64,7 +63,6 @@ export async function loader({context}) {
 
 export default function App() {
   const {layout} = useLoaderData();
-
   const {name} = layout.shop;
 
   return (
@@ -75,8 +73,6 @@ export default function App() {
         <Links />
       </head>
       <body>
-        {/* <h1>Hello, {name}</h1>
-        <p>This is a custom storefront powered by Hydrogen</p> */}
         <Layout title={name}>
           <Outlet />
         </Layout>

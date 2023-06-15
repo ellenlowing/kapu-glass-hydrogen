@@ -14,7 +14,7 @@ export default function About() {
                 About kapu
             </h2>
             <div className="">
-                Kapu is a project in glass by Prinita Thevarajah. Born in Brooklyn and based in Sydney, Kapu exchanges worldwide. For collaboration or vendor information, send us a line at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
+            Kapu is a project in glass and design. Kapu exchanges worldwide, born in Brooklyn with a home base in Sydney. <br></br>Say hi at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
             </div>
 
             <h2 className="font-bold text-lead pt-24 pb-6 fa text-4xl">

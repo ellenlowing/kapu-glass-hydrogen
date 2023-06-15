@@ -46,6 +46,7 @@ export default class Ladder {
                 this.menuActive = true;
                 menuSwitch.innerHTML = 'close';
                 hide(nav);
+                nav.style.height = '320px';
                 this.interval = setInterval(() => {
                     if(this.startY < 0) {
                         this.startY += 10;
@@ -59,6 +60,7 @@ export default class Ladder {
                 this.menuActive = false;
                 menuSwitch.innerHTML = 'open';
                 hide(nav);
+                nav.style.height = '40px';
                 this.interval = setInterval(() => {
                     if(this.startY > this.menuLength) {
                         this.startY -= 10;
