@@ -29,7 +29,6 @@ export async function loader({context}) {
   return {cart};
 }
 
-
 export async function action({request, context}) {
     const {session, storefront} = context;
     const headers = new Headers();
@@ -109,7 +108,7 @@ export default function Cart() {
 
   if (cart?.totalQuantity > 0)
     return (
-      <div className="cursor-none w-full max-w-3xl mx-auto pt-24 pb-12 px-8 grid gap-8 relative">
+      <div data-total-quantity={cart?.totalQuantity} className="cursor-none w-full max-w-3xl mx-auto pt-24 pb-12 px-8 grid gap-8 relative">
         <div className="flex-grow ">
           <CartLineItems linesObj={cart.lines} />
         </div>

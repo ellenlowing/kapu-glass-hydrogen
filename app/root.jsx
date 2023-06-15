@@ -13,6 +13,8 @@ import {Layout} from './components/Layout';
 import {Seo} from '@shopify/hydrogen';
 import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
 import resetStyles from './styles/reset.css';
+import { CART_QUERY } from './queries/cart.js';
+import {json} from 'react-router';
 
 export const links = () => {
   return [
@@ -39,13 +41,31 @@ export const meta = () => ({
 
 export async function loader({context}) {
   const layout = await context.storefront.query(LAYOUT_QUERY);
-  return {layout};
+
+  const cartId = await context.session.get('cartId');
+  const cart = cartId
+    ? (
+        await context.storefront.query(CART_QUERY, {
+          variables: {
+            cartId,
+            country: context.storefront.i18n.country,
+            language: context.storefront.i18n.language,
+          },
+          cache: context.storefront.CacheNone(),
+        })
+      ).cart
+    : null;
+  
+  return json({
+    layout,
+    cart
+  });
 }
 
 export default function App() {
-  const data = useLoaderData();
+  const {layout} = useLoaderData();
 
-  const {name} = data.layout.shop;
+  const {name} = layout.shop;
 
   return (
     <html lang="en">

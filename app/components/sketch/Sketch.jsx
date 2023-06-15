@@ -120,7 +120,7 @@ function sketch(p5) {
 
         spirals = [];
         for(let i = 0; i < 20; i++) {
-            let x = p5.random(p5.width);
+            let x = i < 10 ? p5.random(p5.width/2) : p5.random(p5.width/2, p5.width);
             let y = p5.random(p5.height);
             let stepSize = p5.random(3, 20);
             let stepCount = p5.random(5, 18);

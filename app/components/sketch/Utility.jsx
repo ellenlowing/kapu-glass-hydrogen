@@ -23,8 +23,8 @@ function inLine(x, y, x0, y0, x1, y1) {
     return slope == xy;
 }
 
-const colors = ['#ff616b', '#FBAC00', '#fbe106', '#40c945', '#B0DAFF', '#0079FF', '#b875eb'];
-const secondaryColors = ['#202d85', '#19cc33', '#07FBF9', '#c9aced', '#ADE4DB'];
+const colors = ['#fbe106', '#FBAC00', '#b8b8ff', '#40c945', '#B0DAFF', '#0d75ff', '#ff99cc'];
+const secondaryColors = ['#202d85', '#19cc33', '#63e5ff', '#c9aced', '#ADE4DB'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 const roughFillStyles = ['dashed', 'hachure', 'cross-hatch', 'zigzag-line'];
 const magazineScrollRanges = [[200, 1200], [1600, 2500], [2950, 3900], [4300, 5200]];
