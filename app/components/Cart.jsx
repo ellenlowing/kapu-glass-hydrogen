@@ -66,6 +66,7 @@ function LineItem({lineItem}) {
         >
           {merchandise.product.title}
         </Link>
+        {/* <h2>{merchandise.selectedOptions.name}</h2> */}
         <div className="text-gray-800 text-sm">Qty: {quantity}</div>
         <ItemRemoveButton className="self-end" lineIds={[lineItem.id]} />
       </div>

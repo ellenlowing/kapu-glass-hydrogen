@@ -28,6 +28,12 @@ export default class FallingStar {
         this.speed = this.p5.map(this.rmag, 100, 600, 0.005, 0.015) * Math.sign(this.rx);
         this.localRotation = this.p5.random(0, this.p5.TWO_PI); // angle relative to self
         this.angularSpeed = this.p5.random(-0.1, 0.1); // self spinning speed
+        this.roughStyle.roughness = this.p5.random(1.2, 3);
+        this.roughStyle.hachureGap = this.p5.random(2, 8);
+        this.roughStyle.hachureAngle = this.p5.random(-180, 180);
+        this.roughStyle.fillWeight = this.p5.random(0.3, 1);
+        this.roughStyle.strokeWidth = this.roughStyle.fillWeight;
+
     }
 
     setup() {

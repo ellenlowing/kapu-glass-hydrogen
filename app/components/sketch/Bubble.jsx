@@ -1,4 +1,4 @@
-import { colors, secondaryColors } from "./Utility";
+import { colors, secondaryColors, roughFillStyles } from "./Utility";
 
 export default class Bubble {
     constructor(p5, rc, center) {
@@ -18,8 +18,14 @@ export default class Bubble {
         this.vel.mult(this.p5.random(10, 20));
         this.acc = this.p5.createVector(0, 0);
         this.d = this.p5.random(10, 100);
-        this.lifetime = this.p5.random(20, 200);
-        this.speed = this.p5.random(4, 20);
+        this.lifetime = this.p5.random(100, 300);
+        this.speed = this.p5.random(10, 20);        
+        this.roughStyle.fillStyle = roughFillStyles[Math.floor(this.p5.random(roughFillStyles.length))];
+        this.roughStyle.fillWeight = this.p5.random(0.3, 1);
+        this.roughStyle.strokeWidth = this.roughStyle.fillWeight;
+        this.roughStyle.hachureGap = this.p5.random(2, 8);
+        this.roughStyle.hachureAngle = this.p5.random(-180, 180);
+
     }
 
     finished() {

@@ -23,6 +23,11 @@ export default class Flower {
         this.ogH = this.p5.height;
         this.growRate = 0.5;
         this.growSpeed = this.p5.random(0.001, 0.05);
+        this.roughStyle.roughness = this.p5.random(1.2, 4);
+        this.roughStyle.fillWeight = this.p5.random(0.3, 1);
+        this.roughStyle.strokeWidth = this.roughStyle.fillWeight;
+        this.roughStyle.hachureGap = this.p5.random(2, 8);
+        this.roughStyle.hachureAngle = this.p5.random(-180, 180);
     }
 
     setup() {

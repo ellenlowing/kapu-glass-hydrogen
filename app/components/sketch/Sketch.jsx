@@ -6,7 +6,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show, colors, pathNameList, magazineScrollRanges} from './Utility';
+import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -85,6 +85,8 @@ function sketch(p5) {
     let logoAngle = 0;
 
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
+
+    let caterpillarIndicator, caterpillarIndicatorHovered = false;
 
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
@@ -165,6 +167,7 @@ function sketch(p5) {
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             // collections pages
             const collectionName = urlPath[1];
+            setGradientCaterpillarColor();
  
             const body = document.getElementsByTagName('body')[0];
             body.style.overflow = 'hidden';
@@ -197,6 +200,8 @@ function sketch(p5) {
                 setupBubbleEmitters();
             }
         } 
+
+        setUpCaterpillarIndicator();
     }
 
     p5.draw = () => {
@@ -223,6 +228,9 @@ function sketch(p5) {
             if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
                 const collectionName = urlPath[1];
                 slide.setup(collectionName);
+                setGradientCaterpillarColor();
+
+                setUpCaterpillarIndicator();
 
                 // diff animations per collection page
                 if(urlPath.indexOf('vessels') != -1) {
@@ -258,9 +266,16 @@ function sketch(p5) {
             lastURLPath = urlPath;
         }
 
-        if(!slide.freezeScroll && slide.svg) {
-            slide.update();
+
+        if(urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
+            if(!slide.freezeScroll && slide.svg) {
+                slide.update();
+                if(caterpillarIndicatorHovered) {
+                    slide.scrollProgress += 20;
+                }
+            }
         }
+
         if(p5.frameCount % roughFPS == 0) {
 
             p5.background(bgColor);
@@ -373,31 +388,32 @@ function sketch(p5) {
 
     p5.windowResized = () => {
         p5.resizeCanvas(p5.windowWidth, p5.windowHeight);
-        if(lastURLPath.length == 0) {
+        const urlPath = p5.getURLPath();
+        if(urlPath.length == 0) {
             p5.background(bgColor);
             if(caterpillar) {
                 caterpillar.resize();
                 caterpillar.update();
                 caterpillar.show();
             }
-        } else if (lastURLPath.indexOf('collections') != -1 && lastURLPath.length > 1) {
+        } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             p5.background(bgColor);
             slide.resize();
             slide.update();
             slide.show();
 
-            if (lastURLPath.indexOf('workshops') != -1) {
+            if (urlPath.indexOf('workshops') != -1) {
                 // flower
                 for(let flower of flowers) {
                     flower.resize();
                     flower.transform();
                 }
-            } else if (lastURLPath.indexOf('archive') != -1) {
+            } else if (urlPath.indexOf('archive') != -1) {
                 // cloud
                 for(let cloud of clouds) {
                     cloud.show();
                 }
-            } else if (lastURLPath.indexOf('magazine') != -1) {
+            } else if (urlPath.indexOf('magazine') != -1) {
                 // bubble
                 setupBubbleEmitters();
             }
@@ -436,5 +452,27 @@ function sketch(p5) {
         let b = p5.lerp(p5.blue(colorA), p5.blue(colorB), t);
         let a = p5.lerp(p5.alpha(colorA), p5.alpha(colorB), t)
         return p5.color(r, g, b, a);
+    }
+
+    function setGradientCaterpillarColor() {
+        const urlPath = p5.getURLPath();
+        const pathIndex = pathNameList.indexOf(urlPath[1]);
+        document.documentElement.style.setProperty('--gradient-caterpillar-color', secondaryColors[pathIndex]);
+    }
+
+    function setUpCaterpillarIndicator() {
+        caterpillarIndicator = p5.select('#caterpillar-indicator');
+        if(caterpillarIndicator) {
+            caterpillarIndicator.mouseOver(
+                () => {
+                        caterpillarIndicatorHovered = true;
+                }
+            );
+            caterpillarIndicator.mouseOut(
+                () => {
+                        caterpillarIndicatorHovered = false;
+                    }
+            );
+        }
     }
 }

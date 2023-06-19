@@ -71,6 +71,10 @@ export default class Slide {
         this.bubbleTriggers = [false, false, false, false];
         this.lastTriggerTime = 0;
         this.roughStyle.roughness = 2;
+        this.gradientCircles = document.getElementsByClassName('gradient-circle');
+        this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
+        this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
+
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
             product.style.position = 'absolute';
@@ -97,47 +101,7 @@ export default class Slide {
                 }
 
                 show(this.selectedProductInfo);
-
-                // let productBbox = e.target.getBoundingClientRect();
-                // this.selectedProductBbox = productBbox;
-                // let infoOffset = {x: 0, y: 0};
-                // if((productBbox.x + productBbox.width) < this.p5.width / 2) {
-                //     infoOffset.x = this.p5.random(productBbox.x + productBbox.width + this.selectedProductInfo.getBoundingClientRect().width/2, this.p5.width * 0.95 - 160 * 2);
-                // } else {
-                //     infoOffset.x = this.p5.random(160, productBbox.x);
-                // }
-                // if((productBbox.y + productBbox.height) < this.p5.height / 2) {
-                //     infoOffset.y = this.p5.random(productBbox.y + productBbox.height + this.selectedProductInfo.getBoundingClientRect().height/2, this.p5.height - 160);
-                // } else {
-                //     infoOffset.y = this.p5.random(160, productBbox.y);
-                // }
-
-                // infoOffset.x -= this.selectedProductInfo.getBoundingClientRect().width/2;
-                // infoOffset.y -= this.selectedProductInfo.getBoundingClientRect().height/2;
-
-                // this.selectedProductInfo.style.top = `${infoOffset.y}px`;
-                // this.selectedProductInfo.style.left = `${infoOffset.x}px`;
-                // this.selectedProductInfoBbox = this.selectedProductInfo.getBoundingClientRect();
-
-                // this.p1 = {x: this.p5.random(0, infoOffset.x), y: this.p5.random(0, infoOffset.y)};
-                // this.p4 = {x: this.p5.random(infoOffset.x, this.p5.width), y: this.p5.random(infoOffset.y, this.p5.height)};
-
-                // this.p5.curveTightness(this.p5.map(infoOffset.y, 0, this.p5.height, -2, 2));
-
-                // let curveSteps = 12;
-                // this.productToInfoPoints = [];
-                // for(let i = 0; i <= curveSteps; i++) {
-                //     let t = i / curveSteps;
-                //     let x = this.p5.curvePoint(this.p1.x, 
-                //                 this.selectedProductInfoBbox.x + this.selectedProductInfoBbox.width/2,
-                //                 this.selectedProductBbox.x, 
-                //                 this.p4.x, t);
-                //     let y = this.p5.curvePoint(this.p1.y, 
-                //                 this.selectedProductInfoBbox.y + this.selectedProductInfoBbox.height/2,
-                //                 this.selectedProductBbox.y, 
-                //                 this.p4.y, t);
-                //     this.productToInfoPoints.push({x: x, y: y});
-                // }
+                hide(this.caterpillarIndicator);
             })
 
             product.addEventListener('mouseleave', (e) => {
@@ -150,14 +114,17 @@ export default class Slide {
                     }
                 }
                 hide(this.selectedProductInfo);
+                show(this.caterpillarIndicator);
             })
 
             if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
                 show(product);
                 product.classList.add('active');
+                this.setOpacity(this.caterpillarIndices[i], 1);
             } else {
                 hide(product);
                 product.classList.remove('active');
+                this.setOpacity(this.caterpillarIndices[i], 0);
             }
         }
         this.resize();
@@ -173,6 +140,12 @@ export default class Slide {
             slidePoint = this.mapPoint(slidePoint, productOffset);
             product.style.top = `${slidePoint.y}px`;
             product.style.left = `${slidePoint.x}px`;
+
+            if(product.classList.contains('active')) {
+                let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
+                // let pct = 1-Math.abs(offsetScrollProgress / this.pathLength - 0.5) * 2; 
+                this.gradientCircles[i].style.bottom = `${pct * 24}px`;
+            }
 
             if(this.name == 'magazine' ) {
                 for(let j = 0; j < this.magazineScrollRanges.length; j++) {
@@ -196,21 +169,25 @@ export default class Slide {
 
         if( this.scrollProgress >= scrollThreshold) {
             hide(this.productsNodeList[this.leadingProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 0);
             this.productsNodeList[this.leadingProductIndex].classList.remove('active');
             this.productsDisplayCountList[this.leadingProductIndex] += 1;
             this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
             show(this.productsNodeList[this.lastProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 1);
             this.productsNodeList[this.lastProductIndex].classList.add('active');
             this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
         } 
         if ( this.scrollProgress < reverseScrollThreshold + 1) {
             hide(this.productsNodeList[this.lastProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
             this.productsNodeList[this.lastProductIndex].classList.remove('active');
             this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
             if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
             this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
             this.productsDisplayCountList[this.leadingProductIndex] -= 1;
             show(this.productsNodeList[this.leadingProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 1);
             this.productsNodeList[this.leadingProductIndex].classList.add('active');
         }
     }
@@ -226,19 +203,10 @@ export default class Slide {
             // }
         }
         this.rc.curve(this.points, this.roughStyle);
-        
-        // if(this.selectedProductInfoBbox) {
-        //     let w = this.selectedProductInfoBbox.width * 1.2;
-        //     let h = this.selectedProductInfoBbox.height * 2;
-        //     let x = this.selectedProductInfoBbox.x + this.selectedProductInfoBbox.width/2;
-        //     let y = this.selectedProductInfoBbox.y + this.selectedProductInfoBbox.height/2;
-        //     for(let i = this.productToInfoPoints.length - 1; i >= 0 ; i--) {
-        //         let pt = this.productToInfoPoints[i];
-        //         let r = this.p5.map(this.productToInfoPoints.length - i, 0, this.productToInfoPoints.length, 4, 30);
-        //         this.rc.circle(pt.x, pt.y, r, this.roughBubbleStyle);
-        //     }
-        //     this.rc.ellipse(x, y, w, h, this.roughBboxStyle);            
-        // }
+    }
+
+    setOpacity(el, opacity) {
+        el.style.opacity = `${opacity}`;
     }
 
     resize() {

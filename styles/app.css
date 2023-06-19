@@ -11,6 +11,7 @@
     --hover-txtcolor: #000;
     --product-hover-bgcolor: #E5F3FF;
     --product-hover-txtcolor: #3300FF;
+    /* --gradient-caterpillar-color: #19cc33; */
   }
 
   ::-webkit-scrollbar {
@@ -246,5 +247,10 @@
 
   .iota-book {
     font-family: 'iota-book';
+  }
+
+  .gradient-circle {
+    background: radial-gradient(50% 50% at 50% 50%, var(--gradient-caterpillar-color) 68.75%, rgba(255, 255, 255, 0) 100%);
+    mix-blend-mode: darken;
   }
 }
