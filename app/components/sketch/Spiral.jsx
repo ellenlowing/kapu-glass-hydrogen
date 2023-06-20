@@ -49,7 +49,7 @@ export default class Spiral {
     }
 
     spiral() {
-        this.points = [[this.x, this.y]];
+        this.points = [[this.x * this.p5.width, this.y * this.p5.height]];
         for(let t = 1; t < this.stepCount; t++) {
             let xt = this.points[t-1][0] + this.p5.cos(this.p5.PI*this.angleDiv * t) * this.stepSize * t;
             let yt = this.points[t-1][1] + this.p5.sin(this.p5.PI*this.angleDiv * t) * this.stepSize * t;

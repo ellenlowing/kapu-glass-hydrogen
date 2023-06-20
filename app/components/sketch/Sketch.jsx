@@ -94,6 +94,8 @@ function sketch(p5) {
 
         canvas = document.getElementById('defaultCanvas0');
         rc = rough.canvas(canvas);
+
+        console.log('initialized canvas');
         
         ladder = new Ladder(p5, rc);
 
@@ -132,7 +134,7 @@ function sketch(p5) {
         clouds = [];
         for(let i = 0; i < 4; i++) {
             for(let j = 0; j < 4; j++) {
-                let x = p5.random(p5.width * i, p5.width * (i+1));
+                let x = p5.random(i, i+1);
                 let y = p5.random(0, p5.height);
                 let cloud = new Cloud(p5, rc, p5.createVector(x, y));
                 clouds.push(cloud);
@@ -146,8 +148,8 @@ function sketch(p5) {
         })
 
         canvas.addEventListener('create-spiral', (e) => {
-            let x = p5.random(p5.width);
-            let y = p5.random(p5.height);
+            let x = p5.random();
+            let y = p5.random();
             let stepSize = p5.random(3, 20);
             let stepCount = p5.random(5, 18);
             let spiral = new Spiral(p5, rc, x, y, stepSize, stepCount);
@@ -157,7 +159,7 @@ function sketch(p5) {
         logo = document.getElementById('logo');
 
         const urlPath = p5.getURLPath();
-        lastURLPath = urlPath;
+        lastURLPath = null;
         mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
 
         if(urlPath.length == 0) {
@@ -225,14 +227,17 @@ function sketch(p5) {
                 }
             }
 
-            if(urlPath[0] == 'collections' && urlPath[1] !== lastURLPath[1]) {
+            if( urlPath[0] == 'collections' && (!lastURLPath || urlPath[1] !== lastURLPath[1])) {
                 const collectionName = urlPath[1];
+                console.log('init slide');
                 slide.setup(collectionName);
                 setGradientCaterpillarColor();
 
                 setUpCaterpillarIndicator();
 
                 // diff animations per collection page
+
+                console.log('init bg elements');
                 if(urlPath.indexOf('vessels') != -1) {
                     for(let star of fallingStars) {
                         star.setup();

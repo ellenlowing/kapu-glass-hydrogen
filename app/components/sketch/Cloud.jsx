@@ -46,12 +46,11 @@ export default class Cloud {
     update() {
         this.points = [];
         for(let pt of this.cloudPoints) {
-            let xx = pt[0] + this.center.x - this.rxMax;
+            let xx = pt[0] + (this.center.x % 4 * this.p5.width) - this.rxMax;
             let yy = pt[1] + this.center.y;
             this.points.push([xx, yy]);
         }
-        this.center.x += this.speed;
-        this.center.x = this.center.x % (this.p5.width*4);
+        this.center.x += (this.speed / this.p5.width);
     }
 
     show() {
