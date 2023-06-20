@@ -11,6 +11,7 @@ export default class Slide {
             stroke: '#4f8fe6',
             strokeWidth: 0.8,
             roughness: 2,
+            preserveVertices: true
             // disableMultiStroke: true
         };
         this.roughBboxStyle = {
@@ -50,6 +51,11 @@ export default class Slide {
         }
         this.attrW = Number(this.svg.getAttribute("width"));
         this.attrH = Number(this.svg.getAttribute("height"));
+        this.hwRatio = this.attrH / this.attrW;
+        this.whRatio = this.attrW / this.attrH;
+        if(this.whRatio > 2) {
+            this.whRatio = 2;
+        }
         this.productsContainer = document.getElementById('products-container');
         this.numProducts = Number(this.productsContainer.getAttribute("data-collection-length"));
         if(this.numProducts < this.maxNumProductsDisplayed) {
@@ -135,9 +141,9 @@ export default class Slide {
             let offsetScrollProgress = (this.scrollProgress - i * this.pathLengthOffset - this.productsDisplayCountList[i] * this.totalToMaxNumDisplayRatio * this.pathLength);
             let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
             const product = this.productsNodeList[i];
-            const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 2);
+            const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 6 * 5);
             productOffset.add(this.displayOffset);
-            slidePoint = this.mapPoint(slidePoint, productOffset);
+            slidePoint = this.mapPoint(slidePoint, productOffset, this.targetHeight);
             product.style.top = `${slidePoint.y}px`;
             product.style.left = `${slidePoint.x}px`;
 
@@ -216,17 +222,20 @@ export default class Slide {
     resize() {
         this.points = [];
         let slideSteps = 40;
-        this.displayOffset = this.p5.createVector(this.p5.width/2 - this.svg.clientWidth/2);
+        this.targetWidth = this.p5.width * 0.6;
+        this.targetHeight = this.p5.height * 0.7;
+        // this.displayOffset = this.p5.createVector((this.p5.width - this.targetWidth)/2, (this.p5.height - (this.targetWidth * this.hwRatio)) / 2);
+        this.displayOffset = this.p5.createVector((this.p5.width - this.targetHeight * this.whRatio)/2, (this.p5.height - this.targetHeight) / 2 );
         for(let i = 0; i <= slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);
-            slidePoint = this.mapPoint(slidePoint, this.displayOffset);
+            slidePoint = this.mapPoint(slidePoint, this.displayOffset, this.targetHeight);
             this.points.push([slidePoint.x, slidePoint.y]);
         }
     }
 
-    mapPoint(point, offset = this.p5.createVector(0,0)) {
-        point.x = point.x / this.attrW * this.svg.clientWidth + offset.x;
-        point.y = point.y / this.attrH * this.svg.clientHeight + offset.y + (this.p5.height - this.svg.clientHeight) / 2;
+    mapPoint(point, offset = this.p5.createVector(0,0), targetHeight) {
+        point.x = point.x / this.attrW * targetHeight * this.whRatio + offset.x;
+        point.y = point.y / this.attrH * targetHeight + offset.y;
         return point;
     }
 

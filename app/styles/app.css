@@ -677,6 +677,9 @@ nav {
 .left-\[50\%\] {
   left: 50%;
 }
+.bottom-\[10px\] {
+  bottom: 10px;
+}
 .z-40 {
   z-index: 40;
 }
