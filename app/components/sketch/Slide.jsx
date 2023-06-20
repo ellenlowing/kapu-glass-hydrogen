@@ -150,7 +150,9 @@ export default class Slide {
             if(this.name == 'magazine' ) {
                 for(let j = 0; j < this.magazineScrollRanges.length; j++) {
                     let range = this.magazineScrollRanges[j];
-                    if( (Math.abs(offsetScrollProgress - range[0]) < 30 || Math.abs(offsetScrollProgress - range[1]) < 30) && ( (Date.now() - this.lastTriggerTime) > 20) ) {
+                    if( (Math.abs(offsetScrollProgress - range[0]) < 70 || Math.abs(offsetScrollProgress - range[1]) < 70) && ((Date.now() - this.lastTriggerTime) > 10 && this.lastScrollProgress != this.scrollProgress) ||
+                        ( (Math.abs(offsetScrollProgress - range[0]) < 30 || Math.abs(offsetScrollProgress - range[1]) < 30) && ((Date.now() - this.lastTriggerTime) > 70 && this.lastScrollProgress == this.scrollProgress)  ) ) 
+                    {
                         const createNewBubble = new CustomEvent("create-bubble", {
                             detail: {bubbleIndex: j},
                             bubbles: true,
@@ -162,6 +164,8 @@ export default class Slide {
                     }
                 }
             }
+
+            this.lastScrollProgress = this.scrollProgress;
         }
 
         const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);

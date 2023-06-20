@@ -131,7 +131,7 @@ function sketch(p5) {
         }
 
         flowers = [];
-        for(let i = 0; i < 9; i++) {
+        for(let i = 0; i < 20; i++) {
             let x = p5.random(p5.width);
             let y = p5.random(p5.height);
             let flower = new Flower(p5.createVector(x, y), p5, rc);
@@ -258,7 +258,7 @@ function sketch(p5) {
             }
 
             const body = document.getElementsByTagName('body')[0];
-            if(urlPath[0] == 'products' || urlPath[0] == 'cart') {
+            if(urlPath[0] == 'products' || urlPath[0] == 'cart' || urlPath == 'about') {
                 body.style.overflow = 'auto';
             } else {
                 body.style.overflow = 'hidden';

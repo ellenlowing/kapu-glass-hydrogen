@@ -763,6 +763,21 @@ nav {
 .w-full {
   width: 100%;
 }
+.w-\[400px\] {
+  width: 400px;
+}
+.w-\[60\%\] {
+  width: 60%;
+}
+.w-\[80\%\] {
+  width: 80%;
+}
+.w-\[90\%\] {
+  width: 90%;
+}
+.w-\[70\%\] {
+  width: 70%;
+}
 .max-w-3xl {
   max-width: 48rem;
 }
@@ -780,6 +795,9 @@ nav {
 }
 .max-w-xl {
   max-width: 36rem;
+}
+.max-w-\[240px\] {
+  max-width: 240px;
 }
 .flex-1 {
   flex: 1 1 0%;
@@ -984,6 +1002,18 @@ nav {
 .pt-6 {
   padding-top: 1.5rem;
 }
+.pb-8 {
+  padding-bottom: 2rem;
+}
+.pb-24 {
+  padding-bottom: 6rem;
+}
+.pt-10 {
+  padding-top: 2.5rem;
+}
+.pt-20 {
+  padding-top: 5rem;
+}
 .text-left {
   text-align: left;
 }
@@ -1153,6 +1183,10 @@ nav {
 
 @media (min-width: 640px) {
 
+  .sm\:w-full {
+    width: 100%;
+  }
+
   .sm\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1184,6 +1218,14 @@ nav {
 }
 
 @media (min-width: 1024px) {
+
+  .lg\:w-full {
+    width: 100%;
+  }
+
+  .lg\:w-\[90\%\] {
+    width: 90%;
+  }
 
   .lg\:max-w-6xl {
     max-width: 72rem;
@@ -1233,5 +1275,12 @@ nav {
   .lg\:py-16 {
     padding-top: 4rem;
     padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1280px) {
+
+  .xl\:w-full {
+    width: 100%;
   }
 }

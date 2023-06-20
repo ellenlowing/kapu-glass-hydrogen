@@ -6,7 +6,7 @@ export default class BubbleEmitter {
         this.rc = rc;
         this.center = center;
         this.bubbles = [];
-        this.forceMag = 10;
+        this.forceMag = 30;
         this.t = 0;
     }
 
