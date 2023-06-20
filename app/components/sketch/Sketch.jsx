@@ -399,7 +399,17 @@ function sketch(p5) {
             slide.update();
             slide.show();
 
-            if (urlPath.indexOf('workshops') != -1) {
+            if(urlPath.indexOf('vessels') != -1) {
+                for(let star of fallingStars) {
+                    star.update();
+                    star.show();
+                }
+            } else if (urlPath.indexOf('accessories') != -1) {
+                for(let spiral of spirals) {
+                    spiral.update();
+                    spiral.show();
+                }
+            } else if (urlPath.indexOf('workshops') != -1) {
                 // flower
                 for(let flower of flowers) {
                     flower.resize();
