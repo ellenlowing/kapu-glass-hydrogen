@@ -68,7 +68,6 @@ function sketch(p5) {
 
     // spiral
     let spirals;
-    let activeSpiralIndices = [];
 
     // cloud
     let clouds;
@@ -121,14 +120,6 @@ function sketch(p5) {
         }
 
         spirals = [];
-        for(let i = 0; i < 20; i++) {
-            let x = i < 10 ? p5.random(p5.width/2) : p5.random(p5.width/2, p5.width);
-            let y = p5.random(p5.height);
-            let stepSize = p5.random(3, 20);
-            let stepCount = p5.random(5, 18);
-            let spiral = new Spiral(p5, rc, x, y, stepSize, stepCount);
-            spirals.push(spiral);
-        }
 
         flowers = [];
         for(let i = 0; i < 20; i++) {
@@ -152,6 +143,15 @@ function sketch(p5) {
             if(bubbleEmitters.length > 0) {
                 bubbleEmitters[e.detail.bubbleIndex].emit(2);
             }
+        })
+
+        canvas.addEventListener('create-spiral', (e) => {
+            let x = p5.random(p5.width);
+            let y = p5.random(p5.height);
+            let stepSize = p5.random(3, 20);
+            let stepCount = p5.random(5, 18);
+            let spiral = new Spiral(p5, rc, x, y, stepSize, stepCount);
+            spirals.push(spiral);
         })
 
         logo = document.getElementById('logo');
@@ -294,17 +294,9 @@ function sketch(p5) {
                         star.show();
                     }
                 } else if (urlPath.indexOf('accessories') != -1) {
-                    if(slide.freezeScroll) {
-                        if(activeSpiralIndices.length == 0) {
-                            activeSpiralIndices.push(Math.floor(p5.random(0, spirals.length/2)));
-                            activeSpiralIndices.push(Math.floor(p5.random(spirals.length/2, spirals.length)));
-                        }
-                        for(let idx of activeSpiralIndices) {
-                            spirals[idx].update();
-                            spirals[idx].show();
-                        }
-                    } else {
-                        activeSpiralIndices = [];
+                    for(let spiral of spirals) {
+                        spiral.update();
+                        spiral.show();
                     }
                 } else if (urlPath.indexOf('workshops') != -1) {
                     // flower

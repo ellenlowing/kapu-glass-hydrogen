@@ -106,6 +106,15 @@ export default class Slide {
 
                 show(this.selectedProductInfo);
                 hide(this.caterpillarIndicator);
+
+                if(this.name == 'accessories') {
+                    const createNewSpiral = new CustomEvent("create-spiral", {
+                        bubbles: true,
+                        cancelable: true,
+                        composed: false
+                    });
+                    this.canvas.dispatchEvent(createNewSpiral);
+                }
             })
 
             product.addEventListener('mouseleave', (e) => {
