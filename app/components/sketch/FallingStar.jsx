@@ -21,11 +21,11 @@ export default class FallingStar {
             disableMultiStrokeFill: true
         };
 
-        this.rx = this.x - this.p5.width/2;
-        this.ry = this.y - this.p5.height/2;
+        this.rx = this.x - 0.5;
+        this.ry = this.y - 0.5;
         this.angle = this.p5.atan2(this.ry, this.rx); // angle relative to center of universe
-        this.rmag = this.p5.constrain(Math.sqrt(Math.pow(this.rx, 2) + Math.pow(this.ry, 2)), 0, 600);
-        this.speed = this.p5.map(this.rmag, 100, 600, 0.005, 0.015) * Math.sign(this.rx);
+        this.rmag = this.p5.constrain(Math.sqrt(Math.pow(this.rx, 2) + Math.pow(this.ry, 2)), 0, 60);
+        this.speed = this.p5.map(this.rmag, 10, 60, 0.01, 0.1) * Math.sign(this.rx);
         this.localRotation = this.p5.random(0, this.p5.TWO_PI); // angle relative to self
         this.angularSpeed = this.p5.random(-0.1, 0.1); // self spinning speed
         this.roughStyle.roughness = this.p5.random(1.2, 3);
@@ -42,8 +42,9 @@ export default class FallingStar {
     }
 
     update() {
-        this.x = this.rx * this.p5.sin(this.angle) + this.p5.width/2;
-        this.y = this.ry * this.p5.cos(this.angle) + this.p5.height/2;
+        this.x = (this.rx * this.p5.sin(this.angle) + 0.5) * this.p5.width;
+        this.y = (this.ry * this.p5.cos(this.angle) + 0.5) * this.p5.height;
+
         this.angle += this.speed;
         this.localRotation += this.angularSpeed;
         this.points = [];

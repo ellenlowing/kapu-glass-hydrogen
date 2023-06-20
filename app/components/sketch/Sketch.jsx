@@ -114,8 +114,8 @@ function sketch(p5) {
 
         fallingStars = [];
         for(let i = 0; i < 20; i++) {
-            let x = p5.random(p5.width);
-            let y = p5.random(p5.height);
+            let x = p5.random();
+            let y = p5.random();
             let radius1 = p5.random(5);
             let radius2 = p5.random(radius1 + 2, 25);
             fallingStars.push(new FallingStar(p5, rc, x, y, radius1, radius2, 5));
