@@ -12,7 +12,6 @@ export default class Slide {
             strokeWidth: 0.8,
             roughness: 2,
             preserveVertices: true
-            // disableMultiStroke: true
         };
         this.roughBboxStyle = {
             stroke: '#00000000',
@@ -72,7 +71,6 @@ export default class Slide {
         this.productsNodeList = [];
         this.productsDisplayCountList = [];
         hide(this.selectedProductInfo);
-        // this.selectedProductInfoBbox = null;
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
         this.lastTriggerTime = 0;
@@ -113,7 +111,6 @@ export default class Slide {
             product.addEventListener('mouseleave', (e) => {
                 this.freezeScroll = false; 
                 this.roughStyle.roughness = 2;
-                // this.selectedProductInfoBbox = null;
                 for(let node of this.productsNodeList) {
                     if(node.classList.contains('active')) {
                         show(node);
@@ -137,13 +134,41 @@ export default class Slide {
     }
 
     update() {
+
+        const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
+        const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
+
+        if( this.scrollProgress >= scrollThreshold) {
+            hide(this.productsNodeList[this.leadingProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 0);
+            this.productsNodeList[this.leadingProductIndex].classList.remove('active');
+            this.productsDisplayCountList[this.leadingProductIndex] += 1;
+            this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
+            show(this.productsNodeList[this.lastProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 1);
+            this.productsNodeList[this.lastProductIndex].classList.add('active');
+            this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
+        } 
+        if ( this.scrollProgress < reverseScrollThreshold + 1) {
+            hide(this.productsNodeList[this.lastProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
+            this.productsNodeList[this.lastProductIndex].classList.remove('active');
+            this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
+            if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
+            this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
+            this.productsDisplayCountList[this.leadingProductIndex] -= 1;
+            show(this.productsNodeList[this.leadingProductIndex]);
+            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 1);
+            this.productsNodeList[this.leadingProductIndex].classList.add('active');
+        }
+
         for(let i = 0; i < this.productsNodeList.length; i++) {
             let offsetScrollProgress = (this.scrollProgress - i * this.pathLengthOffset - this.productsDisplayCountList[i] * this.totalToMaxNumDisplayRatio * this.pathLength);
             let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
             const product = this.productsNodeList[i];
-            const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 6 * 5);
+            const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
             productOffset.add(this.displayOffset);
-            slidePoint = this.mapPoint(slidePoint, productOffset, this.targetHeight);
+            slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight);
             product.style.top = `${slidePoint.y}px`;
             product.style.left = `${slidePoint.x}px`;
 
@@ -173,33 +198,6 @@ export default class Slide {
 
             this.lastScrollProgress = this.scrollProgress;
         }
-
-        const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
-        const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
-
-        if( this.scrollProgress >= scrollThreshold) {
-            hide(this.productsNodeList[this.leadingProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 0);
-            this.productsNodeList[this.leadingProductIndex].classList.remove('active');
-            this.productsDisplayCountList[this.leadingProductIndex] += 1;
-            this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
-            show(this.productsNodeList[this.lastProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 1);
-            this.productsNodeList[this.lastProductIndex].classList.add('active');
-            this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
-        } 
-        if ( this.scrollProgress < reverseScrollThreshold + 1) {
-            hide(this.productsNodeList[this.lastProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
-            this.productsNodeList[this.lastProductIndex].classList.remove('active');
-            this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
-            if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
-            this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
-            this.productsDisplayCountList[this.leadingProductIndex] -= 1;
-            show(this.productsNodeList[this.leadingProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 1);
-            this.productsNodeList[this.leadingProductIndex].classList.add('active');
-        }
     }
 
     show(color) {
@@ -222,19 +220,18 @@ export default class Slide {
     resize() {
         this.points = [];
         let slideSteps = 40;
-        this.targetWidth = this.p5.width * 0.6;
         this.targetHeight = this.p5.height * 0.7;
-        // this.displayOffset = this.p5.createVector((this.p5.width - this.targetWidth)/2, (this.p5.height - (this.targetWidth * this.hwRatio)) / 2);
-        this.displayOffset = this.p5.createVector((this.p5.width - this.targetHeight * this.whRatio)/2, (this.p5.height - this.targetHeight) / 2 );
+        this.targetWidth = this.p5.constrain(this.p5.width * 0.7, 0, this.targetHeight * this.whRatio);
+        this.displayOffset = this.p5.createVector((this.p5.width - this.targetWidth)/2, (this.p5.height - this.targetHeight) / 2 );
         for(let i = 0; i <= slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);
-            slidePoint = this.mapPoint(slidePoint, this.displayOffset, this.targetHeight);
+            slidePoint = this.mapPoint(slidePoint, this.displayOffset, this.targetWidth, this.targetHeight);
             this.points.push([slidePoint.x, slidePoint.y]);
         }
     }
 
-    mapPoint(point, offset = this.p5.createVector(0,0), targetHeight) {
-        point.x = point.x / this.attrW * targetHeight * this.whRatio + offset.x;
+    mapPoint(point, offset = this.p5.createVector(0,0), targetWidth, targetHeight) {
+        point.x = point.x / this.attrW * targetWidth + offset.x;
         point.y = point.y / this.attrH * targetHeight + offset.y;
         return point;
     }

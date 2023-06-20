@@ -24,7 +24,7 @@ function inLine(x, y, x0, y0, x1, y1) {
 }
 
 const colors = ['#fbe106', '#FBAC00', '#b8b8ff', '#40c945', '#B0DAFF', '#0d75ff', '#ff99cc'];
-const secondaryColors = ['#202d85', '#19cc33', '#63e5ff', '#c9aced', '#ADE4DB'];
+const secondaryColors = ['#202d85', '#19cc33', '#ffb852', '#c9aced', '#abf5ed'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 const roughFillStyles = ['dashed', 'hachure', 'cross-hatch', 'zigzag-line'];
 const magazineScrollRanges = [[200, 1200], [1600, 2500], [2950, 3900], [4300, 5200]];

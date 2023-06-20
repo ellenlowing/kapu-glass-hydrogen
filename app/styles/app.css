@@ -647,6 +647,9 @@ nav {
 .bottom-\[0px\] {
   bottom: 0px;
 }
+.bottom-\[10px\] {
+  bottom: 10px;
+}
 .bottom-\[20px\] {
   bottom: 20px;
 }
@@ -662,6 +665,9 @@ nav {
 .left-\[20px\] {
   left: 20px;
 }
+.left-\[50\%\] {
+  left: 50%;
+}
 .right-0 {
   right: 0px;
 }
@@ -673,12 +679,6 @@ nav {
 }
 .top-\[8px\] {
   top: 8px;
-}
-.left-\[50\%\] {
-  left: 50%;
-}
-.bottom-\[10px\] {
-  bottom: 10px;
 }
 .z-40 {
   z-index: 40;
@@ -700,14 +700,11 @@ nav {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
-.mr-\[-16px\] {
-  margin-right: -16px;
+.mr-\[-20px\] {
+  margin-right: -20px;
 }
 .mr-\[60px\] {
   margin-right: 60px;
-}
-.mr-\[-20px\] {
-  margin-right: -20px;
 }
 .block {
   display: block;
@@ -760,26 +757,14 @@ nav {
 .w-\[50px\] {
   width: 50px;
 }
+.w-\[80\%\] {
+  width: 80%;
+}
 .w-\[auto\] {
   width: auto;
 }
 .w-full {
   width: 100%;
-}
-.w-\[400px\] {
-  width: 400px;
-}
-.w-\[60\%\] {
-  width: 60%;
-}
-.w-\[80\%\] {
-  width: 80%;
-}
-.w-\[90\%\] {
-  width: 90%;
-}
-.w-\[70\%\] {
-  width: 70%;
 }
 .max-w-3xl {
   max-width: 48rem;
@@ -799,9 +784,6 @@ nav {
 .max-w-xl {
   max-width: 36rem;
 }
-.max-w-\[240px\] {
-  max-width: 240px;
-}
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -813,14 +795,6 @@ nav {
 }
 .grow {
   flex-grow: 1;
-}
-.translate-x-2\/4 {
-  --tw-translate-x: 50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.translate-x-\[50vw\] {
-  --tw-translate-x: 50vw;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .translate-x-\[-50\%\] {
   --tw-translate-x: -50%;
@@ -996,26 +970,20 @@ nav {
 .pb-12 {
   padding-bottom: 3rem;
 }
+.pb-24 {
+  padding-bottom: 6rem;
+}
 .pb-6 {
   padding-bottom: 1.5rem;
+}
+.pt-10 {
+  padding-top: 2.5rem;
 }
 .pt-24 {
   padding-top: 6rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
-}
-.pb-8 {
-  padding-bottom: 2rem;
-}
-.pb-24 {
-  padding-bottom: 6rem;
-}
-.pt-10 {
-  padding-top: 2.5rem;
-}
-.pt-20 {
-  padding-top: 5rem;
 }
 .text-left {
   text-align: left;
@@ -1186,10 +1154,6 @@ nav {
 
 @media (min-width: 640px) {
 
-  .sm\:w-full {
-    width: 100%;
-  }
-
   .sm\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1221,10 +1185,6 @@ nav {
 }
 
 @media (min-width: 1024px) {
-
-  .lg\:w-full {
-    width: 100%;
-  }
 
   .lg\:w-\[90\%\] {
     width: 90%;
