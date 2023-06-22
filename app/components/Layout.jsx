@@ -15,7 +15,7 @@ export function Layout({children, title}) {
             <img id="logo" className="h-full" src={logo}></img>
           </Link>
 
-          <nav id="nav" className={`fixed`}>
+          <nav id="nav" className={`fixed z-50`}>
             <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
             <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
             <Link id="nav-link-2" to="/collections/magazine" className=" cursor-pointer nav-link">magazine</Link>
@@ -25,6 +25,8 @@ export function Layout({children, title}) {
             <Link id="nav-link-6" to="/cart" className=" cursor-pointer nav-link">cart{cart?.totalQuantity > 0 && `(${cart?.totalQuantity})`}</Link>
             <a id="menu-switch" className=" cursor-pointer nav-link">menu</a>
           </nav>
+
+          <canvas id="ladder-menu" className="fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px]"></canvas>
         </header>
 
         <main

@@ -6,7 +6,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges} from './Utility';
+import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -97,7 +97,11 @@ function sketch(p5) {
 
         console.log('initialized canvas');
         
-        ladder = new Ladder(p5, rc);
+        let ladderMenu = document.getElementById('ladder-menu');
+        let ladderCanvas = ladderMenu;
+        // const c = setPixelDensity(ladderCanvas);
+        let roughLadder = rough.canvas(ladderCanvas);
+        ladder = new Ladder(p5, roughLadder, ladderMenu);
 
         butterfly = new Butterfly(
             p5.createVector(p5.width/2, p5.height/2),
@@ -210,7 +214,8 @@ function sketch(p5) {
 
         // if page change
         const urlPath = p5.getURLPath();
-        if(lastURLPath !== urlPath) {
+
+        if(lastURLPath == null || !arrayEquals(urlPath, lastURLPath)) {
             const navLinks = document.getElementsByClassName('nav-link');
             if(urlPath.length == 0) {
                 bgColor = '#000';
@@ -226,6 +231,7 @@ function sketch(p5) {
                     link.style.color = '#000';
                 }
             }
+            ladder.show(mainColor);
 
             if( urlPath[0] == 'collections' && (!lastURLPath || urlPath[1] !== lastURLPath[1])) {
                 const collectionName = urlPath[1];
@@ -284,7 +290,7 @@ function sketch(p5) {
         if(p5.frameCount % roughFPS == 0) {
 
             p5.background(bgColor);
-            ladder.show(mainColor);
+            // ladder.show(mainColor);
 
             if(urlPath.length == 0) {
                 if(caterpillar) {
@@ -425,7 +431,7 @@ function sketch(p5) {
                 setupBubbleEmitters();
             }
         }
-        ladder.resize();
+        // ladder.resize();
         ladder.show();
     }
 
