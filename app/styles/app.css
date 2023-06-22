@@ -674,17 +674,17 @@ nav {
 .right-\[20px\] {
   right: 20px;
 }
-.top-0 {
-  top: 0px;
-}
-.top-\[8px\] {
-  top: 8px;
-}
 .right-\[5vw\] {
   right: 5vw;
 }
+.top-0 {
+  top: 0px;
+}
 .top-\[0\] {
   top: 0;
+}
+.top-\[8px\] {
+  top: 8px;
 }
 .z-40 {
   z-index: 40;
@@ -697,6 +697,12 @@ nav {
 }
 .z-\[2\] {
   z-index: 2;
+}
+.z-\[60\] {
+  z-index: 60;
+}
+.z-\[70\] {
+  z-index: 70;
 }
 .mx-auto {
   margin-left: auto;
@@ -736,6 +742,9 @@ nav {
 .h-\[30\%\] {
   height: 30%;
 }
+.h-\[320px\] {
+  height: 320px;
+}
 .h-\[50px\] {
   height: 50px;
 }
@@ -747,12 +756,6 @@ nav {
 }
 .h-screen {
   height: 100vh;
-}
-.h-\[280px\] {
-  height: 280px;
-}
-.h-\[320px\] {
-  height: 320px;
 }
 .min-h-\[180px\] {
   min-height: 180px;
@@ -777,9 +780,6 @@ nav {
 }
 .w-full {
   width: 100%;
-}
-.w-\[320px\] {
-  width: 320px;
 }
 .max-w-3xl {
   max-width: 48rem;
@@ -815,20 +815,8 @@ nav {
   --tw-translate-x: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-.translate-y-0 {
-  --tw-translate-y: 0px;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.translate-y-\[-40px\] {
-  --tw-translate-y: -40px;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
 .translate-y-\[-280px\] {
   --tw-translate-y: -280px;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.translate-y-\[-160px\] {
-  --tw-translate-y: -160px;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .transform {
@@ -949,19 +937,6 @@ nav {
 .bg-red-800 {
   --tw-bg-opacity: 1;
   background-color: rgb(153 27 27 / var(--tw-bg-opacity));
-}
-.bg-\[\#FF0000\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 0 0 / var(--tw-bg-opacity));
-}
-.bg-\[\#FF000055\] {
-  background-color: #FF000055;
-}
-.bg-\[\#FF000000\] {
-  background-color: #FF000000;
-}
-.bg-\[\#FF000022\] {
-  background-color: #FF000022;
 }
 .p-0 {
   padding: 0px;

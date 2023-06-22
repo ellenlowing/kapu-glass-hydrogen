@@ -99,7 +99,7 @@ function sketch(p5) {
         
         let ladderMenu = document.getElementById('ladder-menu');
         let ladderCanvas = ladderMenu;
-        // const c = setPixelDensity(ladderCanvas);
+        const c = setPixelDensity(ladderCanvas);
         let roughLadder = rough.canvas(ladderCanvas);
         ladder = new Ladder(p5, roughLadder, ladderMenu);
 
