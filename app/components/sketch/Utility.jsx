@@ -59,7 +59,7 @@ function setPixelDensity(canvas) {
     return context;
 }
 
-const colors = ['#fbe106', '#FBAC00', '#b8b8ff', '#40c945', '#B0DAFF', '#0d75ff', '#ff99cc'];
+const colors = ['#fbe106', '#FBAC00', '#b8b8ff', '#40c945', '#B0DAFF', '#0d75ff', '#FFB6C1'];
 const secondaryColors = ['#202d85', '#19cc33', '#ffb852', '#c9aced', '#abf5ed'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 const roughFillStyles = ['dashed', 'hachure', 'cross-hatch', 'zigzag-line'];

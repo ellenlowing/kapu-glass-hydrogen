@@ -14,7 +14,7 @@ export default function About() {
             <h2 className="font-bold text-lead py-6 fa text-4xl">
                 About kapu
             </h2>
-            <div className="w-[80%] lg:w-[90%] xl:w-full">
+            <div className="w-full">
                 Kapu is a project in glass and design. Kapu exchanges worldwide, born in Brooklyn with a home base in Sydney. <br></br>Say hi at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
             </div>
             <img className="w-full max-w-[400px] pt-10" src={portrait}></img>

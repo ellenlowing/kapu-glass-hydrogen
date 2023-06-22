@@ -9,7 +9,7 @@ export function Layout({children, title}) {
       <div className="flex flex-col min-h-screen antialiased">
         <header
           role="banner"
-          className={`absolute items-center h-20 z-60 top-0 justify-between leading-none p-1 antialiased transition`}
+          className={`absolute items-center h-20 z-[60] top-0 justify-between leading-none p-1 antialiased transition`}
         >
           <Link className="h-full" to="/">
             <img id="logo" className="h-full" src={logo}></img>
@@ -26,7 +26,7 @@ export function Layout({children, title}) {
             <a id="menu-switch" className=" cursor-pointer nav-link">menu</a>
           </nav>
 
-          <canvas id="ladder-menu" className="fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px] z-[60]"></canvas>
+          <canvas id="ladder-menu" className="fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px] z-[60] mix-blend-multiply"></canvas>
         </header>
 
         <main

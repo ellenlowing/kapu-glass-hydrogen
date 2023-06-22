@@ -27,7 +27,6 @@ export default class Ladder {
             navLink.addEventListener('mouseover', (e) => {
                 this.activeIndex.push(i);
                 this.show();
-                console.log(i);
             })
             navLink.addEventListener('mouseleave', (e) => {
                 let index = this.activeIndex.indexOf(i);
@@ -58,6 +57,7 @@ export default class Ladder {
                     } else {
                         clearInterval(this.interval);
                         show(nav);
+                        this.el.style.mixBlendMode = 'normal';
                     }
                 }, this.menuSpeed);
             } else {
@@ -73,6 +73,7 @@ export default class Ladder {
                     } else {
                         clearInterval(this.interval);
                         show(nav);
+                        this.el.style.mixBlendMode = 'multiply';
                     }
                 }, this.menuSpeed);
             }
