@@ -366,19 +366,23 @@ function sketch(p5) {
         if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
             let color = butterfly.updateColor();
             mousePath.addPoint(p5.mouseX, p5.mouseY);
-            if(mousePath.points.length > 2) {
+            if(mousePath.points.length > 3) {
                 mousePath.points.shift();
                 mousePath.angles.shift();
+
+                let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
+                sparkles.push(sparkle);
             }
             if(sparkles.length > 120) {
                 sparkles.shift();
             }
-            let mouseDist = p5.pow(p5.pow(p5.mouseX - p5.pmouseX, 2) + p5.pow(p5.mouseY - p5.pmouseY, 2), 0.5);
 
-            if(mouseDist > 6) {
-                let sparkle = new Sparkle(p5, rc, color, p5.createVector(p5.mouseX, p5.mouseY));
-                sparkles.push(sparkle);
-            }
+            // if u want to switch back to uneven distribution of particles
+            // let mouseDist = p5.pow(p5.pow(p5.mouseX - p5.pmouseX, 2) + p5.pow(p5.mouseY - p5.pmouseY, 2), 0.5);
+            // if(mouseDist > 6) {
+            //     let sparkle = new Sparkle(p5, rc, color, p5.createVector(p5.mouseX, p5.mouseY));
+            //     sparkles.push(sparkle);
+            // }
         }
     }
 
