@@ -15,6 +15,7 @@ import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
+import Sparkle from './Sparkle';
 
 export default function Sketch() {
 
@@ -74,6 +75,9 @@ function sketch(p5) {
 
     // bubble
     let bubbleEmitters;
+
+    // sparkle
+    let sparkles;
     
     let canvas;
 
@@ -144,6 +148,8 @@ function sketch(p5) {
                 clouds.push(cloud);
             }
         }
+
+        sparkles = [];
 
         canvas.addEventListener('create-bubble', (e) => {
             if(bubbleEmitters.length > 0) {
@@ -233,38 +239,45 @@ function sketch(p5) {
             }
             ladder.show(mainColor);
 
-            if( urlPath[0] == 'collections' && (!lastURLPath || urlPath[1] !== lastURLPath[1])) {
-                const collectionName = urlPath[1];
-                console.log('init slide');
-                slide.setup(collectionName);
-                setGradientCaterpillarColor();
-
-                setUpCaterpillarIndicator();
-
-                // diff animations per collection page
-
-                console.log('init bg elements');
-                if(urlPath.indexOf('vessels') != -1) {
-                    for(let star of fallingStars) {
-                        star.setup();
+            if((!lastURLPath || urlPath[1] !== lastURLPath[1])) {
+                if(urlPath.length == 0) {
+                    console.log('set up home');
+                } else if( urlPath[0] == 'collections') {
+                    const collectionName = urlPath[1];
+                    console.log('init slide');
+                    slide.setup(collectionName);
+                    setGradientCaterpillarColor();
+    
+                    setUpCaterpillarIndicator();
+    
+                    // diff animations per collection page
+    
+                    console.log('init bg elements');
+                    if(urlPath.indexOf('vessels') != -1) {
+                        for(let star of fallingStars) {
+                            star.setup();
+                        }
+                    } else if (urlPath.indexOf('accessories') != -1) {
+                        // spiral
+                        for(let spiral of spirals) {
+                            spiral.setup();
+                        }
+                    } else if (urlPath.indexOf('workshops') != -1) {
+                        // flower
+                        for(let flower of flowers) {
+                            flower.setup();
+                        }
+                    } else if (urlPath.indexOf('archive') != -1) {
+                        // cloud
+                        for(let cloud of clouds) {
+                            cloud.setup();
+                        }
+                    } else if (urlPath.indexOf('magazine') != -1) {
+                        setupBubbleEmitters();
                     }
-                } else if (urlPath.indexOf('accessories') != -1) {
-                    // spiral
-                    for(let spiral of spirals) {
-                        spiral.setup();
-                    }
-                } else if (urlPath.indexOf('workshops') != -1) {
-                    // flower
-                    for(let flower of flowers) {
-                        flower.setup();
-                    }
-                } else if (urlPath.indexOf('archive') != -1) {
-                    // cloud
-                    for(let cloud of clouds) {
-                        cloud.setup();
-                    }
-                } else if (urlPath.indexOf('magazine') != -1) {
-                    setupBubbleEmitters();
+                } else {
+                    sparkles = [];
+                    console.log('set up sparkles');
                 }
             }
 
@@ -290,7 +303,6 @@ function sketch(p5) {
         if(p5.frameCount % roughFPS == 0) {
 
             p5.background(bgColor);
-            // ladder.show(mainColor);
 
             if(urlPath.length == 0) {
                 if(caterpillar) {
@@ -328,31 +340,44 @@ function sketch(p5) {
                         if(!slide.freezeScroll) emitter.update();
                     }
                 }
-            } else if (urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
+            } else {
                 // butterfly
                 if(mousePath.points.length >= 2) {
-                    butterfly.update(mousePath.points[0], mousePath.angles[0]);
+                    butterfly.update(mousePath.lastPt, mousePath.lastAngle);
                     butterfly.show();
+                }
+
+                for(let sparkle of sparkles) {
+                    sparkle.show();
                 }
             }
         }
 
         // frame rate debug
         getAverageFPS();
-        // p5.stroke(0);
-        // p5.noFill();
-        // p5.text(`${averageFPS}`, 100, 200);
+        p5.stroke(0);
+        p5.noFill();
+        p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {
         // butterfly
         const urlPath = p5.getURLPath();
         if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
-            butterfly.updateColor();
+            let color = butterfly.updateColor();
             mousePath.addPoint(p5.mouseX, p5.mouseY);
             if(mousePath.points.length > 2) {
                 mousePath.points.shift();
                 mousePath.angles.shift();
+            }
+            if(sparkles.length > 120) {
+                sparkles.shift();
+            }
+            let mouseDist = p5.pow(p5.pow(p5.mouseX - p5.pmouseX, 2) + p5.pow(p5.mouseY - p5.pmouseY, 2), 0.5);
+
+            if(mouseDist > 6) {
+                let sparkle = new Sparkle(p5, rc, color, p5.createVector(p5.mouseX, p5.mouseY));
+                sparkles.push(sparkle);
             }
         }
     }

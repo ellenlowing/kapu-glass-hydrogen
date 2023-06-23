@@ -49,6 +49,7 @@ export default class Butterfly {
             this.colorA = this.colorB;
             this.colorB = this.p5.color(randomHex());
         }
+        return reversedString;
     }
 
     update(offset, heading) {

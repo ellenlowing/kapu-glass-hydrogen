@@ -10,6 +10,10 @@ export default class Path {
         return this.points[this.points.length-1];
     }
 
+    get lastAngle() {
+        return this.angles[this.angles.length-1];
+    }
+
     addPoint(x, y) {
         if(this.points.length < 1) {
             this.points.push(this.p5.createVector(x, y));
