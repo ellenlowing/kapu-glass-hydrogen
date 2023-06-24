@@ -355,9 +355,9 @@ function sketch(p5) {
 
         // frame rate debug
         getAverageFPS();
-        p5.stroke(0);
-        p5.noFill();
-        p5.text(`${averageFPS}`, 100, 200);
+        // p5.stroke(0);
+        // p5.noFill();
+        // p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {

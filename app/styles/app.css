@@ -686,9 +686,6 @@ nav {
 .top-\[8px\] {
   top: 8px;
 }
-.z-40 {
-  z-index: 40;
-}
 .z-50 {
   z-index: 50;
 }
@@ -771,9 +768,6 @@ nav {
 }
 .w-\[50px\] {
   width: 50px;
-}
-.w-\[80\%\] {
-  width: 80%;
 }
 .w-\[auto\] {
   width: auto;
@@ -1208,10 +1202,6 @@ nav {
 
 @media (min-width: 1024px) {
 
-  .lg\:w-\[90\%\] {
-    width: 90%;
-  }
-
   .lg\:max-w-6xl {
     max-width: 72rem;
   }
@@ -1260,12 +1250,5 @@ nav {
   .lg\:py-16 {
     padding-top: 4rem;
     padding-bottom: 4rem;
-  }
-}
-
-@media (min-width: 1280px) {
-
-  .xl\:w-full {
-    width: 100%;
   }
 }
