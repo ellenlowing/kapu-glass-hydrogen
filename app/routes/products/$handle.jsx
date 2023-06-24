@@ -45,7 +45,6 @@ export default function ProductHandle() {
     const {price, compareAtPrice} = product.variants?.nodes[0] || {};
     const isDiscounted = compareAtPrice?.amount > price?.amount;
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
-    const displayClass = isMobile ? 'block' : 'grid';
 
     return (
         <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 cursor-none">
@@ -56,12 +55,12 @@ export default function ProductHandle() {
                     </div>
                 </div>
                 <div className={`sticky grid gap-8 lg:gap-12 lg:px-8 py-8`}>
-                    <div className={`${displayClass} lg:gap-8 lg:grid-flow-row grid-flow-col`}>
+                    <div className={`${isMobile ? 'block' : 'grid'} lg:gap-8 lg:grid-flow-row grid-flow-col`}>
                         <h1 className="text-5xl whitespace-normal fa">
                             {product.title}
                         </h1>
                         {(price?.amount > 0 && availableForSale) && 
-                          <div className="flex gap-2 self-end place-self-end lg:self-start lg:place-self-start">
+                          <div className={`flex gap-2 self-end place-self-end lg:self-start lg:place-self-start ${isMobile ? 'pt-8' : ''}`}>
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                               $
                               <Money 
@@ -81,7 +80,7 @@ export default function ProductHandle() {
                           </div>
                         }
                         {(price?.amount > 0 && !availableForSale) && 
-                          <div className="flex gap-2 self-end place-self-end lg:self-start lg:place-self-start">
+                          <div className={`flex gap-2 self-end place-self-end lg:self-start lg:place-self-start ${isMobile ? 'pt-8' : ''}`}>
                             <span className="max-w-prose whitespace-pre-wrap inherit text-copy flex gap-3">
                               Sold out
                             </span>
@@ -89,13 +88,13 @@ export default function ProductHandle() {
                         }
                     </div>
                     {product.options[0].values.length > 1 && <ProductOptions options={product.options} selectedVariant={selectedVariant} />}
-                    <div className={`${displayClass} lg:grid-flow-row grid-flow-col`}>
+                    <div className={`${isMobile ? 'block' : 'grid'} lg:grid-flow-row grid-flow-col`}>
                       <div
                         className="prose pt-6 text-black text-sm"
                         dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
                       />
                       {(price?.amount > 0 && availableForSale) && 
-                        <div className="py-[0px] lg:py-16 self-end place-self-end lg:self-start lg:place-self-start">
+                        <div className={`py-[0px] lg:py-16 self-end place-self-end lg:self-start lg:place-self-start ${isMobile ? 'pt-12' : ''}`}>
                           <ProductForm variantId={selectedVariant?.id} />
                         </div>
                       }

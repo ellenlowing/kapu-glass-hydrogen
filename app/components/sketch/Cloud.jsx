@@ -1,4 +1,4 @@
-import { roughFillStyles, secondaryColors } from './Utility';
+import { deviceMultiplier, roughFillStyles, secondaryColors } from './Utility';
 
 export default class Cloud {
     constructor(p5, rc, center) {
@@ -30,8 +30,8 @@ export default class Cloud {
         this.zoff = this.p5.random(0, 200);
         this.speed = this.p5.random(1, 6);
         this.drad = this.p5.random(5, 20);
-        this.rxMax = this.p5.random(80, 400);
-        this.ryMax = this.p5.random(this.rxMax/4, this.rxMax/1.5);
+        this.rxMax = this.p5.random(80, 400) * deviceMultiplier;
+        this.ryMax = this.p5.random(this.rxMax/4, this.rxMax/1.5) * deviceMultiplier;
         for (let a = 0; a <= this.p5.TWO_PI; a += this.p5.radians(this.drad)) {
             let xoff = this.p5.map(this.p5.cos(a + this.phase), -1, 1, 0, this.noiseMax);
             let yoff = this.p5.map(this.p5.sin(a + this.phase), -1, 1, 0, this.noiseMax);
@@ -46,7 +46,7 @@ export default class Cloud {
     update() {
         this.points = [];
         for(let pt of this.cloudPoints) {
-            let xx = pt[0] + (this.center.x % 4 * this.p5.width) - this.rxMax;
+            let xx = pt[0] + (this.center.x % (4 * deviceMultiplier) * this.p5.width) - this.rxMax;
             let yy = pt[1] + this.center.y;
             this.points.push([xx, yy]);
         }

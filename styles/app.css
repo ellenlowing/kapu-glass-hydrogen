@@ -220,14 +220,9 @@
     left: 270px;
     transform: rotate(1deg);
   }
-
-  #selected-product-title {
-    font-size: 4em;
-    /* letter-spacing: -0.1em; */
-  }
   
   #selected-product-price {
-    font-size: 2.5em;
+    /* font-size: 2.5em; */
     letter-spacing: -0.04em;
   }
 

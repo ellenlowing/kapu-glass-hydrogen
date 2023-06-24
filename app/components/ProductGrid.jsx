@@ -1,13 +1,14 @@
 import {useState, useEffect} from 'react';
 import ProductCard from './ProductCard';
 import SVGSlide from './SVGSlide';
+import {isMobile} from 'react-device-detect';
 
 export default function ProductGrid({collection}) {
 
   return (
     <>
       <section 
-        className="gap-8 grid mr-[60px] md:mr-[0] relative h-full"
+        className="gap-8 grid relative h-full"
       >
         <SVGSlide/>
         <div id="products-container" data-collection-length={collection.products.nodes.length} className="grid-flow-row grid gap-6 gap-y-20">
@@ -18,8 +19,8 @@ export default function ProductGrid({collection}) {
       </section>
 
       <div id="selected-product-info" className=" absolute text-center bottom-[20px] w-full bg-red-800 fa">
-        <h1 id="selected-product-title" className="fa absolute text-left left-[20px] bottom-0 leading-none max-w-[70%]"></h1>
-        <span id="selected-product-price" className="fa absolute text-right right-[20px] bottom-0"></span>
+        <h1 id="selected-product-title" className={`fa absolute text-left left-[20px] bottom-0 leading-none max-w-[70%] ${isMobile ? 'text-[2em]' : 'text-[4em]'}`} ></h1>
+        <span id="selected-product-price" className={`fa absolute text-right right-[20px] bottom-0  ${isMobile ? 'text-[1.2em]' : 'text-[2.5em]'}`}></span>
         <p className='fa absolute z-[-10] bottom-[-40px]'>preload</p>
       </div>
 

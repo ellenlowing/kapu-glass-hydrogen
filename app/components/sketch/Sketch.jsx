@@ -6,7 +6,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity} from './Utility';
+import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -121,7 +121,7 @@ function sketch(p5) {
         slide = new Slide(p5, rc, canvas);
 
         fallingStars = [];
-        for(let i = 0; i < 20; i++) {
+        for(let i = 0; i < 20 * deviceMultiplier; i++) {
             let x = p5.random();
             let y = p5.random();
             let radius1 = p5.random(5);
@@ -132,7 +132,7 @@ function sketch(p5) {
         spirals = [];
 
         flowers = [];
-        for(let i = 0; i < 20; i++) {
+        for(let i = 0; i < 20 * deviceMultiplier; i++) {
             let x = p5.random(p5.width);
             let y = p5.random(p5.height);
             let flower = new Flower(p5.createVector(x, y), p5, rc);
@@ -140,8 +140,8 @@ function sketch(p5) {
         }
 
         clouds = [];
-        for(let i = 0; i < 4; i++) {
-            for(let j = 0; j < 4; j++) {
+        for(let i = 0; i < 4 * deviceMultiplier; i++) {
+            for(let j = 0; j < 4 * deviceMultiplier; j++) {
                 let x = p5.random(i, i+1);
                 let y = p5.random(0, p5.height);
                 let cloud = new Cloud(p5, rc, p5.createVector(x, y));

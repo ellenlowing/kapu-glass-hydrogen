@@ -79,6 +79,7 @@ export default class Slide {
         this.gradientCircles = document.getElementsByClassName('gradient-circle');
         this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
         this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
+        this.activeIndex = null;
 
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
@@ -87,48 +88,34 @@ export default class Slide {
             this.productsDisplayCountList.push(0);
 
             product.addEventListener('mouseenter', (e) => {
-                this.freezeScroll = true; 
-                this.roughStyle.roughness = Math.random() * 5 + 4;
-
-                for(let node of this.productsNodeList) {
-                    if(node != e.target && node.classList.contains('active')) {
-                        hide(node);
-                    }
-                }
-
-                this.selectedProductTitle.innerHTML = e.target.querySelector('#product-title').innerHTML;
-                this.selectedProductPrice.innerHTML = e.target.querySelector('#product-price').innerHTML;
-
-                if(Number(e.target.querySelector('#product-price').getAttribute('data-price')) == 0) {
-                    hide(this.selectedProductPrice);
-                } else {
-                    show(this.selectedProductPrice);
-                }
-
-                show(this.selectedProductInfo);
-                hide(this.caterpillarIndicator);
-
-                if(this.name == 'accessories') {
-                    const createNewSpiral = new CustomEvent("create-spiral", {
-                        bubbles: true,
-                        cancelable: true,
-                        composed: false
-                    });
-                    this.canvas.dispatchEvent(createNewSpiral);
-                }
+                this.mouseEnterHandler(e);
             })
 
             product.addEventListener('mouseleave', (e) => {
-                this.freezeScroll = false; 
-                this.roughStyle.roughness = 2;
-                for(let node of this.productsNodeList) {
-                    if(node.classList.contains('active')) {
-                        show(node);
-                    }
-                }
-                hide(this.selectedProductInfo);
-                show(this.caterpillarIndicator);
+                this.mouseLeaveHandler(e);
             })
+
+            if(isMobile) {
+                product.addEventListener('touchstart', (e) => {
+                    if(!this.activeIndex) {
+                        e.preventDefault();
+                        this.activeIndex = i;
+                        this.mouseEnterHandler(e);
+                    } else if (i == this.activeIndex) {
+                        this.activeIndex = null;
+                    } else if (i != this.activeIndex) {
+                        e.preventDefault();
+                        this.activeIndex = i;
+                    }
+                })
+                // this.svg.addEventListener('touchstart', (e) => {
+                //     console.log(e.target);
+                //     if(this.activeIndex) {
+                //         console.log("hi1");
+                //         this.mouseLeaveHandler(e);
+                //     }
+                // })
+            }
 
             if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
                 show(product);
@@ -138,6 +125,17 @@ export default class Slide {
                 hide(product);
                 product.classList.remove('active');
                 this.setOpacity(this.caterpillarIndices[i], 0);
+            }
+        }
+
+        if(isMobile) {
+            for(let svg of this.svgSlides) {
+                svg.addEventListener('touchstart', (e) => {
+                    console.log(this.activeIndex);
+                    if(this.activeIndex != null) {
+                        this.mouseLeaveHandler();
+                    }
+                })
             }
         }
         this.resize();
@@ -251,5 +249,50 @@ export default class Slide {
 
     inRange(progress, min, max) {
         return progress >= min && progress <= max;
+    }
+
+    mouseEnterHandler(e) {
+        this.freezeScroll = true; 
+        this.roughStyle.roughness = Math.random() * 5 + 4;
+
+        for(let node of this.productsNodeList) {
+            if(node != e.currentTarget && node.classList.contains('active')) {
+                hide(node);
+            }
+        }
+        this.selectedProductTitle.innerHTML = e.currentTarget.querySelector('#product-title').innerHTML;
+        this.selectedProductPrice.innerHTML = e.currentTarget.querySelector('#product-price').innerHTML;
+
+        if(Number(e.currentTarget.querySelector('#product-price').getAttribute('data-price')) == 0) {
+            hide(this.selectedProductPrice);
+        } else {
+            show(this.selectedProductPrice);
+        }
+
+        show(this.selectedProductInfo);
+        hide(this.caterpillarIndicator);
+
+        if(this.name == 'accessories') {
+            const createNewSpiral = new CustomEvent("create-spiral", {
+                bubbles: true,
+                cancelable: true,
+                composed: false
+            });
+            this.canvas.dispatchEvent(createNewSpiral);
+        }
+    }
+
+    mouseLeaveHandler(e) {
+        this.freezeScroll = false; 
+        this.activeIndex = null;
+        this.roughStyle.roughness = 2;
+        for(let node of this.productsNodeList) {
+            if(node.classList.contains('active')) {
+                show(node);
+            }
+        }
+        hide(this.selectedProductInfo);
+        show(this.caterpillarIndicator);
+        console.log('hi2');
     }
 }

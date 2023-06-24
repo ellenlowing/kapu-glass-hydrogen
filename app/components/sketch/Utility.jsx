@@ -1,3 +1,5 @@
+import {isMobile} from 'react-device-detect';
+
 function hide (el) {
     el.style.display = 'none';
 }
@@ -64,5 +66,6 @@ const secondaryColors = ['#202d85', '#19cc33', '#ffb852', '#c9aced', '#abf5ed'];
 const pathNameList = ['vessels', 'accessories', 'magazine', 'workshops', 'archive', 'about', 'cart'];
 const roughFillStyles = ['dashed', 'hachure', 'cross-hatch', 'zigzag-line'];
 const magazineScrollRanges = [[200, 1200], [1600, 2500], [2950, 3900], [4300, 5200]];
+const deviceMultiplier = isMobile ? 0.5 : 1;
 
-export {hide, show, randomHex, colors, secondaryColors, pathNameList, roughFillStyles, inLine, magazineScrollRanges, arrayEquals, setPixelDensity};
+export {hide, show, randomHex, colors, secondaryColors, pathNameList, roughFillStyles, inLine, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier};
