@@ -1,4 +1,5 @@
 import {hide, show, colors, secondaryColors, inLine, magazineScrollRanges} from './Utility';
+import {isBrowser, isMobile} from 'react-device-detect';
 
 export default class Slide {
     constructor(p5, rc, canvas) {
@@ -215,9 +216,6 @@ export default class Slide {
             this.roughBboxStyle.stroke = color;
             this.roughBubbleStyle.stroke = color;
             this.p5.stroke(color);
-            // for(let i = 0; i < this.points.length; i++) {
-            //     this.p5.text(i, this.points[i][0], this.points[i][1]);
-            // }
         }
         this.rc.curve(this.points, this.roughStyle);
     }
@@ -229,8 +227,14 @@ export default class Slide {
     resize() {
         this.points = [];
         let slideSteps = 40;
-        this.targetHeight = this.p5.height * 0.7;
-        this.targetWidth = this.p5.constrain(this.p5.width * 0.7, 0, this.targetHeight * this.whRatio);
+        if(isBrowser) {
+            this.targetHeight = this.p5.height * 0.7;
+            this.targetWidth = this.p5.constrain(this.p5.width * 0.7, 0, this.targetHeight * this.whRatio);    
+        }
+        if(isMobile) {
+            this.targetHeight = this.p5.height * 0.75;
+            this.targetWidth = this.p5.constrain(this.p5.width * 0.9, 0, this.targetHeight * this.whRatio);    
+        }
         this.displayOffset = this.p5.createVector((this.p5.width - this.targetWidth)/2, (this.p5.height - this.targetHeight) / 2 );
         for(let i = 0; i <= slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);

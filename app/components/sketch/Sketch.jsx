@@ -223,20 +223,20 @@ function sketch(p5) {
 
         if(lastURLPath == null || !arrayEquals(urlPath, lastURLPath)) {
             const navLinks = document.getElementsByClassName('nav-link');
-            if(urlPath.length == 0) {
-                bgColor = '#000';
-                mainColor = '#FFF';
-                for(let link of navLinks) {
-                    link.style.color = '#FFF';
-                }
-                caterpillar.setup();
-            } else {
+            // if(urlPath.length == 0) {
+            //     bgColor = '#000';
+            //     mainColor = '#FFF';
+            //     for(let link of navLinks) {
+            //         link.style.color = '#FFF';
+            //     }
+            //     caterpillar.setup();
+            // } else {
                 bgColor = '#FFF';
                 mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
                 for(let link of navLinks) {
                     link.style.color = '#000';
                 }
-            }
+            // }
             ladder.show(mainColor);
 
             if((!lastURLPath || urlPath[1] !== lastURLPath[1])) {

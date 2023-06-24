@@ -4,6 +4,7 @@ import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
 import {useMatches, useFetcher} from '@remix-run/react';
+import {isBrowser, isMobile} from 'react-device-detect';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -44,6 +45,7 @@ export default function ProductHandle() {
     const {price, compareAtPrice} = product.variants?.nodes[0] || {};
     const isDiscounted = compareAtPrice?.amount > price?.amount;
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
+    const displayClass = isMobile ? 'block' : 'grid';
 
     return (
         <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 cursor-none">
@@ -53,8 +55,8 @@ export default function ProductHandle() {
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
-                <div className="sticky grid gap-8 lg:gap-12 lg:px-8 py-8">
-                    <div className="grid lg:gap-8 lg:grid-flow-row grid-flow-col">
+                <div className={`sticky grid gap-8 lg:gap-12 lg:px-8 py-8`}>
+                    <div className={`${displayClass} lg:gap-8 lg:grid-flow-row grid-flow-col`}>
                         <h1 className="text-5xl whitespace-normal fa">
                             {product.title}
                         </h1>
@@ -87,7 +89,7 @@ export default function ProductHandle() {
                         }
                     </div>
                     {product.options[0].values.length > 1 && <ProductOptions options={product.options} selectedVariant={selectedVariant} />}
-                    <div className="grid lg:grid-flow-row grid-flow-col">
+                    <div className={`${displayClass} lg:grid-flow-row grid-flow-col`}>
                       <div
                         className="prose pt-6 text-black text-sm"
                         dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
