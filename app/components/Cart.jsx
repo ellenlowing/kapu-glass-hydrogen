@@ -1,5 +1,6 @@
 import {Link, useFetcher} from '@remix-run/react';
 import {flattenConnection, Image, Money} from '@shopify/hydrogen-react';
+import {isMobile} from 'react-device-detect';
 
 export function CartLineItems({linesObj}) {
   const lines = flattenConnection(linesObj);
@@ -35,7 +36,7 @@ export function CartSummary({cost}) {
     if (!checkoutUrl) return null;
   
     return (
-      <div className="flex flex-col mx-auto">
+      <div className={`flex flex-col mx-auto ${isMobile ? 'py-4' : 'py-2'}`}>
         <a
         target='_blank'
           href={checkoutUrl}

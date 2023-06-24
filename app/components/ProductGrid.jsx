@@ -19,8 +19,8 @@ export default function ProductGrid({collection}) {
       </section>
 
       <div id="selected-product-info" className=" absolute text-center bottom-[20px] w-full bg-red-800 fa">
-        <h1 id="selected-product-title" className={`fa absolute text-left left-[20px] bottom-0 leading-none max-w-[70%] ${isMobile ? 'text-[2em]' : 'text-[4em]'}`} ></h1>
-        <span id="selected-product-price" className={`fa absolute text-right right-[20px] bottom-0  ${isMobile ? 'text-[1.2em]' : 'text-[2.5em]'}`}></span>
+        <h1 id="selected-product-title" className={`fa absolute text-left  bottom-0 leading-none max-w-[70%] ${isMobile ? 'text-[2em] left-[20px] font-bold' : 'text-[4em] left-[20px]'}`} ></h1>
+        <span id="selected-product-price" className={`fa absolute text-right bottom-0  ${isMobile ? 'text-[1.2em] right-[20px] font-bold' : 'text-[2.5em] right-[20px]'}`}></span>
         <p className='fa absolute z-[-10] bottom-[-40px]'>preload</p>
       </div>
 

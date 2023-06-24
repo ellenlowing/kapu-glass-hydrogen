@@ -3,6 +3,7 @@ import {json} from '@shopify/remix-oxygen';
 import { CartLineItems } from '~/components/Cart';
 import { CART_QUERY } from '~/queries/cart';
 import {CartActions, CartSummary} from '~/components/Cart';
+import {isBrowser} from 'react-device-detect';
 
 export const meta = () => {
   return {
@@ -112,8 +113,8 @@ export default function Cart() {
         <div className="flex-grow ">
           <CartLineItems linesObj={cart.lines} />
         </div>
-        <div id="cartSummary" className="left-0 right-0 bottom-0 grid gap-6 p-4 rounded-md w-full">
-          <div className="left-0 right-0 bottom-0 grid gap-6 p-4 rounded-md w-full">
+        <div id="cartSummary" className={`left-0 right-0 bottom-0 grid ${isBrowser ? 'gap-6 p-4' : '' } rounded-md w-full`}>
+          <div className={`left-0 right-0 bottom-0 grid ${isBrowser ? 'gap-6 p-4' : '' } rounded-md w-full`}>
             <CartSummary cost={cart.cost} />
             <CartActions checkoutUrl={cart.checkoutUrl} />
           </div>
