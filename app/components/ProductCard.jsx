@@ -16,7 +16,7 @@ export default function ProductCard({product, dataIndex}) {
             <Image
               data={product.variants.nodes[0].image}
               alt={product.title}
-              className="rounded"
+              className="rounded product-image"
               loading="eager"
             />
           }

@@ -7,6 +7,7 @@ const ReactP5Wrapper = lazy(() =>
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
 import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier} from './Utility';
+import {isMobile} from 'react-device-detect';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -295,7 +296,7 @@ function sketch(p5) {
             if(!slide.freezeScroll && slide.svg) {
                 slide.update();
                 if(caterpillarIndicatorHovered) {
-                    slide.scrollProgress += 20;
+                    slide.scrollProgress += 20 * deviceMultiplier;
                 }
             }
         }
@@ -342,11 +343,28 @@ function sketch(p5) {
                 }
             } else {
                 // butterfly
+                if(deviceMultiplier === 0.5) {
+                    // use noise 
+                    let x = p5.noise(p5.millis() * 0.001) * p5.width;
+                    let y = p5.noise(p5.millis() * 0.0005) * p5.height;
+                    let color = butterfly.updateColor();
+                    mousePath.addPoint(x, y);
+                    if(mousePath.points.length > 3) {
+                        mousePath.points.shift();
+                        mousePath.angles.shift();
+        
+                        let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
+                        sparkles.push(sparkle);
+                    }
+                    if(sparkles.length > 120) {
+                        sparkles.shift();
+                    }
+                } 
+
                 if(mousePath.points.length >= 2) {
                     butterfly.update(mousePath.lastPt, mousePath.lastAngle);
                     butterfly.show();
                 }
-
                 for(let sparkle of sparkles) {
                     sparkle.show();
                 }
@@ -365,16 +383,18 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
             let color = butterfly.updateColor();
-            mousePath.addPoint(p5.mouseX, p5.mouseY);
-            if(mousePath.points.length > 3) {
-                mousePath.points.shift();
-                mousePath.angles.shift();
-
-                let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
-                sparkles.push(sparkle);
-            }
-            if(sparkles.length > 120) {
-                sparkles.shift();
+            if(deviceMultiplier === 1) {
+                mousePath.addPoint(p5.mouseX, p5.mouseY);
+                if(mousePath.points.length > 3) {
+                    mousePath.points.shift();
+                    mousePath.angles.shift();
+    
+                    let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
+                    sparkles.push(sparkle);
+                }
+                if(sparkles.length > 120) {
+                    sparkles.shift();
+                }
             }
 
             // if u want to switch back to uneven distribution of particles
@@ -411,11 +431,11 @@ function sketch(p5) {
     }
 
     p5.touchMoved = (e) => {
-        if(e.touches) {
-            p5.loop();
-            let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
-            slide.scrollProgress += p5.constrain(movedTouch.y, -10, 10);
-        }
+        // if(e.touches) {
+        //     p5.loop();
+        //     let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
+        //     slide.scrollProgress += p5.constrain(movedTouch.y, -10, 10);
+        // }
     }
 
     p5.windowResized = () => {

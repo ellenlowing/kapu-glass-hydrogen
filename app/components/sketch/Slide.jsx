@@ -89,32 +89,33 @@ export default class Slide {
 
             product.addEventListener('mouseenter', (e) => {
                 this.mouseEnterHandler(e);
+                console.log('mouseenter product')
             })
 
             product.addEventListener('mouseleave', (e) => {
                 this.mouseLeaveHandler(e);
+                console.log('mouseleave');
             })
 
             if(isMobile) {
                 product.addEventListener('touchstart', (e) => {
-                    if(!this.activeIndex) {
+                    if(this.activeIndex == null) {
+                        // when product image is not highlighted and clicked
                         e.preventDefault();
                         this.activeIndex = i;
                         this.mouseEnterHandler(e);
+                        console.log(i, this.activeIndex, 'when product image is not highlighted and clicked');
                     } else if (i == this.activeIndex) {
+                        // when product image is highlighted and clicked again
                         this.activeIndex = null;
+                        console.log('product image is highlighted and clicked');
                     } else if (i != this.activeIndex) {
+                        // when another product image that's not highlighted is clicked
                         e.preventDefault();
                         this.activeIndex = i;
+                        console.log('when another product image thats not highlighted is clicked')
                     }
                 })
-                // this.svg.addEventListener('touchstart', (e) => {
-                //     console.log(e.target);
-                //     if(this.activeIndex) {
-                //         console.log("hi1");
-                //         this.mouseLeaveHandler(e);
-                //     }
-                // })
             }
 
             if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
@@ -129,14 +130,13 @@ export default class Slide {
         }
 
         if(isMobile) {
-            for(let svg of this.svgSlides) {
-                svg.addEventListener('touchstart', (e) => {
-                    console.log(this.activeIndex);
-                    if(this.activeIndex != null) {
-                        this.mouseLeaveHandler();
-                    }
-                })
-            }
+            const mainContent = document.getElementById('mainContent');
+            mainContent.addEventListener('touchstart', (e) => {
+                console.log(e.target);
+                if(this.activeIndex != null && !e.target.classList.contains('product-image')) {
+                    this.mouseLeaveHandler();
+                }
+            })
         }
         this.resize();
     }

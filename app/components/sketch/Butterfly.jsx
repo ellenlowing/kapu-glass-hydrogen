@@ -1,4 +1,4 @@
-import { randomHex } from "./Utility";
+import { randomHex, deviceMultiplier } from "./Utility";
 
 export default class Butterfly {
     constructor(center, dx, p5, rc) {
@@ -6,7 +6,7 @@ export default class Butterfly {
         this.rc = rc;
         this.shapePoints = [];
         this.points = [];
-        this.da = this.p5.PI / 120;
+        this.da = this.p5.PI / 120 * deviceMultiplier;
         this.dx = dx;
         this.center = center;
         this.xoff = 0;
@@ -93,9 +93,11 @@ export default class Butterfly {
     }
 
     show() {
-        this.rc.curve(this.points, this.roughStyle);
         this.rc.curve(this.antenna0, this.roughAntennaStyle);
         this.rc.curve(this.antenna1, this.roughAntennaStyle);
+        this.rc.curve(this.points, this.roughStyle);
+        // console.log('hi2');
+        // console.log(this.points.length);
 
         // debug colors
         // this.rc.rectangle(10, 100, 100, 100, {
