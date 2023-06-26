@@ -45,6 +45,7 @@ function sketch(p5) {
 
     // butterfly
     let butterfly;
+    let butterflyOffset = 0;
     let mousePath;
 
     let caterpillar;
@@ -345,26 +346,34 @@ function sketch(p5) {
                 // butterfly
                 if(deviceMultiplier === 0.5) {
                     // use noise 
-                    let x = p5.noise(p5.millis() * 0.001) * p5.width;
-                    let y = p5.noise(p5.millis() * 0.0005) * p5.height;
+                    let xoff = p5.map(p5.cos(butterflyOffset), -1, 1, 0, 4);
+                    let yoff = p5.map(p5.sin(butterflyOffset), -1, 1, 0, 4);
+                    let rx = p5.map(p5.noise(xoff, yoff), 0, 1, p5.width * 0.25, p5.width/2);
+                    let ry = p5.map(p5.noise(xoff, yoff), 0, 1, p5.height * 0.25, p5.height/2);
+                    let x = rx * p5.cos(butterflyOffset) + p5.width / 2;
+                    let y = ry * p5.sin(butterflyOffset) + p5.height / 2;
                     let color = butterfly.updateColor();
                     mousePath.addPoint(x, y);
-                    if(mousePath.points.length > 3) {
+                    let sparkle = new Sparkle(p5, rc, color, p5.createVector(x, y));
+                    sparkles.push(sparkle);
+                    if(mousePath.points.length > 2) {
+                        butterfly.update(mousePath.lastPt, mousePath.lastAngle);
+                        butterfly.show();
                         mousePath.points.shift();
                         mousePath.angles.shift();
         
-                        let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
-                        sparkles.push(sparkle);
                     }
-                    if(sparkles.length > 120) {
+                    if(sparkles.length > 60) {
                         sparkles.shift();
                     }
-                } 
-
-                if(mousePath.points.length >= 2) {
-                    butterfly.update(mousePath.lastPt, mousePath.lastAngle);
-                    butterfly.show();
+                    butterflyOffset += 0.08;
+                } else {
+                    if(mousePath.points.length >= 2) {
+                        butterfly.update(mousePath.lastPt, mousePath.lastAngle);
+                        butterfly.show();
+                    }
                 }
+                
                 for(let sparkle of sparkles) {
                     sparkle.show();
                 }

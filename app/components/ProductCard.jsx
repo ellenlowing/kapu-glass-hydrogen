@@ -1,6 +1,6 @@
 import {Link} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
-import {isBrowser, isMobile} from 'react-device-detect';
+import {isMobile} from 'react-device-detect';
 
 export default function ProductCard({product, dataIndex}) {
   const {price, compareAtPrice} = product.variants?.nodes[0] || {};
@@ -22,7 +22,7 @@ export default function ProductCard({product, dataIndex}) {
           }
           
         </div>
-        <div className="hidden group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200">
+        <div className={`hidden group-hover:opacity-[100%] opacity-[0] grid absolute h-full w-full transition ease-in-out duration-200 `}>
           <h3 id="product-title" className="t-0 left-[150px] p-[0.1rem] product-hover text-xs text-copy overflow-hidden text-ellipsis w-max-content h-fit-content absolute">
             {product.title}
           </h3>

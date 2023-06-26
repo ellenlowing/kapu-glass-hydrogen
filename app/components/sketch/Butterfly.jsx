@@ -1,4 +1,5 @@
 import { randomHex, deviceMultiplier } from "./Utility";
+import {isMobile} from 'react-device-detect';
 
 export default class Butterfly {
     constructor(center, dx, p5, rc) {
@@ -15,8 +16,9 @@ export default class Butterfly {
         this.heading = 0;
         this.antenna0 = [];
         this.antenna1 = [];
+        this.rMultiplier = isMobile ? 0.75 : 1;
         this.roughStyle = {
-            strokeWidth: 1,
+            strokeWidth: 1 * deviceMultiplier,
             roughness: 1,
             fillWeight: 0.5,
             hachureGap: 3,
@@ -43,7 +45,7 @@ export default class Butterfly {
         let reversedString = reversed.toString();
         this.roughStyle.stroke = reversedString;
         this.roughAntennaStyle.stroke = reversedString;
-        this.t += 0.005;
+        this.t += (0.005 / deviceMultiplier);
         if(this.t >= 1) {
             this.t = 0;
             this.colorA = this.colorB;
@@ -61,7 +63,7 @@ export default class Butterfly {
         this.roughStyle.hachureAngle = (heading) / this.p5.PI * 180;
         for(let a = 0; a <= this.p5.TWO_PI; a += this.da) {
             let n = this.p5.noise(this.xoff, this.yoff);
-            let r = this.p5.sin(2 * a) * this.p5.map(n, 0, 1, 20, 100);
+            let r = this.p5.sin(2 * a) * this.p5.map(n, 0, 1, 20, 100) * this.rMultiplier;
             let x = this.p5.sin(this.yoff * 5) * r * this.p5.cos(a);
             let y = r * this.p5.sin(a);
             let v = this.p5.createVector(x, y);
@@ -96,8 +98,6 @@ export default class Butterfly {
         this.rc.curve(this.antenna0, this.roughAntennaStyle);
         this.rc.curve(this.antenna1, this.roughAntennaStyle);
         this.rc.curve(this.points, this.roughStyle);
-        // console.log('hi2');
-        // console.log(this.points.length);
 
         // debug colors
         // this.rc.rectangle(10, 100, 100, 100, {

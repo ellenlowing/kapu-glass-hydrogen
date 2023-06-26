@@ -1,8 +1,10 @@
+import {deviceMultiplier} from './Utility';
+
 export default class Path {
     constructor(p5) {
         this.points = [];
         this.angles = [];
-        this.stepSize = 20;
+        this.stepSize = 20 * (deviceMultiplier * deviceMultiplier);
         this.p5 = p5;
     }
 

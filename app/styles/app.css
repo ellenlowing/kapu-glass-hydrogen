@@ -987,6 +987,14 @@ nav {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+.py-16 {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
 .pb-12 {
   padding-bottom: 3rem;
 }
@@ -1057,6 +1065,9 @@ nav {
 }
 .font-medium {
   font-weight: 500;
+}
+.font-normal {
+  font-weight: 400;
 }
 .uppercase {
   text-transform: uppercase;

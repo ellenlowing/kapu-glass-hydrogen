@@ -1,4 +1,4 @@
-import {colors} from './Utility';
+import {colors, deviceMultiplier} from './Utility';
 
 export default class Sparkle {
     constructor(p5, rc, color, pos) {
@@ -15,7 +15,7 @@ export default class Sparkle {
         this.roughStyle.roughness = this.p5.random(0.2, 2);
         this.roughStyle.strokeWidth = this.p5.random(0.01, 0.8);
         this.minSize = 4;
-        this.maxSize = 15;
+        this.maxSize = 15 * deviceMultiplier;
         this.rx = this.p5.random(this.minSize, this.maxSize);
         this.ry = this.p5.random(this.minSize, this.maxSize);
         this.w = this.rx * 2;

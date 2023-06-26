@@ -4,7 +4,7 @@ import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
 import {useMatches, useFetcher} from '@remix-run/react';
-import {isBrowser, isMobile} from 'react-device-detect';
+import {isMobile} from 'react-device-detect';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -54,7 +54,7 @@ export default function ProductHandle() {
                         <ProductGallery media={product.media.nodes}/>
                     </div>
                 </div>
-                <div className={`sticky grid gap-8 lg:gap-12 lg:px-8 py-8`}>
+                <div className={`sticky grid gap-8 lg:gap-12 lg:px-8 ${isMobile ? 'py-16' : 'py-8' }`}>
                     <div className={`${isMobile ? 'block' : 'grid'} lg:gap-8 lg:grid-flow-row grid-flow-col`}>
                         <h1 className="text-5xl whitespace-normal fa">
                             {product.title}
