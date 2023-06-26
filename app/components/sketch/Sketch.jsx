@@ -525,16 +525,25 @@ function sketch(p5) {
     function setUpCaterpillarIndicator() {
         caterpillarIndicator = p5.select('#caterpillar-indicator');
         if(caterpillarIndicator) {
-            caterpillarIndicator.mouseOver(
-                () => {
-                        caterpillarIndicatorHovered = true;
-                }
-            );
-            caterpillarIndicator.mouseOut(
-                () => {
-                        caterpillarIndicatorHovered = false;
+            if(isMobile) {
+                caterpillarIndicator.touchStarted(
+                    () => {
+                        caterpillarIndicatorHovered = !caterpillarIndicatorHovered;
                     }
-            );
+                )
+            } else {
+                caterpillarIndicator.mouseOver(
+                    () => {
+                            caterpillarIndicatorHovered = true;
+                    }
+                );
+                caterpillarIndicator.mouseOut(
+                    () => {
+                            caterpillarIndicatorHovered = false;
+                        }
+                );
+            }
+            
         }
     }
 }
