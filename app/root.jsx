@@ -42,6 +42,8 @@ export const meta = () => ({
 export async function loader({context}) {
   const layout = await context.storefront.query(LAYOUT_QUERY);
   const cartId = await context.session.get('cartId');
+  const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
+
   const cart = cartId
     ? (
         await context.storefront.query(CART_QUERY, {
@@ -57,7 +59,8 @@ export async function loader({context}) {
   
   return json({
     layout,
-    cart
+    cart,
+    product
   });
 }
 
@@ -90,4 +93,27 @@ const LAYOUT_QUERY = `#graphql
       description
     }
   }
+`;
+
+const FEATURED_PRODUCT_QUERY = `#graphql
+    query FeaturedProduct {
+        product(handle: "featured-page") {
+                id
+                title
+                media(first: 10) {
+                    nodes {
+                        ... on MediaImage {
+                        mediaContentType
+                                image {
+                                    id
+                                    url
+                                    altText
+                                    width
+                                    height
+                                }
+                        }
+                    }
+                }
+        }
+    }
 `;

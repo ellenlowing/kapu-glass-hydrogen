@@ -1,4 +1,5 @@
 import {useEffect, useState, lazy, Suspense} from "react";
+import rough from 'roughjs/bin/rough';
 const ReactP5Wrapper = lazy(() => 
   import('react-p5-wrapper').then(module => ({
     default: module.ReactP5Wrapper
@@ -11,17 +12,27 @@ import {isMobile} from 'react-device-detect';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
-import CaterpillarHop from './CaterpillarHop';
+import Caterpillar from './Caterpillar';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
 import Sparkle from './Sparkle';
-import rough from 'roughjs/bin/rough';
+import { useLoaderData, Link } from "@remix-run/react";
+
+export async function loader({context}) {
+    const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
+  
+    return json({
+        product
+    });
+  }
 
 export default function Sketch() {
-
+    const {product} = useLoaderData();
     const [isSSR, setIsSSR] = useState(true);
+
+    const links = product.media.nodes.map(media => media.image.url);
 
     useEffect(() => {
         setIsSSR(false);
@@ -32,9 +43,9 @@ export default function Sketch() {
             {
                 !isSSR && (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <ReactP5Wrapper sketch={sketch}></ReactP5Wrapper>
+                        <ReactP5Wrapper sketch={sketch} links={links}></ReactP5Wrapper>
                     </Suspense>
-                )
+                )   
             }
         </>
     );
@@ -49,7 +60,8 @@ function sketch(p5) {
     let butterflyOffset = 0;
     let mousePath;
 
-    let caterpillar;
+    // caterpillar
+    let caterpillars;
 
     // flower
     let flowers;
@@ -92,10 +104,22 @@ function sketch(p5) {
 
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
 
+    let featuredImages = [];
+    let pg;
+
+    p5.updateWithProps = props => {
+        for(let link of props.links) {
+            let img = p5.loadImage(link);
+            featuredImages.push(img);
+        }
+    }
+
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
         p5.noStroke();
+
+        pg = p5.createGraphics(400, 400);
 
         canvas = document.getElementById('defaultCanvas0');
         rc = rough.canvas(canvas);
@@ -108,14 +132,14 @@ function sketch(p5) {
         let roughLadder = rough.canvas(ladderCanvas);
         ladder = new Ladder(p5, roughLadder, ladderMenu);
 
+        caterpillars = [];
+
         butterfly = new Butterfly(
             p5.createVector(p5.width/2, p5.height/2),
             p5.random(0.01, 0.1),
             p5,
             rc
         );
-
-        // caterpillar = new CaterpillarHop(p5, rc);
 
         mousePath = new Path(p5);
 
@@ -172,7 +196,6 @@ function sketch(p5) {
 
         logo = document.getElementById('logo');
 
-        const urlPath = p5.getURLPath();
         lastURLPath = null;
     }
 
@@ -193,6 +216,15 @@ function sketch(p5) {
             if((!lastURLPath || urlPath[1] !== lastURLPath[1])) {
                 if(urlPath.length == 0) {
                     console.log('set up home');
+                    // add caterpillar
+                    caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height)));
+
+
+                pg.background(255);
+                pg.fill(0);
+                pg.ellipse(50, 50, 200);
+                featuredImages[0].mask(pg);
+
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
                     console.log('init slide');
@@ -251,10 +283,15 @@ function sketch(p5) {
             p5.background(bgColor);
 
             if(urlPath.length == 0) {
-                // if(caterpillar) {
-                //     caterpillar.update();
-                //     caterpillar.show();
-                // }                
+                for(let caterpillar of caterpillars) {
+                    caterpillar.update();
+                    caterpillar.show();
+                }
+                for(let img of featuredImages) {
+                    // p5.image(img, 0, 0);
+                }
+
+                p5.image(featuredImages[0], 0, 0);
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
                 if(urlPath.indexOf('vessels') != -1) {
@@ -326,9 +363,9 @@ function sketch(p5) {
 
         // frame rate debug
         getAverageFPS();
-        // p5.stroke(0);
-        // p5.noFill();
-        // p5.text(`${averageFPS}`, 100, 200);
+        p5.stroke(0);
+        p5.noFill();
+        p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {
@@ -361,9 +398,9 @@ function sketch(p5) {
 
     p5.mousePressed = (e) => {
         const urlPath = p5.getURLPath();
-        // if(urlPath.length == 0) {
-        //     caterpillar.pressed();
-        // }
+        if(urlPath.length == 0) {
+            caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY));
+        }
     }
 
     p5.mouseWheel = (e) => {
@@ -396,11 +433,6 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
             p5.background(bgColor);
-            // if(caterpillar) {
-            //     caterpillar.resize();
-            //     caterpillar.update();
-            //     caterpillar.show();
-            // }
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             p5.background(bgColor);
             slide.resize();
@@ -476,3 +508,26 @@ function sketch(p5) {
     }
 
 }
+
+const FEATURED_PRODUCT_QUERY = `#graphql
+query FeaturedProduct {
+    product(handle: "featured-page") {
+            id
+            title
+            media(first: 10) {
+                nodes {
+                    ... on MediaImage {
+                    mediaContentType
+                            image {
+                                id
+                                url
+                                altText
+                                width
+                                height
+                            }
+                    }
+                }
+            }
+    }
+}
+`;
