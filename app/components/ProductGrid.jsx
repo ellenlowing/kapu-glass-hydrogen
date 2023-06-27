@@ -24,7 +24,7 @@ export default function ProductGrid({collection}) {
         <p className='fa absolute z-[-10] bottom-[-40px]'>preload</p>
       </div>
 
-      <div id="caterpillar-indicator" className="absolute bottom-[10px] left-[50%] translate-x-[-50%] text-center z-[2] cursor-pointer">
+      <div id="caterpillar-indicator" className="absolute bottom-[10px] left-[50%] translate-x-[-50%] text-center z-[2] cursor-pointer w-full">
         {collection.products.nodes.map((product, index) => (
           <div id={`gradient-circle-${index}`} className={`gradient-circle relative w-[50px] h-[50px] rounded-full bottom-[0] inline-block mr-[-20px]`} key={`gradient-circle-${index}`}>
             <span id={`caterpillar-index-${index}`} className='caterpillar-index text-white iota-md drop-shadow-[0_0_2px_#FFFFFF] text-lg top-[8px] left-[0.5px] relative'>{index+1}</span>
