@@ -1599,9 +1599,9 @@
     "dequal" "^2.0.2"
 
 "@restart/ui@^1.6.3":
-  "integrity" "sha512-kDjhH8lk+aVGc+dPb8wEBXRDx4B1WX6/pqyWi22R3Oim6KQokeLGO2g8MYzwd2/UdjsrDt+HyYFpKihLIN7+/A=="
-  "resolved" "https://registry.npmjs.org/@restart/ui/-/ui-1.6.5.tgz"
-  "version" "1.6.5"
+  "integrity" "sha512-eC3puKuWE1SRYbojWHXnvCNHGgf3uzHCb6JOhnF4OXPibOIPEkR1sqDSkL643ydigxwh+ruCa1CmYHlzk7ikKA=="
+  "resolved" "https://registry.npmjs.org/@restart/ui/-/ui-1.6.6.tgz"
+  "version" "1.6.6"
   dependencies:
     "@babel/runtime" "^7.21.0"
     "@popperjs/core" "^2.11.6"
@@ -7849,10 +7849,10 @@
     "minimist" "^1.2.0"
     "strip-json-comments" "~2.0.1"
 
-"react-bootstrap@^2.7.4":
-  "integrity" "sha512-EPKPwhfbxsKsNBhJBitJwqul9fvmlYWSft6jWE2EpqhEyjhqIqNihvQo2onE5XtS+QHOavUSNmA+8Lnv5YeAyg=="
-  "resolved" "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.7.4.tgz"
-  "version" "2.7.4"
+"react-bootstrap@^2.8.0":
+  "integrity" "sha512-e/aNtxl0Z2ozrIaR82jr6Zz7ss9GSoaXpQaxmvtDUsTZIq/XalkduR/ZXP6vbQHz2T4syvjA+4FbtwELxxmpww=="
+  "resolved" "https://registry.npmjs.org/react-bootstrap/-/react-bootstrap-2.8.0.tgz"
+  "version" "2.8.0"
   dependencies:
     "@babel/runtime" "^7.21.0"
     "@restart/hooks" "^0.4.9"
