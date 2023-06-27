@@ -78,7 +78,6 @@ export default function App() {
         </Layout>
         <ScrollRestoration />
         <Scripts />
-        <script src="https://unpkg.com/roughjs@latest/bundled/rough.js"></script>
       </body>
     </html>
   );

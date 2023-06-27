@@ -17,6 +17,7 @@ import Spiral from './Spiral';
 import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
 import Sparkle from './Sparkle';
+import rough from 'roughjs/bin/rough';
 
 export default function Sketch() {
 
