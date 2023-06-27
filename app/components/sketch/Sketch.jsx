@@ -91,8 +91,6 @@ function sketch(p5) {
 
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
 
-    let caterpillarIndicator, caterpillarIndicatorHovered = false;
-
     p5.setup = () => {
         p5.createCanvas(p5.windowWidth, p5.windowHeight); 
         p5.pixelDensity(2);
@@ -166,56 +164,15 @@ function sketch(p5) {
             let stepCount = p5.random(5, 18);
             let spiral = new Spiral(p5, rc, x, y, stepSize, stepCount);
             spirals.push(spiral);
+            if(spirals.length > (10 * deviceMultiplier)) {
+                spirals.shift();
+            }
         })
 
         logo = document.getElementById('logo');
 
         const urlPath = p5.getURLPath();
         lastURLPath = null;
-        mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
-
-        if(urlPath.length == 0) {
-            // homepage
-            caterpillar.setup();
-
-        } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
-            // collections pages
-            const collectionName = urlPath[1];
-            setGradientCaterpillarColor();
- 
-            const body = document.getElementsByTagName('body')[0];
-            body.style.overflow = 'hidden';
-
-            // slide layout things
-            slide.setup(collectionName);
-
-            // diff animations per collection page
-            if(urlPath.indexOf('vessels') != -1) {
-                // star
-                for(let star of fallingStars) {
-                    star.setup();
-                }
-            } else if (urlPath.indexOf('accessories') != -1) {
-                // spiral
-                for(let spiral of spirals){
-                    spiral.setup();
-                }
-            } else if (urlPath.indexOf('workshops') != -1) {
-                // flower
-                for(let flower of flowers) {
-                    flower.setup();
-                }
-            } else if (urlPath.indexOf('archive') != -1) {
-                // cloud
-                for(let cloud of clouds) {
-                    cloud.setup();
-                }
-            } else if (urlPath.indexOf('magazine') != -1) {
-                setupBubbleEmitters();
-            }
-        } 
-
-        setUpCaterpillarIndicator();
     }
 
     p5.draw = () => {
@@ -225,20 +182,11 @@ function sketch(p5) {
 
         if(lastURLPath == null || !arrayEquals(urlPath, lastURLPath)) {
             const navLinks = document.getElementsByClassName('nav-link');
-            // if(urlPath.length == 0) {
-            //     bgColor = '#000';
-            //     mainColor = '#FFF';
-            //     for(let link of navLinks) {
-            //         link.style.color = '#FFF';
-            //     }
-            //     caterpillar.setup();
-            // } else {
-                bgColor = '#FFF';
-                mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
-                for(let link of navLinks) {
-                    link.style.color = '#000';
-                }
-            // }
+            bgColor = '#FFF';
+            mainColor = colors[pathNameList.indexOf(urlPath[urlPath.length-1])];
+            for(let link of navLinks) {
+                link.style.color = '#000';
+            }
             ladder.show(mainColor);
 
             if((!lastURLPath || urlPath[1] !== lastURLPath[1])) {
@@ -249,9 +197,7 @@ function sketch(p5) {
                     console.log('init slide');
                     slide.setup(collectionName);
                     setGradientCaterpillarColor();
-    
-                    setUpCaterpillarIndicator();
-    
+        
                     // diff animations per collection page
     
                     console.log('init bg elements');
@@ -296,9 +242,6 @@ function sketch(p5) {
         if(urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             if(!slide.freezeScroll && slide.svg) {
                 slide.update();
-                if(caterpillarIndicatorHovered) {
-                    slide.scrollProgress += 20 * deviceMultiplier;
-                }
             }
         }
 
@@ -346,10 +289,10 @@ function sketch(p5) {
                 // butterfly
                 if(deviceMultiplier === 0.5) {
                     // use noise 
-                    let xoff = p5.map(p5.cos(butterflyOffset), -1, 1, 0, 4);
-                    let yoff = p5.map(p5.sin(butterflyOffset), -1, 1, 0, 4);
-                    let rx = p5.map(p5.noise(xoff, yoff), 0, 1, p5.width * 0.25, p5.width/2);
-                    let ry = p5.map(p5.noise(xoff, yoff), 0, 1, p5.height * 0.25, p5.height/2);
+                    let xoff = p5.map(p5.cos(butterflyOffset), -1, 1, 0, 3);
+                    let yoff = p5.map(p5.sin(butterflyOffset), -1, 1, 0, 3);
+                    let rx = p5.map(p5.noise(xoff, yoff, butterflyOffset), 0, 1, p5.width * 0.15, p5.width/2);
+                    let ry = p5.map(p5.noise(xoff, yoff, butterflyOffset), 0, 1, p5.height * 0.15, p5.height/2);
                     let x = rx * p5.cos(butterflyOffset) + p5.width / 2;
                     let y = ry * p5.sin(butterflyOffset) + p5.height / 2;
                     let color = butterfly.updateColor();
@@ -531,28 +474,4 @@ function sketch(p5) {
         document.documentElement.style.setProperty('--gradient-caterpillar-color', secondaryColors[pathIndex]);
     }
 
-    function setUpCaterpillarIndicator() {
-        caterpillarIndicator = p5.select('#caterpillar-indicator');
-        if(caterpillarIndicator) {
-            if(isMobile) {
-                caterpillarIndicator.touchStarted(
-                    () => {
-                        caterpillarIndicatorHovered = !caterpillarIndicatorHovered;
-                    }
-                )
-            } else {
-                caterpillarIndicator.mouseOver(
-                    () => {
-                            caterpillarIndicatorHovered = true;
-                    }
-                );
-                caterpillarIndicator.mouseOut(
-                    () => {
-                            caterpillarIndicatorHovered = false;
-                        }
-                );
-            }
-            
-        }
-    }
 }

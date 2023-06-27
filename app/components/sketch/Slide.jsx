@@ -1,4 +1,4 @@
-import {hide, show, colors, secondaryColors, inLine, magazineScrollRanges} from './Utility';
+import {hide, show, colors, secondaryColors, inLine, deviceMultiplier, magazineScrollRanges} from './Utility';
 import {isBrowser, isMobile} from 'react-device-detect';
 
 export default class Slide {
@@ -79,7 +79,31 @@ export default class Slide {
         this.gradientCircles = document.getElementsByClassName('gradient-circle');
         this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
         this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
+        this.caterpillarIndicatorHovered = false;
+        this.caterpillarIndicatorChanged = false;
         this.activeIndex = null;
+
+        if(isBrowser) {
+            this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
+                this.caterpillarIndicatorHovered = true;
+            })
+            this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
+                this.caterpillarIndicatorHovered = false;
+            })
+            console.log('setup');
+        }
+
+        if(isMobile) {
+            this.caterpillarIndicator.addEventListener('touchstart', e => {
+                if(!this.caterpillarIndicatorChanged) {
+                    this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
+                    this.caterpillarIndicatorChanged = true;
+                    setTimeout(() => {
+                        this.caterpillarIndicatorChanged = false;
+                    }, 200)
+                }
+            })
+        }
 
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);
@@ -132,7 +156,7 @@ export default class Slide {
         if(isMobile) {
             const mainContent = document.getElementById('mainContent');
             mainContent.addEventListener('touchstart', (e) => {
-                console.log(e.target);
+                // console.log(e.target);
                 if(this.activeIndex != null && !e.target.classList.contains('product-image')) {
                     this.mouseLeaveHandler();
                 }
@@ -142,6 +166,10 @@ export default class Slide {
     }
 
     update() {
+
+        if(this.caterpillarIndicatorHovered) {
+            this.scrollProgress += 10;
+        }
 
         const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
         const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
@@ -278,6 +306,7 @@ export default class Slide {
                 cancelable: true,
                 composed: false
             });
+            console.log('hi');
             this.canvas.dispatchEvent(createNewSpiral);
         }
     }
