@@ -11,7 +11,7 @@ import {isMobile} from 'react-device-detect';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
-import Caterpillar from './Caterpillar';
+import CaterpillarHop from './CaterpillarHop';
 import FallingStar from './FallingStar';
 import Spiral from './Spiral';
 import Cloud from './Cloud';
@@ -115,7 +115,7 @@ function sketch(p5) {
             rc
         );
 
-        caterpillar = new Caterpillar(p5, rc);
+        // caterpillar = new CaterpillarHop(p5, rc);
 
         mousePath = new Path(p5);
 
@@ -251,10 +251,10 @@ function sketch(p5) {
             p5.background(bgColor);
 
             if(urlPath.length == 0) {
-                if(caterpillar) {
-                    caterpillar.update();
-                    caterpillar.show();
-                }                
+                // if(caterpillar) {
+                //     caterpillar.update();
+                //     caterpillar.show();
+                // }                
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
                 if(urlPath.indexOf('vessels') != -1) {
@@ -361,9 +361,9 @@ function sketch(p5) {
 
     p5.mousePressed = (e) => {
         const urlPath = p5.getURLPath();
-        if(urlPath.length == 0) {
-            caterpillar.pressed();
-        }
+        // if(urlPath.length == 0) {
+        //     caterpillar.pressed();
+        // }
     }
 
     p5.mouseWheel = (e) => {
@@ -396,11 +396,11 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
             p5.background(bgColor);
-            if(caterpillar) {
-                caterpillar.resize();
-                caterpillar.update();
-                caterpillar.show();
-            }
+            // if(caterpillar) {
+            //     caterpillar.resize();
+            //     caterpillar.update();
+            //     caterpillar.show();
+            // }
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             p5.background(bgColor);
             slide.resize();
