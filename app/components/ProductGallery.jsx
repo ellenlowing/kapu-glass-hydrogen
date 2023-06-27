@@ -32,14 +32,13 @@ export default function ProductGallery({media}) {
         <Carousel 
             activeIndex={index} 
             controls={false} 
-            onSelect={handleSelect} 
-            interval={null} 
+            interval={0} 
             indicators={false} 
             onClick={onImageClick} 
             slide={false}>
 
             {media.map((med, i) => {
-                let extraProps = {};
+                let extraProps = {loading: 'eager'};
         
                 if (med.mediaContentType === 'MODEL_3D') {
                     extraProps = {
@@ -65,10 +64,14 @@ export default function ProductGallery({media}) {
                             tabIndex="0"
                             className={`w-100 d-block mx-auto`}
                             data={data}
+                            loading='eager'
                             options={{
                             crop: 'center',
                             }}
                             {...extraProps}
+                            onLoad={() => {
+                                console.log('hi', i);
+                            }}
                         />
                     </Carousel.Item>
                 );
