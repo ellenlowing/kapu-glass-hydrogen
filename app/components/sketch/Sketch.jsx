@@ -1,4 +1,5 @@
 import {useEffect, useState, lazy, Suspense} from "react";
+import { useLoaderData, Link } from "@remix-run/react";
 import rough from 'roughjs/bin/rough';
 const ReactP5Wrapper = lazy(() => 
   import('react-p5-wrapper').then(module => ({
@@ -18,7 +19,8 @@ import Spiral from './Spiral';
 import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
 import Sparkle from './Sparkle';
-import { useLoaderData, Link } from "@remix-run/react";
+import Leaf from './Leaf';
+import Habitat from './Habitat';
 
 export async function loader({context}) {
     const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
@@ -61,7 +63,9 @@ function sketch(p5) {
     let mousePath;
 
     // caterpillar
-    let caterpillars;
+    // let caterpillars;
+    // let leaves;
+    let habitat;
 
     // flower
     let flowers;
@@ -109,9 +113,15 @@ function sketch(p5) {
 
     p5.updateWithProps = props => {
         for(let link of props.links) {
-            let img = p5.loadImage(link);
-            featuredImages.push(img);
+            p5.loadImage(link, img => {
+                // img.resize(p5.width * 0.2, 0);
+                habitat.addImage(img);
+            });
+            // featuredImages.push(img);
+            // let leaf = new Leaf(p5, rc, p5.width * 0.1 * idx, p5.height * 0.4 * Math.floor(idx / 3), img);
+            // leaves.push(leaf);
         }
+        // habitat.setImages(featuredImages);
     }
 
     p5.setup = () => {
@@ -132,7 +142,9 @@ function sketch(p5) {
         let roughLadder = rough.canvas(ladderCanvas);
         ladder = new Ladder(p5, roughLadder, ladderMenu);
 
-        caterpillars = [];
+        // caterpillars = [];
+        // leaves = [];
+        habitat = new Habitat(p5, rc);
 
         butterfly = new Butterfly(
             p5.createVector(p5.width/2, p5.height/2),
@@ -217,13 +229,8 @@ function sketch(p5) {
                 if(urlPath.length == 0) {
                     console.log('set up home');
                     // add caterpillar
-                    caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height)));
-
-
-                pg.background(255);
-                pg.fill(0);
-                pg.ellipse(50, 50, 200);
-                featuredImages[0].mask(pg);
+                    habitat.setup();
+                    habitat.caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height)));
 
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
@@ -271,7 +278,6 @@ function sketch(p5) {
             lastURLPath = urlPath;
         }
 
-
         if(urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             if(!slide.freezeScroll && slide.svg) {
                 slide.update();
@@ -283,15 +289,13 @@ function sketch(p5) {
             p5.background(bgColor);
 
             if(urlPath.length == 0) {
-                for(let caterpillar of caterpillars) {
-                    caterpillar.update();
-                    caterpillar.show();
-                }
-                for(let img of featuredImages) {
-                    // p5.image(img, 0, 0);
-                }
+                pg.background(255);
+                pg.fill(0);
+                pg.circle(200, 200, habitat.caterpillars.length * 100);
 
-                p5.image(featuredImages[0], 0, 0);
+                habitat.update();
+                habitat.show();
+
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
                 if(urlPath.indexOf('vessels') != -1) {
@@ -399,7 +403,8 @@ function sketch(p5) {
     p5.mousePressed = (e) => {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
-            caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY));
+            habitat.caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY));
+            // maskPImageWithPG(leaves[0].pimg, pg);
         }
     }
 
