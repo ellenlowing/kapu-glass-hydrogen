@@ -230,7 +230,7 @@ function sketch(p5) {
                     console.log('set up home');
                     // add caterpillar
                     habitat.setup();
-                    habitat.caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height)));
+                    // habitat.caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height), 0));
 
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
@@ -403,7 +403,7 @@ function sketch(p5) {
     p5.mousePressed = (e) => {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
-            habitat.caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY));
+            habitat.caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY, habitat.caterpillars.length));
             // maskPImageWithPG(leaves[0].pimg, pg);
         }
     }
