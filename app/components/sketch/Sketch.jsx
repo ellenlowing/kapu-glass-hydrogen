@@ -149,7 +149,7 @@ function sketch(p5) {
             rc
         );
 
-        faFont = p5.loadFont(`${window.location.href}${fa.slice(1)}`, font => {
+        faFont = p5.loadFont(`${fa}`, font => {
             console.log('success!');
             faFontLoaded = true;
         });
