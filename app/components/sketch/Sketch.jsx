@@ -109,6 +109,7 @@ function sketch(p5) {
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
 
     let faFont = null;
+    let faFontLoaded = false;
     let titlePoints;
 
     p5.updateWithProps = props => {
@@ -148,8 +149,10 @@ function sketch(p5) {
             rc
         );
 
-        faFont = p5.loadFont(`${window.location.href}${fa.slice(1)}`);
-        console.log(faFont);
+        faFont = p5.loadFont(`${window.location.href}${fa.slice(1)}`, font => {
+            console.log('success!');
+            faFontLoaded = true;
+        });
 
         mousePath = new Path(p5);
 
@@ -290,7 +293,7 @@ function sketch(p5) {
                 habitat.update();
                 habitat.show();
 
-                if(faFont) {
+                if(faFontLoaded) {
                     if(deviceMultiplier == 1) drawRoughTitle(p5.width/2, p5.height/2);
                     // else drawRoughTitle(p5.width/2, 0);
                 }
