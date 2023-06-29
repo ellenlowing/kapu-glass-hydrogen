@@ -294,7 +294,7 @@ function sketch(p5) {
                 habitat.show();
 
                 if(faFontLoaded) {
-                    if(deviceMultiplier == 1) drawRoughTitle(p5.width/2, p5.height/2);
+                    // if(deviceMultiplier == 1) drawRoughTitle(p5.width/2, p5.height/2);
                     // else drawRoughTitle(p5.width/2, 0);
                 }
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
