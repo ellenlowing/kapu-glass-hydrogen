@@ -478,7 +478,6 @@ function sketch(p5) {
         let fontSpacing = deviceMultiplier == 1 ? fontSize / 3 * 2 : 12;
         titlePoints = [];
         for(let i = 0; i < string.length; i++) {
-            console.log(string.charAt(i));
             titlePoints.push(faFont.textToPoints(string.charAt(i), 0, 0, fontSize));
         }
         let letterOffset = 0;
