@@ -111,7 +111,9 @@ export default class Habitat {
             }
         }
         
-        let randompos = this.p5.createVector(this.p5.random(pos.x - 100, pos.x + 100), this.p5.random(pos.y - 100, pos.y + 100));
+        // let randompos = this.p5.createVector(this.p5.random(pos.x - 100, pos.x + 100), this.p5.random(pos.y - 100, pos.y + 100));
+        let randompos = this.p5.createVector(this.p5.noise(pos.x, this.p5.millis() * 0.1) * 20 - 10 + pos.x, this.p5.noise(pos.y, this.p5.millis() * 0.1) * 20 - 10 + pos.y);
+
         return randompos;
     }
 
