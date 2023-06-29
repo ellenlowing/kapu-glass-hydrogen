@@ -7,6 +7,7 @@ export default class Habitat {
         this.caterpillars = [];
         this.images = [];
         this.imagesIndex = 0;
+        this.pixelDensity = 2;
         // this.imagesCount = 0;
     }
 
@@ -16,22 +17,21 @@ export default class Habitat {
 
     addImage(img) {
         this.images.push(img);
-        if(img.width > img.height) {
-            img.resize(this.p5.width / 2 * 0.8 * 0.5, 0);
-            console.log(img.width);
+
+        if(this.p5.width > this.p5.height) {
+            img.resize(0, this.p5.height / 2 * 0.5 * this.pixelDensity);
         } else {
-            img.resize(0, this.p5.height / 2 * 0.5);
-            console.log(img.height);
+            img.resize(this.p5.width / 2 * 0.5 * this.pixelDensity, 0);
         }
 
         let w = img.width;
         let h = img.height;
         let rx = this.p5.width / 2 * 0.8;
         let ry = this.p5.height / 2 * 0.7;
-        let x = rx * Math.cos(Math.PI * 2 / (this.imagesCount) * this.imagesIndex) + (this.p5.width - w) / 2;
-        let y = ry * Math.sin(Math.PI * 2/ (this.imagesCount) * this.imagesIndex) + (this.p5.height - h) / 2;
+        let x = rx * Math.cos(Math.PI * 2 / (this.imagesCount) * this.imagesIndex) + (this.p5.width - w / this.pixelDensity) / 2;
+        let y = ry * Math.sin(Math.PI * 2/ (this.imagesCount) * this.imagesIndex) + (this.p5.height - h / this.pixelDensity) / 2;
 
-        this.mainImage.copy(img, 0, 0, w, h, x, y, w, h);
+        this.mainImage.copy(img, 0, 0, w, h, x, y, w / this.pixelDensity, h / this.pixelDensity);
         this.imagesIndex++;
     }
 

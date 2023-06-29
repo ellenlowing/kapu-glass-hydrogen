@@ -9,7 +9,6 @@ const ReactP5Wrapper = lazy(() =>
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
 import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier} from './Utility';
-import {isMobile} from 'react-device-detect';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -21,6 +20,7 @@ import BubbleEmitter from './BubbleEmitter';
 import Sparkle from './Sparkle';
 import Leaf from './Leaf';
 import Habitat from './Habitat';
+import fa from '../../../public/fonts/FA_TEEQGAFPBI_cleaned.ttf';
 
 export async function loader({context}) {
     const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
@@ -108,22 +108,17 @@ function sketch(p5) {
 
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
 
-    let featuredImages = [];
-    let pg;
+    let faFont = null;
+    let titlePoints;
 
     p5.updateWithProps = props => {
         if(props.links) console.log(props.links.length);
         for(let link of props.links) {
             habitat.imagesCount = props.links.length;
             p5.loadImage(link, img => {
-                // img.resize(p5.width * 0.2, 0);
                 habitat.addImage(img);
             });
-            // featuredImages.push(img);
-            // let leaf = new Leaf(p5, rc, p5.width * 0.1 * idx, p5.height * 0.4 * Math.floor(idx / 3), img);
-            // leaves.push(leaf);
         }
-        // habitat.setImages(featuredImages);
     }
 
     p5.setup = () => {
@@ -131,7 +126,7 @@ function sketch(p5) {
         p5.pixelDensity(2);
         p5.noStroke();
 
-        pg = p5.createGraphics(400, 400);
+        console.log(fa);
 
         canvas = document.getElementById('defaultCanvas0');
         rc = rough.canvas(canvas);
@@ -144,8 +139,6 @@ function sketch(p5) {
         let roughLadder = rough.canvas(ladderCanvas);
         ladder = new Ladder(p5, roughLadder, ladderMenu);
 
-        // caterpillars = [];
-        // leaves = [];
         habitat = new Habitat(p5, rc);
 
         butterfly = new Butterfly(
@@ -154,6 +147,9 @@ function sketch(p5) {
             p5,
             rc
         );
+
+        faFont = p5.loadFont(`${window.location.href}${fa.slice(1)}`);
+        console.log(faFont);
 
         mousePath = new Path(p5);
 
@@ -232,7 +228,6 @@ function sketch(p5) {
                     console.log('set up home');
                     // add caterpillar
                     habitat.setup();
-                    // habitat.caterpillars.push(new Caterpillar(p5, rc, p5.random(p5.width), p5.random(p5.height), 0));
 
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
@@ -291,13 +286,14 @@ function sketch(p5) {
             p5.background(bgColor);
 
             if(urlPath.length == 0) {
-                pg.background(255);
-                pg.fill(0);
-                pg.circle(200, 200, habitat.caterpillars.length * 100);
-
+                // home
                 habitat.update();
                 habitat.show();
 
+                if(faFont) {
+                    if(deviceMultiplier == 1) drawRoughTitle(p5.width/2, p5.height/2);
+                    // else drawRoughTitle(p5.width/2, 0);
+                }
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
                 if(urlPath.indexOf('vessels') != -1) {
@@ -369,13 +365,14 @@ function sketch(p5) {
 
         // frame rate debug
         getAverageFPS();
-        // p5.stroke(0);
-        // p5.noFill();
-        // p5.text(`${averageFPS}`, 100, 200);
+        p5.stroke(0);
+        p5.noFill();
+        p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {
         // butterfly
+
         const urlPath = p5.getURLPath();
         if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
             let color = butterfly.updateColor();
@@ -406,7 +403,6 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
             habitat.caterpillars.push(new Caterpillar(p5, rc, p5.mouseX, p5.mouseY, habitat.caterpillars.length));
-            // maskPImageWithPG(leaves[0].pimg, pg);
         }
     }
 
@@ -474,6 +470,36 @@ function sketch(p5) {
         }
         // ladder.resize();
         ladder.show();
+    }
+
+    function drawRoughTitle(x, y) {
+        let string = 'RIGHT HERE IS A GOOD PLACE TO START';
+        let fontSize = deviceMultiplier == 1 ? 36 : 36;
+        let fontSpacing = deviceMultiplier == 1 ? fontSize / 3 * 2 : 12;
+        titlePoints = [];
+        for(let i = 0; i < string.length; i++) {
+            console.log(string.charAt(i));
+            titlePoints.push(faFont.textToPoints(string.charAt(i), 0, 0, fontSize));
+        }
+        let letterOffset = 0;
+        let slantedOffset = 0;
+        let midPointOffset = string.length * fontSpacing / 2;
+        for(let letter of titlePoints) {
+            let roughPoints = [];
+            for(let pt of letter) {
+                roughPoints.push([pt.x + x + letterOffset - midPointOffset, pt.y + y + slantedOffset]);
+            }
+            if(roughPoints.length > 0) {
+                rc.curve(roughPoints, {
+                    disableMultiStroke: true,
+                    roughness: deviceMultiplier,
+                });
+            }
+            letterOffset += fontSpacing;
+            if(deviceMultiplier != 1) {
+                slantedOffset += fontSpacing * 1.5;
+            }
+        }
     }
 
     function setupBubbleEmitters() {

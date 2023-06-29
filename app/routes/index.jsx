@@ -1,6 +1,4 @@
-import { useLoaderData, Link } from "@remix-run/react";
-import {Image} from '@shopify/hydrogen';
-import {json} from '@shopify/remix-oxygen';
+import {isMobile} from 'react-device-detect';
 
 export const meta = () => {
     return {
@@ -8,57 +6,8 @@ export const meta = () => {
     };
 };
 
-export async function loader({context}) {
-    const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
-  
-    return json({
-        product
-    });
-  }
-
 export default function Index() {
-    const {product} = useLoaderData();
     return (
-        <></>
-        // <section className="h-[calc(100vh-64px)] w-[auto] gap-4">
-        //     {product.media.nodes.map((media, idx) => {
-        //         return ( <></>
-        //             // <Image
-        //             //     data={media.image}
-        //             //     key={`featured-image-${idx}`}
-        //             //     loaderOptions={{
-        //             //         scale: 2,
-        //             //     }}
-        //             //     className="h-[30%] w-[auto] min-h-[180px] absolute featured-image rounded hidden z-50"
-        //             //     id={`featured-image-${idx}`}
-        //             //     loading="eager"
-        //             // ></Image>
-        //             // <p>{media.image.url}</p>
-        //         );
-        //     })}
-        // </section>
+        <div className={`select-none fa text-uppercase absolute text-center top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${isMobile ? 'homepage-title-mobile font-bold text-2xl' : 'homepage-title font-bold text-4xl'}`}>Right here is a good place to start</div>
     );
 }
-
-const FEATURED_PRODUCT_QUERY = `#graphql
-    query FeaturedProduct {
-        product(handle: "featured-page") {
-                id
-                title
-                media(first: 10) {
-                    nodes {
-                        ... on MediaImage {
-                        mediaContentType
-                                image {
-                                    id
-                                    url
-                                    altText
-                                    width
-                                    height
-                                }
-                        }
-                    }
-                }
-        }
-    }
-`;

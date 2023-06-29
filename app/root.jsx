@@ -36,7 +36,7 @@ export const links = () => {
 
 export const meta = () => ({
   charset: 'utf-8',
-  viewport: 'width=device-width,initial-scale=1',
+  viewport: 'width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no',
 });
 
 export async function loader({context}) {

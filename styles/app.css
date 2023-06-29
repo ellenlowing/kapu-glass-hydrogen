@@ -248,4 +248,21 @@
     background: radial-gradient(50% 50% at 50% 50%, var(--gradient-caterpillar-color) 68.75%, rgba(255, 255, 255, 0) 100%);
     mix-blend-mode: darken;
   }
+
+  .homepage-title {
+    display: none;
+    /* color: #00000055; */
+    /* color: #ffffff;
+    text-shadow: 0px 0px 24px #003dff;
+    filter: drop-shadow(0 0 20px #003dff);
+    -webkit-filter: drop-shadow(0 0 20px #003dff) blur(0.8px); */
+  }
+
+  .homepage-title-mobile {
+    display: block;
+    /* color: #ffffff;
+    text-shadow: 0px 0px 12px #003dff;
+    filter: drop-shadow(0 0 6px #003dff);
+    -webkit-filter: drop-shadow(0 0 16px #003dff); */
+  }
 }

@@ -1,4 +1,4 @@
-import { randomHex } from "./Utility";
+import { randomHex, deviceMultiplier } from "./Utility";
 
 export default class Caterpillar {
     constructor(p5, rc, x, y, index) {
@@ -9,14 +9,14 @@ export default class Caterpillar {
         this.acc = p5.createVector(0, 0);
         this.maxSpeed = this.p5.random(2, 6);
         this.maxForce = this.p5.random(0.1, 0.5);
-        this.size = Math.floor(p5.random(10, 30));
+        this.size = Math.floor(p5.random(10, 30)) * deviceMultiplier;
         this.numCircles = Math.floor(p5.random(this.p5.map(this.size, 10, 30, 20, 40), 50));
         this.c = randomHex();
         this.roughStyle = {
             strokeWidth: 0.5,
             roughness: 1.2,
             fillStyle: 'solid', 
-            fillWidth: 0.5,
+            fillWeight: 0.2,
             hachureGap: 5,
             stroke: this.c,
             fill: this.c,
