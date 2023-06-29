@@ -112,7 +112,9 @@ function sketch(p5) {
     let pg;
 
     p5.updateWithProps = props => {
+        if(props.links) console.log(props.links.length);
         for(let link of props.links) {
+            habitat.imagesCount = props.links.length;
             p5.loadImage(link, img => {
                 // img.resize(p5.width * 0.2, 0);
                 habitat.addImage(img);
@@ -367,9 +369,9 @@ function sketch(p5) {
 
         // frame rate debug
         getAverageFPS();
-        p5.stroke(0);
-        p5.noFill();
-        p5.text(`${averageFPS}`, 100, 200);
+        // p5.stroke(0);
+        // p5.noFill();
+        // p5.text(`${averageFPS}`, 100, 200);
     }
 
     p5.mouseMoved = (e) => {

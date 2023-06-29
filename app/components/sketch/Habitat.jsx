@@ -1,5 +1,3 @@
-import Caterpillar from "./Caterpillar";
-
 export default class Habitat {
     constructor(p5, rc) {
         this.p5 = p5;
@@ -8,7 +6,8 @@ export default class Habitat {
         this.maskPg = p5.createGraphics(p5.width, p5.height);
         this.caterpillars = [];
         this.images = [];
-        this.imagesCount = 0;
+        this.imagesIndex = 0;
+        // this.imagesCount = 0;
     }
 
     setup() {
@@ -17,28 +16,42 @@ export default class Habitat {
 
     addImage(img) {
         this.images.push(img);
-        img.resize(this.p5.width * 0.2, 0);
-
-        let x = this.p5.width * 0.4 * (this.imagesCount % 3);
-        let y = this.p5.height * 0.3 * Math.floor(this.imagesCount / 3);
+        if(img.width > img.height) {
+            img.resize(this.p5.width / 2 * 0.8 * 0.5, 0);
+            console.log(img.width);
+        } else {
+            img.resize(0, this.p5.height / 2 * 0.5);
+            console.log(img.height);
+        }
 
         let w = img.width;
         let h = img.height;
+        let rx = this.p5.width / 2 * 0.8;
+        let ry = this.p5.height / 2 * 0.7;
+        let x = rx * Math.cos(Math.PI * 2 / (this.imagesCount) * this.imagesIndex) + (this.p5.width - w) / 2;
+        let y = ry * Math.sin(Math.PI * 2/ (this.imagesCount) * this.imagesIndex) + (this.p5.height - h) / 2;
+
         this.mainImage.copy(img, 0, 0, w, h, x, y, w, h);
-        this.imagesCount++;
+        this.imagesIndex++;
     }
 
     update() {
         this.maskPg.background(255);
         this.maskPg.fill(0);
 
-        for(let c of this.caterpillars) {
-            let target = this.findClosestPixel(c.pos);
-            c.seek(target);
-            c.update();
-            this.maskPg.circle(c.pos.x, c.pos.y, c.size);
+        for(let i = this.caterpillars.length-1; i >= 0; i--) {
+            let c = this.caterpillars[i];
+            if(c.edges()) {
+                let target = this.findClosestPixel(c.pos);
+                c.seek(target);
+                c.update();
+                this.maskPg.circle(c.pos.x, c.pos.y, c.size);    
+            } else {
+                this.caterpillars.splice(i, 1);
+                console.log('popping ', i, 'off')
+            }
         }
-        this.maskPImageWithPG(this.mainImage, this.maskPg);
+        if(this.caterpillars.length > 0) this.maskPImageWithPG(this.mainImage, this.maskPg);
     }
 
     show() {
@@ -46,13 +59,6 @@ export default class Habitat {
         for(let c of this.caterpillars) {
             c.show();
         }
-
-        // let dummy = this.findClosestPixel(this.p5.createVector(0, this.p5.height));
-        // this.p5.circle(0, this.p5.height, 100);
-        // this.p5.fill(255, 0, 0);
-        // this.p5.circle(dummy.x, dummy.y, 100);
-
-        console.log(this.checkPixelColor(0, this.p5.height));
     }
     
     maskPImageWithPG(pimg, pg) {
@@ -67,7 +73,6 @@ export default class Habitat {
             maskImage.pixels[i+3] = v;
         }
         maskImage.updatePixels();
-
         pimg.mask(maskImage);
         return pimg;
     }
@@ -76,20 +81,18 @@ export default class Habitat {
     findClosestPixel(pos) {
 
         for(let d = 0; d < 10; d++) {
-            let w = pos.x - d;
-            let e = pos.x + d;
-            let n = pos.y - d;
-            let s = pos.y + d;
+            let w = (pos.x - d) ;
+            let e = (pos.x + d) ;
+            let n = (pos.y - d) ;
+            let s = (pos.y + d) ;
 
             for(let x = pos.x-d; x <= pos.x+d; x++) {
                 let isColoredN = this.checkPixelColor(x, n);
-
                 if(isColoredN) {
                     return this.p5.createVector(x, n);
                 }
 
                 let isColoredS = this.checkPixelColor(x, s);
-
                 if(isColoredS) {
                     return this.p5.createVector(x, s);
                 }
@@ -97,13 +100,11 @@ export default class Habitat {
             }
             for(let y = pos.y-d; y <= pos.y+d; y++) {
                 let isColoredE = this.checkPixelColor(e, y);
-
                 if(isColoredE) {
                     return this.p5.createVector(e, y);
                 }
 
                 let isColoredW = this.checkPixelColor(w, y);
-
                 if(isColoredW) {
                     return this.p5.createVector(w, y);
                 }
@@ -116,8 +117,6 @@ export default class Habitat {
 
     checkPixelColor(x, y) {
         let c = this.mainImage.get(x, y);
-        // console.log(c);
         return this.p5.alpha(c) != 0;
-        // return (this.p5.red(c) != 255 && this.p5.green(c) != 255 && this.p5.blue(c) != 255);
     }
 }

@@ -1,3 +1,5 @@
+import { randomHex } from "./Utility";
+
 export default class Caterpillar {
     constructor(p5, rc, x, y, index) {
         this.p5 = p5;
@@ -5,14 +7,14 @@ export default class Caterpillar {
         this.pos = p5.createVector(x, y); // head position of caterpillar
         this.vel = p5.createVector(0, 0);
         this.acc = p5.createVector(0, 0);
-        this.maxSpeed = 4;
-        this.maxForce = 0.25;
-        this.numCircles = p5.random(10, 30);
-        this.size = 20;
-        this.c = '#0000ff';
+        this.maxSpeed = this.p5.random(2, 6);
+        this.maxForce = this.p5.random(0.1, 0.5);
+        this.size = Math.floor(p5.random(10, 30));
+        this.numCircles = Math.floor(p5.random(this.p5.map(this.size, 10, 30, 20, 40), 50));
+        this.c = randomHex();
         this.roughStyle = {
-            strokeWidth: 1,
-            roughness: 0.5,
+            strokeWidth: 0.5,
+            roughness: 1.2,
             fillStyle: 'solid', 
             fillWidth: 0.5,
             hachureGap: 5,
@@ -23,7 +25,9 @@ export default class Caterpillar {
         };
         this.xoff = 0;
         this.index = index;
-        this.posOffsets = [];
+        this.posOffsets = [this.pos];
+
+        console.log(this.numCircles);
     }
 
     seek(target) {
@@ -50,7 +54,15 @@ export default class Caterpillar {
         if(this.posOffsets.length >= this.numCircles) {
             this.posOffsets.shift();
         }
-        this.xoff -= 0.01;
+    }
+
+    edges() {
+        for(let offset of this.posOffsets) {
+            if(offset.x >= -this.size && offset.x <= (this.p5.width + this.size) && offset.y >= -this.size && offset.y <= (this.p5.height + this.size)) {
+                return true;
+            } 
+        }
+        return false;
     }
 
     show() {
