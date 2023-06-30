@@ -13,7 +13,7 @@ export default class Caterpillar {
         this.numCircles = Math.floor(p5.random(this.p5.map(this.size, 10, 30, 20, 40), 50));
         this.c = randomHex();
         this.roughStyle = {
-            strokeWidth: 0.5,
+            strokeWidth: 1,
             roughness: 1.2,
             fillStyle: 'solid', 
             fillWeight: 0.2,
@@ -26,8 +26,6 @@ export default class Caterpillar {
         this.xoff = 0;
         this.index = index;
         this.posOffsets = [this.pos];
-
-        console.log(this.numCircles);
     }
 
     seek(target) {
@@ -68,8 +66,20 @@ export default class Caterpillar {
     show() {
         for(let i = 0; i < this.posOffsets.length; i++) {
             let pos = this.posOffsets[i].copy();
-            // pos.y = pos.y + Math.abs(this.p5.sin(i * this.xoff)) * this.size * 0.25; // 1) make it so that there's no negative number, 2) need to transform to direction's normal
             this.rc.circle(pos.x, pos.y, this.size, this.roughStyle);
+            if(i == this.posOffsets.length-1) {
+                // this.rc.circle(pos.x - 5, pos.y - 5, this.size);
+                let head = pos.copy();
+                let first = this.posOffsets[i-1].copy();
+                head.sub(first);
+                let heading = head.heading();
+                let leftArcX = pos.x - this.size * 0.6 * this.p5.cos(heading + Math.PI/2);
+                let leftArcY = pos.y - this.size * this.p5.sin(heading + Math.PI/2);
+                let rightArcX = pos.x + this.size * 0.6 * this.p5.cos(heading + Math.PI/2);
+                let rightArcY = pos.y + this.size * this.p5.sin(heading + Math.PI/2);
+                this.rc.arc(leftArcX, leftArcY, this.size, this.size * 3, heading, heading + Math.PI/2, false, this.roughStyle);
+                this.rc.arc(rightArcX, rightArcY, this.size, this.size * 3, heading - Math.PI/2, heading, false, this.roughStyle);
+            }
         }
     }
 }

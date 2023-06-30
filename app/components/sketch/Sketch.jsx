@@ -127,8 +127,6 @@ function sketch(p5) {
         p5.pixelDensity(2);
         p5.noStroke();
 
-        console.log(fa);
-
         canvas = document.getElementById('defaultCanvas0');
         rc = rough.canvas(canvas);
 
