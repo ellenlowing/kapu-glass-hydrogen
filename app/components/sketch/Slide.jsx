@@ -92,7 +92,8 @@ export default class Slide {
         this.caterpillarIndicatorHovered = false;
         this.caterpillarIndicatorChanged = false;
         this.activeIndex = null;
-        
+
+        // make caterpillar button clickable
         for(let circle of this.gradientCircles) {
             if(isBrowser) {
                 circle.addEventListener('click', (e) => {
@@ -107,6 +108,28 @@ export default class Slide {
                 })
             }
         }
+
+        // uncomment if conveyor belt should automate on mouseover
+        // if(isBrowser) {
+        //     this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
+        //         this.caterpillarIndicatorHovered = true;
+        //     })
+        //     this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
+        //         this.caterpillarIndicatorHovered = false;
+        //     })
+        //     console.log('setup');
+        // }
+        // if(isMobile) {
+        //     this.caterpillarIndicator.addEventListener('touchstart', e => {
+        //         if(!this.caterpillarIndicatorChanged) {
+        //             this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
+        //             this.caterpillarIndicatorChanged = true;
+        //             setTimeout(() => {
+        //                 this.caterpillarIndicatorChanged = false;
+        //             }, 200)
+        //         }
+        //     })
+        // }
 
         for(let i = 0; i < this.numProducts; i++) {
             const product = document.getElementById(`product-${i}`);

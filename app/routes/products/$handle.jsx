@@ -3,8 +3,10 @@ import { useLoaderData } from '@remix-run/react';
 import ProductOptions from '../../components/ProductOptions';
 import {Money} from '@shopify/hydrogen';
 import ProductGallery from '../../components/ProductGallery';
+import {useEffect, useState} from 'react';
 import {useMatches, useFetcher} from '@remix-run/react';
 import {isMobile} from 'react-device-detect';
+import { CART_QUERY } from '../../queries/cart';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -29,22 +31,51 @@ export const loader = async ({params, context, request}) => {
   });
   const selectedVariant = product.selectedVariant ?? product?.variants?.nodes[0];
 
+  const cartId = await context.session.get('cartId');
+  const cart = cartId
+    ? (
+        await context.storefront.query(CART_QUERY, {
+          variables: {
+            cartId,
+            country: context.storefront.i18n.country,
+            language: context.storefront.i18n.language,
+          },
+          cache: context.storefront.CacheNone(),
+        })
+      ).cart
+    : null;
+
   if (!product?.id) {
       throw new Response(null, {status: 404});
   }
 
   return json({
       product,
-      selectedVariant
+      selectedVariant,
+      cart
   });
 }
 
 
 export default function ProductHandle() {
-    const {product, selectedVariant} = useLoaderData();
+    const {product, selectedVariant, cart} = useLoaderData();
     const {price, compareAtPrice} = product.variants?.nodes[0] || {};
+    const [cartQuantity, setCartQuantity] = useState(cart?.totalQuantity);
+    const [cartAdded, setCartAdded] = useState(false);
     const isDiscounted = compareAtPrice?.amount > price?.amount;
     const availableForSale = selectedVariant?.availableForSale || product.variants?.nodes[0].availableForSale;
+
+    useEffect(() => {
+      if(cart) {
+        if(cartQuantity != cart?.totalQuantity) {
+          setCartAdded(true);
+          setTimeout(() => {
+            setCartAdded(false);
+          }, 1500)
+        } 
+        setCartQuantity(cart?.totalQuantity);
+      }
+    })
 
     return (
         <section id="active-product" data-collection-handle={product.collections.nodes[0].handle} className="w-full lg:max-w-6xl gap-4 grid px-6 mx-auto relative py-24 cursor-none">
@@ -96,6 +127,7 @@ export default function ProductHandle() {
                       {(price?.amount > 0 && availableForSale) && 
                         <div className={`py-[0px] lg:py-16 self-end place-self-end lg:self-start lg:place-self-start ${isMobile ? 'pt-12' : ''}`}>
                           <ProductForm variantId={selectedVariant?.id} />
+                          {cartAdded && <span className="inline-block px-4">Added!</span>}
                         </div>
                       }
                     </div>
@@ -115,7 +147,7 @@ function ProductForm({variantId}) {
   const lines = [{merchandiseId: variantId, quantity: 1}];
 
   return (
-    <fetcher.Form action="/cart" method="post">
+    <fetcher.Form action="/cart" method="post" className="inline-block">
       <input type="hidden" name="cartAction" value={'ADD_TO_CART'} />
       <input
         type="hidden"

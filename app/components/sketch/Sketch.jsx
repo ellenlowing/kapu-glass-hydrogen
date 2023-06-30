@@ -236,7 +236,6 @@ function sketch(p5) {
                     setGradientCaterpillarColor();
         
                     // diff animations per collection page
-    
                     console.log('init bg elements');
                     if(urlPath.indexOf('vessels') != -1) {
                         for(let star of fallingStars) {
