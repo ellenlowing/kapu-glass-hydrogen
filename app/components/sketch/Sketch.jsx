@@ -228,7 +228,6 @@ function sketch(p5) {
                 if(urlPath.length == 0) {
                     console.log('set up home');
                     // add caterpillar
-                    habitat.setup();
 
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];

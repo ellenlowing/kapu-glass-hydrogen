@@ -13,12 +13,23 @@ export default class Caterpillar {
         this.numCircles = Math.floor(p5.random(this.p5.map(this.size, 10, 30, 20, 40), 50));
         this.c = randomHex();
         this.roughStyle = {
-            strokeWidth: 1,
+            strokeWidth: 1.5,
             roughness: 1.2,
             fillStyle: 'solid', 
             fillWeight: 0.2,
             hachureGap: 5,
             stroke: this.c,
+            fill: this.c,
+            disableMultiStroke: true,
+            disableMultiStrokeFill: true
+        };
+        this.roughRightStyle = {
+            strokeWidth: 1.5,
+            roughness: 1.2,
+            fillStyle: 'solid', 
+            fillWeight: 0.2,
+            hachureGap: 5,
+            stroke: '#000',
             fill: this.c,
             disableMultiStroke: true,
             disableMultiStrokeFill: true
@@ -77,8 +88,8 @@ export default class Caterpillar {
                 let leftArcY = pos.y - this.size * this.p5.sin(heading + Math.PI/2);
                 let rightArcX = pos.x + this.size * 0.6 * this.p5.cos(heading + Math.PI/2);
                 let rightArcY = pos.y + this.size * this.p5.sin(heading + Math.PI/2);
-                this.rc.arc(leftArcX, leftArcY, this.size, this.size * 3, heading, heading + Math.PI/2, false, this.roughStyle);
-                this.rc.arc(rightArcX, rightArcY, this.size, this.size * 3, heading - Math.PI/2, heading, false, this.roughStyle);
+                this.rc.arc(leftArcX, leftArcY, this.size, this.size * 2, heading % (2 * Math.PI), heading + Math.PI/2 % (2 * Math.PI), false, this.roughStyle);
+                this.rc.arc(rightArcX, rightArcY, this.size, this.size * 2, (heading - Math.PI/2) % (2 * Math.PI), heading % (2 * Math.PI), false, this.roughStyle);
             }
         }
     }
