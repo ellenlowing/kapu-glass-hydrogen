@@ -667,8 +667,8 @@ nav {
 .left-0 {
   left: 0px;
 }
-.left-\[0\.5px\] {
-  left: 0.5px;
+.left-\[0px\] {
+  left: 0px;
 }
 .left-\[150px\] {
   left: 150px;
@@ -694,11 +694,11 @@ nav {
 .top-\[0\] {
   top: 0;
 }
+.top-\[11px\] {
+  top: 11px;
+}
 .top-\[50\%\] {
   top: 50%;
-}
-.top-\[8px\] {
-  top: 8px;
 }
 .z-50 {
   z-index: 50;

@@ -28,6 +28,13 @@ export default class Slide {
             strokeWidth: 0.8,
             fillStyle: 'solid'
         };
+        this.activeCirclePerPage = {
+            "vessels": 2,
+            "accessories": 2,
+            "magazine": 2,
+            "workshops": 2,
+            "archive": 2
+        }
     }
 
     setup(collectionName) {
@@ -65,7 +72,10 @@ export default class Slide {
         }
         this.pathLength = this.path.getTotalLength();
         this.pathLengthOffset = this.pathLength / this.numProductsDisplayed;
-        this.scrollProgress = this.pathLength / this.numProductsDisplayed * (this.numProductsDisplayed - 1) + 10;
+        if(this.activeCirclePerPage[this.name] >= this.numProducts) {
+            this.activeCirclePerPage[this.name] = this.activeCirclePerPage[this.name] % this.numProductsDisplayed;
+        }
+        this.scrollProgress = this.pathLengthOffset * this.activeCirclePerPage[this.name];
         this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
         this.leadingProductIndex = 0;
         this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
@@ -82,27 +92,20 @@ export default class Slide {
         this.caterpillarIndicatorHovered = false;
         this.caterpillarIndicatorChanged = false;
         this.activeIndex = null;
-
-        if(isBrowser) {
-            this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
-                this.caterpillarIndicatorHovered = true;
-            })
-            this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
-                this.caterpillarIndicatorHovered = false;
-            })
-            console.log('setup');
-        }
-
-        if(isMobile) {
-            this.caterpillarIndicator.addEventListener('touchstart', e => {
-                if(!this.caterpillarIndicatorChanged) {
-                    this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
-                    this.caterpillarIndicatorChanged = true;
-                    setTimeout(() => {
-                        this.caterpillarIndicatorChanged = false;
-                    }, 200)
-                }
-            })
+        
+        for(let circle of this.gradientCircles) {
+            if(isBrowser) {
+                circle.addEventListener('click', (e) => {
+                    this.setScrollProgress(circle);
+                })
+                circle.addEventListener('mouseup', (e) => {
+                    this.setScrollProgress(circle);
+                })
+            } else {
+                circle.addEventListener('touchstart', (e) => {
+                    this.setScrollProgress(circle);
+                })
+            }
         }
 
         for(let i = 0; i < this.numProducts; i++) {
@@ -185,7 +188,7 @@ export default class Slide {
             this.productsNodeList[this.lastProductIndex].classList.add('active');
             this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
         } 
-        if ( this.scrollProgress < reverseScrollThreshold + 1) {
+        if ( this.scrollProgress < reverseScrollThreshold-1) {
             hide(this.productsNodeList[this.lastProductIndex]);
             this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
             this.productsNodeList[this.lastProductIndex].classList.remove('active');
@@ -210,8 +213,9 @@ export default class Slide {
 
             if(product.classList.contains('active')) {
                 let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
-                // let pct = 1-Math.abs(offsetScrollProgress / this.pathLength - 0.5) * 2; 
                 this.gradientCircles[i].style.bottom = `${pct * 24}px`;
+            } else {
+                this.gradientCircles[i].style.bottom = `0px`;
             }
 
             if(this.name == 'magazine' ) {
@@ -231,7 +235,6 @@ export default class Slide {
                     }
                 }
             }
-
             this.lastScrollProgress = this.scrollProgress;
         }
     }
@@ -248,6 +251,13 @@ export default class Slide {
 
     setOpacity(el, opacity) {
         el.style.opacity = `${opacity}`;
+    }
+
+    setScrollProgress(circle) {
+        let classPrefix = 'gradient-circle-';
+        let index = Number(circle.id.slice(classPrefix.length));
+        this.scrollProgress = index * this.pathLengthOffset;
+        this.activeCirclePerPage[this.name] = index;
     }
 
     resize() {
@@ -306,7 +316,6 @@ export default class Slide {
                 cancelable: true,
                 composed: false
             });
-            console.log('hi');
             this.canvas.dispatchEvent(createNewSpiral);
         }
     }
@@ -322,6 +331,5 @@ export default class Slide {
         }
         hide(this.selectedProductInfo);
         show(this.caterpillarIndicator);
-        console.log('hi2');
     }
 }
