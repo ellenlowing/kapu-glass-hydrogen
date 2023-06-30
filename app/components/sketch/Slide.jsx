@@ -48,7 +48,8 @@ export default class Slide {
         if(!this.svg) {
             this.svg = document.getElementById('slide-vessels');
         }
-        this.path = this.svg.firstChild;
+        console.log(this.svg);
+        this.path = this.svg.firstChild; // this.svg is null when i go back on page
         for(let svgSlide of this.svgSlides) {
             if(svgSlide !== this.svg) {
                 hide(svgSlide);
@@ -96,16 +97,21 @@ export default class Slide {
         // make caterpillar button clickable
         for(let circle of this.gradientCircles) {
             if(isBrowser) {
-                circle.addEventListener('click', (e) => {
-                    this.setScrollProgress(circle);
-                })
-                circle.addEventListener('mouseup', (e) => {
+                circle.addEventListener('mouseover', (e) => {
                     this.setScrollProgress(circle);
                 })
             } else {
-                circle.addEventListener('touchstart', (e) => {
-                    this.setScrollProgress(circle);
-                })
+                // circle.addEventListener('touchstart', (e) => {
+                //     console.log(e);
+                //     this.setScrollProgress(circle);
+                // })
+                // circle.addEventListener('touchmove', (e) => {
+                //     console.log(e);
+                //     this.setScrollProgress(circle);
+                // })
+                // circle.addEventListener('touchend', (e) => {
+                //     this.setScrollProgress(circle);
+                // })
             }
         }
 
@@ -279,6 +285,15 @@ export default class Slide {
     setScrollProgress(circle) {
         let classPrefix = 'gradient-circle-';
         let index = Number(circle.id.slice(classPrefix.length));
+        // let currProgress = this.scrollProgress % this.pathLength;
+        // let finalProgress = index * this.pathLengthOffset;
+        // if(currProgress != finalProgress) {
+        //     this.interpolateProgressInterval = setInterval(() => {
+        //         if(currProgress < finalProgress) {
+        //             this.scrollProgress += 10;
+        //         }
+        //     }, 50)
+        // }
         this.scrollProgress = index * this.pathLengthOffset;
         this.activeCirclePerPage[this.name] = index;
     }

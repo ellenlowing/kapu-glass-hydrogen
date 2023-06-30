@@ -45,7 +45,7 @@ export default function Sketch() {
             {
                 !isSSR && (
                     <Suspense fallback={<div>Loading...</div>}>
-                        <ReactP5Wrapper sketch={sketch} links={links}></ReactP5Wrapper>
+                        <ReactP5Wrapper sketch={sketch} links={links} className="select-none"></ReactP5Wrapper>
                     </Suspense>
                 )   
             }
