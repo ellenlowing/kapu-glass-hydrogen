@@ -1433,7 +1433,7 @@
   dependencies:
     "@swc/helpers" "^0.4.14"
 
-"@remix-run/dev@^1.12.0":
+"@remix-run/dev@^1.12.0", "@remix-run/dev@1.13.0":
   "integrity" "sha512-hPqUjM9RRcz3inBOWqP3GKhggVz0a0ikWaRZpdKrhpQNCNiF6Hunbx876mJERj2YrmIzJ05eoeQmmdF6xcr4qg=="
   "resolved" "https://registry.npmjs.org/@remix-run/dev/-/dev-1.13.0.tgz"
   "version" "1.13.0"
@@ -1490,69 +1490,13 @@
     "ws" "^7.4.5"
     "xdm" "^2.0.0"
 
-"@remix-run/dev@1.12.0":
-  "integrity" "sha512-lBiA2FlDi+DjpOAE/vn93zFTSxudKag/FGpmbV6O+LQItDCpFARfbBMhTck/uKcc95nyhRd1GGhQ4ZDgQnyjaQ=="
-  "resolved" "https://registry.npmjs.org/@remix-run/dev/-/dev-1.12.0.tgz"
-  "version" "1.12.0"
+"@remix-run/react@^1.12.0", "@remix-run/react@1.12.0", "@remix-run/react@1.13.0":
+  "integrity" "sha512-LT9TStmMavBlLqRG8u5Ku8bxdYcpIbqpmh44/f2Fyw8RvdaRCYYMkuUXsr8bhOqftaEZMFLqFhi19NWY/18DLA=="
+  "resolved" "https://registry.npmjs.org/@remix-run/react/-/react-1.13.0.tgz"
+  "version" "1.13.0"
   dependencies:
-    "@babel/core" "^7.18.6"
-    "@babel/generator" "^7.18.6"
-    "@babel/parser" "^7.18.6"
-    "@babel/plugin-syntax-jsx" "^7.18.6"
-    "@babel/plugin-syntax-typescript" "^7.20.0"
-    "@babel/preset-env" "^7.18.6"
-    "@babel/preset-typescript" "^7.18.6"
-    "@babel/traverse" "^7.18.6"
-    "@babel/types" "^7.20.2"
-    "@esbuild-plugins/node-modules-polyfill" "^0.1.4"
-    "@npmcli/package-json" "^2.0.0"
-    "@remix-run/server-runtime" "1.12.0"
-    "@vanilla-extract/integration" "^6.0.2"
-    "arg" "^5.0.1"
-    "cacache" "^15.0.5"
-    "chalk" "^4.1.2"
-    "chokidar" "^3.5.1"
-    "dotenv" "^16.0.0"
-    "esbuild" "0.16.3"
-    "execa" "5.1.1"
-    "exit-hook" "2.2.1"
-    "express" "^4.17.1"
-    "fast-glob" "3.2.11"
-    "fs-extra" "^10.0.0"
-    "get-port" "^5.1.1"
-    "gunzip-maybe" "^1.4.2"
-    "inquirer" "^8.2.1"
-    "jsesc" "3.0.2"
-    "json5" "^2.2.1"
-    "lodash" "^4.17.21"
-    "lodash.debounce" "^4.0.8"
-    "lru-cache" "^7.14.1"
-    "minimatch" "^3.0.4"
-    "node-fetch" "^2.6.7"
-    "ora" "^5.4.1"
-    "postcss" "^8.4.19"
-    "postcss-discard-duplicates" "^5.1.0"
-    "postcss-modules" "^6.0.0"
-    "prettier" "2.7.1"
-    "pretty-ms" "^7.0.1"
-    "proxy-agent" "^5.0.0"
-    "recast" "^0.21.5"
-    "remark-frontmatter" "4.0.1"
-    "remark-mdx-frontmatter" "^1.0.1"
-    "semver" "^7.3.7"
-    "sort-package-json" "^1.55.0"
-    "tar-fs" "^2.1.1"
-    "tsconfig-paths" "^4.0.0"
-    "ws" "^7.4.5"
-    "xdm" "^2.0.0"
-
-"@remix-run/react@^1.12.0", "@remix-run/react@1.12.0":
-  "integrity" "sha512-BokbMOILGJvUvwOsTXAUrucvfFz/SBKVgSHke2+89DZIU7H2Z1UWe5t8wRTfjQnfnSH2tAXCF0QxmVpo1GQ3dg=="
-  "resolved" "https://registry.npmjs.org/@remix-run/react/-/react-1.12.0.tgz"
-  "version" "1.12.0"
-  dependencies:
-    "@remix-run/router" "1.3.1"
-    "react-router-dom" "6.8.0"
+    "@remix-run/router" "1.3.2"
+    "react-router-dom" "6.8.1"
     "use-sync-external-store" "1.2.0"
 
 "@remix-run/router@1.3.1":
@@ -7917,20 +7861,20 @@
     "object-assign" "^4.1.1"
     "scheduler" "^0.20.2"
 
-"react-router-dom@6.8.0":
-  "integrity" "sha512-hQouduSTywGJndE86CXJ2h7YEy4HYC6C/uh19etM+79FfQ6cFFFHnHyDlzO4Pq0eBUI96E4qVE5yUjA00yJZGQ=="
-  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.8.0.tgz"
-  "version" "6.8.0"
+"react-router-dom@6.8.1":
+  "integrity" "sha512-67EXNfkQgf34P7+PSb6VlBuaacGhkKn3kpE51+P6zYSG2kiRoumXEL6e27zTa9+PGF2MNXbgIUHTVlleLbIcHQ=="
+  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.8.1.tgz"
+  "version" "6.8.1"
   dependencies:
-    "@remix-run/router" "1.3.1"
-    "react-router" "6.8.0"
+    "@remix-run/router" "1.3.2"
+    "react-router" "6.8.1"
 
-"react-router@6.8.0":
-  "integrity" "sha512-760bk7y3QwabduExtudhWbd88IBbuD1YfwzpuDUAlJUJ7laIIcqhMvdhSVh1Fur1PE8cGl84L0dxhR3/gvHF7A=="
-  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.8.0.tgz"
-  "version" "6.8.0"
+"react-router@6.8.1":
+  "integrity" "sha512-Jgi8BzAJQ8MkPt8ipXnR73rnD7EmZ0HFFb7jdQU24TynGW1Ooqin2KVDN9voSC+7xhqbbCd2cjGUepb6RObnyg=="
+  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.8.1.tgz"
+  "version" "6.8.1"
   dependencies:
-    "@remix-run/router" "1.3.1"
+    "@remix-run/router" "1.3.2"
 
 "react-transition-group@^4.4.5":
   "integrity" "sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g=="

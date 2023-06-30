@@ -33,17 +33,30 @@ export async function loader({context}) {
 export default function Sketch() {
     const {product} = useLoaderData();
     const [isSSR, setIsSSR] = useState(true);
+    const [isDOMLoaded, setIsDOMLoaded] = useState(false);
 
     const links = product.media.nodes.map(media => media.image.url);
 
     useEffect(() => {
         setIsSSR(false);
-    })
+
+        const onPageLoad = () => {
+            setIsDOMLoaded(true);
+            console.log('ISLOADED')
+        }
+        if (document.readyState === 'complete') {
+            onPageLoad();
+          } else {
+            window.addEventListener('load', onPageLoad);
+            // Remove the event listener when component unmounts
+            return () => window.removeEventListener('load', onPageLoad);
+          }
+    }, [])
 
     return (
         <>
             {
-                !isSSR && (
+                !isSSR && isDOMLoaded && (
                     <Suspense fallback={<div>Loading...</div>}>
                         <ReactP5Wrapper sketch={sketch} links={links} className="select-none"></ReactP5Wrapper>
                     </Suspense>
