@@ -265,4 +265,10 @@
     filter: drop-shadow(0 0 6px #003dff);
     -webkit-filter: drop-shadow(0 0 16px #003dff); */
   }
+  
+  .caterpillar-indicator-mobile {
+    width: -moz-max-content;
+    width: -webkit-max-content;
+    width: -o-max-content;
+  }
 }

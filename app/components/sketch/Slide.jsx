@@ -100,9 +100,14 @@ export default class Slide {
 
             if(isBrowser) {
                 this.caterpillarIndicator.addEventListener('mousemove', (e) => {
-                    let caterpillarHoverProgress = this.p5.constrain((e.clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
-                    this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
-                    console.log(caterpillarHoverProgress);
+                    this.setScrollProgress(e.clientX);
+                })
+            } else {
+                this.caterpillarIndicator.addEventListener('touchstart', (e) => {
+                    this.setScrollProgress(e.pageX);
+                })
+                this.caterpillarIndicator.addEventListener('touchmove', (e) => {
+                    this.setScrollProgress(e.pageX);
                 })
             }
 
@@ -167,7 +172,6 @@ export default class Slide {
     }
 
     update() {
-
         if(this.slideInitialized) {
             if(this.caterpillarIndicatorHovered) {
                 this.scrollProgress += 10;
@@ -212,7 +216,7 @@ export default class Slide {
     
                 if(product.classList.contains('active')) {
                     let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
-                    this.gradientCircles[i].style.bottom = `${pct * 24}px`;
+                    this.gradientCircles[i].style.bottom = `${pct * 24 * deviceMultiplier}px`;
                 } else {
                     this.gradientCircles[i].style.bottom = `0px`;
                 }
@@ -255,19 +259,9 @@ export default class Slide {
         el.style.opacity = `${opacity}`;
     }
 
-    setScrollProgress(circle) {
-        let classPrefix = 'gradient-circle-';
-        let index = Number(circle.id.slice(classPrefix.length));
-        // let currProgress = this.scrollProgress % this.pathLength;
-        // let finalProgress = index * this.pathLengthOffset;
-        // if(currProgress != finalProgress) {
-        //     this.interpolateProgressInterval = setInterval(() => {
-        //         if(currProgress < finalProgress) {
-        //             this.scrollProgress += 10;
-        //         }
-        //     }, 50)
-        // }
-        this.scrollProgress = index * this.pathLengthOffset;
+    setScrollProgress(clientX) {
+        let caterpillarHoverProgress = this.p5.constrain((clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
+        this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
     }
 
     resize() {

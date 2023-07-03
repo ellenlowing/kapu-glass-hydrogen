@@ -24,10 +24,10 @@ export default function ProductGrid({collection}) {
         <p className='fa absolute z-[-10] bottom-[-40px]'>preload</p>
       </div>
 
-      <div id="caterpillar-indicator" className="absolute bottom-[10px] left-[50%] translate-x-[-50%] text-center z-[2] cursor-pointer">
+      <div id="caterpillar-indicator" className={`absolute bottom-[10px] left-[50%] translate-x-[-50%] text-center z-[2] cursor-pointer w-max ${isMobile ? 'caterpillar-indicator-mobile w-max' : ''}`}>
         {collection.products.nodes.map((product, index) => (
-          <div id={`gradient-circle-${index}`} className={`select-none gradient-circle relative w-[50px] h-[50px] rounded-full bottom-[0] inline-block mr-[-20px]`} key={`gradient-circle-${index}`}>
-            <span id={`caterpillar-index-${index}`} className='caterpillar-index text-white iota-md drop-shadow-[0_0_2px_#FFFFFF] text-md top-[11px] left-[0px] relative'>{index+1}</span>
+          <div id={`gradient-circle-${index}`} className={`select-none gradient-circle relative ${isMobile ? 'w-[30px] h-[30px] mr-[-12px]' : 'w-[50px] h-[50px] mr-[-20px]'} rounded-full bottom-[0] inline-block`} key={`gradient-circle-${index}`}>
+            <span id={`caterpillar-index-${index}`} className={`caterpillar-index text-white iota-md drop-shadow-[0_0_2px_#FFFFFF] ${isMobile ? 'top-[1px] left-[0.5px] text-[0.6rem]' : 'top-[11px] left-[1px]'}  relative`}>{index+1}</span>
           </div>
         ))}
       </div>
