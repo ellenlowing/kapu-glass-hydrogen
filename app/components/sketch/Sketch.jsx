@@ -33,30 +33,17 @@ export async function loader({context}) {
 export default function Sketch() {
     const {product} = useLoaderData();
     const [isSSR, setIsSSR] = useState(true);
-    const [isDOMLoaded, setIsDOMLoaded] = useState(false);
 
     const links = product.media.nodes.map(media => media.image.url);
 
     useEffect(() => {
         setIsSSR(false);
-
-        const onPageLoad = () => {
-            setIsDOMLoaded(true);
-            console.log('ISLOADED')
-        }
-        if (document.readyState === 'complete') {
-            onPageLoad();
-          } else {
-            window.addEventListener('load', onPageLoad);
-            // Remove the event listener when component unmounts
-            return () => window.removeEventListener('load', onPageLoad);
-          }
     }, [])
 
     return (
         <>
             {
-                !isSSR && isDOMLoaded && (
+                !isSSR && (
                     <Suspense fallback={<div>Loading...</div>}>
                         <ReactP5Wrapper sketch={sketch} links={links} className="select-none"></ReactP5Wrapper>
                     </Suspense>
@@ -223,7 +210,7 @@ function sketch(p5) {
         lastURLPath = null;
     }
 
-    p5.draw = () => {
+    p5.draw = async () => {
 
         // if page change
         const urlPath = p5.getURLPath();
@@ -289,6 +276,7 @@ function sketch(p5) {
 
         if(urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             if(!slide.freezeScroll && slide.svg) {
+                // console.log(slide.svg)
                 slide.update();
             }
         }

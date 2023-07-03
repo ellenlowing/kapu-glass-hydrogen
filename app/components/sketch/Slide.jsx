@@ -1,4 +1,4 @@
-import {hide, show, colors, secondaryColors, inLine, deviceMultiplier, magazineScrollRanges} from './Utility';
+import {hide, show, colors, secondaryColors, inLine, deviceMultiplier, magazineScrollRanges, waitForElm} from './Utility';
 import {isBrowser, isMobile} from 'react-device-detect';
 
 export default class Slide {
@@ -35,236 +35,232 @@ export default class Slide {
             "workshops": 2,
             "archive": 2
         }
-    }
-
-    setup(collectionName) {
-        this.name = collectionName;
-        this.freezeScroll = false;
-        this.svgSlides = document.getElementsByClassName('svg-slide');
-        this.selectedProductInfo = document.getElementById('selected-product-info');
-        this.selectedProductTitle = document.getElementById('selected-product-title');
-        this.selectedProductPrice = document.getElementById('selected-product-price');
-        this.svg = document.getElementById(`slide-${collectionName}`);
-        if(!this.svg) {
-            this.svg = document.getElementById('slide-vessels');
-        }
-        console.log(this.svg);
-        this.path = this.svg.firstChild; // this.svg is null when i go back on page
-        for(let svgSlide of this.svgSlides) {
-            if(svgSlide !== this.svg) {
-                hide(svgSlide);
-            } else {
-                show(svgSlide);
-            }
-        }
-        this.attrW = Number(this.svg.getAttribute("width"));
-        this.attrH = Number(this.svg.getAttribute("height"));
-        this.hwRatio = this.attrH / this.attrW;
-        this.whRatio = this.attrW / this.attrH;
-        if(this.whRatio > 2) {
-            this.whRatio = 2;
-        }
-        this.productsContainer = document.getElementById('products-container');
-        this.numProducts = Number(this.productsContainer.getAttribute("data-collection-length"));
-        if(this.numProducts < this.maxNumProductsDisplayed) {
-            this.numProductsDisplayed = this.numProducts;
-        } else {
-            this.numProductsDisplayed = this.maxNumProductsDisplayed;
-        }
-        this.pathLength = this.path.getTotalLength();
-        this.pathLengthOffset = this.pathLength / this.numProductsDisplayed;
-        if(this.activeCirclePerPage[this.name] >= this.numProducts) {
-            this.activeCirclePerPage[this.name] = this.activeCirclePerPage[this.name] % this.numProductsDisplayed;
-        }
-        this.scrollProgress = this.pathLengthOffset * this.activeCirclePerPage[this.name];
-        this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
-        this.leadingProductIndex = 0;
-        this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
-        this.productsNodeList = [];
-        this.productsDisplayCountList = [];
-        hide(this.selectedProductInfo);
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
+    }
+
+    async setup(collectionName) {
+        this.slideInitialized = false;
+        this.name = collectionName;
+        this.freezeScroll = false;
         this.lastTriggerTime = 0;
         this.roughStyle.roughness = 2;
-        this.gradientCircles = document.getElementsByClassName('gradient-circle');
-        this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
-        this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
-        this.caterpillarIndicatorHovered = false;
-        this.caterpillarIndicatorChanged = false;
-        this.activeIndex = null;
 
-        // make caterpillar button clickable
-        for(let circle of this.gradientCircles) {
-            if(isBrowser) {
-                circle.addEventListener('mouseover', (e) => {
-                    this.setScrollProgress(circle);
-                })
+        // test promise.all
+        Promise.all([
+            waitForElm(`#slide-${collectionName}`),
+            waitForElm(`#products-container`),
+            waitForElm('#selected-product-info'),
+            waitForElm('#selected-product-title'),
+            waitForElm('#selected-product-price'),
+        ]).then((values) => {
+            this.slideInitialized = true;
+
+            // svg stuff
+            this.svg = values[0];
+            this.path = this.svg.firstChild; // this.svg is null when i go back on page
+            this.attrW = Number(this.svg.getAttribute("width"));
+            this.attrH = Number(this.svg.getAttribute("height"));
+            this.hwRatio = this.attrH / this.attrW;
+            this.whRatio = this.attrW / this.attrH;
+            if(this.whRatio > 2) {
+                this.whRatio = 2;
+            }
+            show(this.svg);
+            this.pathLength = this.path.getTotalLength();
+    
+            // products container stuff
+            this.productsContainer = values[1];
+            this.numProducts = Number(this.productsContainer.getAttribute("data-collection-length"));
+            if(this.numProducts < this.maxNumProductsDisplayed) {
+                this.numProductsDisplayed = this.numProducts;
             } else {
-                // circle.addEventListener('touchstart', (e) => {
-                //     console.log(e);
-                //     this.setScrollProgress(circle);
-                // })
-                // circle.addEventListener('touchmove', (e) => {
-                //     console.log(e);
-                //     this.setScrollProgress(circle);
-                // })
-                // circle.addEventListener('touchend', (e) => {
-                //     this.setScrollProgress(circle);
-                // })
+                this.numProductsDisplayed = this.maxNumProductsDisplayed;
             }
-        }
+            this.pathLengthOffset = this.pathLength / this.numProductsDisplayed;
+            if(this.activeCirclePerPage[this.name] >= this.numProducts) {
+                this.activeCirclePerPage[this.name] = this.activeCirclePerPage[this.name] % this.numProductsDisplayed;
+            }
+            this.scrollProgress = this.pathLengthOffset * this.activeCirclePerPage[this.name];
+            this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
+            this.leadingProductIndex = 0;
+            this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
+            this.resize();
 
-        // uncomment if conveyor belt should automate on mouseover
-        // if(isBrowser) {
-        //     this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
-        //         this.caterpillarIndicatorHovered = true;
-        //     })
-        //     this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
-        //         this.caterpillarIndicatorHovered = false;
-        //     })
-        //     console.log('setup');
-        // }
-        // if(isMobile) {
-        //     this.caterpillarIndicator.addEventListener('touchstart', e => {
-        //         if(!this.caterpillarIndicatorChanged) {
-        //             this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
-        //             this.caterpillarIndicatorChanged = true;
-        //             setTimeout(() => {
-        //                 this.caterpillarIndicatorChanged = false;
-        //             }, 200)
-        //         }
-        //     })
-        // }
+            // selected product info
+            this.selectedProductInfo = values[2];
+            this.selectedProductTitle = values[3];
+            this.selectedProductPrice = values[4];
+            hide(this.selectedProductInfo);
 
-        for(let i = 0; i < this.numProducts; i++) {
-            const product = document.getElementById(`product-${i}`);
-            product.style.position = 'absolute';
-            this.productsNodeList.push(product);
-            this.productsDisplayCountList.push(0);
+            // caterpillar indicator
+            this.caterpillarIndicatorHovered = false;
+            this.caterpillarIndicatorChanged = false;
+            this.gradientCircles = document.getElementsByClassName('gradient-circle');
+            this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
+            this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
 
-            product.addEventListener('mouseenter', (e) => {
-                this.mouseEnterHandler(e);
-                console.log('mouseenter product')
-            })
+            // make caterpillar button clickable
+            for(let circle of this.gradientCircles) {
+                if(isBrowser) {
+                    circle.addEventListener('mouseover', (e) => {
+                        this.setScrollProgress(circle);
+                    })
+                } 
+                // TODO add mobile method
+            }
+            // uncomment if conveyor belt should automate on mouseover
+            // if(isBrowser) {
+            //     this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
+            //         this.caterpillarIndicatorHovered = true;
+            //     })
+            //     this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
+            //         this.caterpillarIndicatorHovered = false;
+            //     })
+            //     console.log('setup');
+            // }
+            // if(isMobile) {
+            //     this.caterpillarIndicator.addEventListener('touchstart', e => {
+            //         if(!this.caterpillarIndicatorChanged) {
+            //             this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
+            //             this.caterpillarIndicatorChanged = true;
+            //             setTimeout(() => {
+            //                 this.caterpillarIndicatorChanged = false;
+            //             }, 200)
+            //         }
+            //     })
+            // }
 
-            product.addEventListener('mouseleave', (e) => {
-                this.mouseLeaveHandler(e);
-                console.log('mouseleave');
-            })
+            // set up individual product 
+            this.productsNodeList = [];
+            this.productsDisplayCountList = [];
+            this.activeIndex = null;
+            for(let i = 0; i < this.numProducts; i++) {
+                const product = document.getElementById(`product-${i}`);
+                product.style.position = 'absolute';
+                this.productsNodeList.push(product);
+                this.productsDisplayCountList.push(0);
 
-            if(isMobile) {
-                product.addEventListener('touchstart', (e) => {
-                    if(this.activeIndex == null) {
-                        // when product image is not highlighted and clicked
-                        e.preventDefault();
-                        this.activeIndex = i;
-                        this.mouseEnterHandler(e);
-                        console.log(i, this.activeIndex, 'when product image is not highlighted and clicked');
-                    } else if (i == this.activeIndex) {
-                        // when product image is highlighted and clicked again
-                        this.activeIndex = null;
-                        console.log('product image is highlighted and clicked');
-                    } else if (i != this.activeIndex) {
-                        // when another product image that's not highlighted is clicked
-                        e.preventDefault();
-                        this.activeIndex = i;
-                        console.log('when another product image thats not highlighted is clicked')
-                    }
+                product.addEventListener('mouseenter', (e) => {
+                    this.mouseEnterHandler(e);
+                    console.log('mouseenter product')
                 })
-            }
 
-            if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
-                show(product);
-                product.classList.add('active');
-                this.setOpacity(this.caterpillarIndices[i], 1);
-            } else {
-                hide(product);
-                product.classList.remove('active');
-                this.setOpacity(this.caterpillarIndices[i], 0);
+                product.addEventListener('mouseleave', (e) => {
+                    this.mouseLeaveHandler(e);
+                    console.log('mouseleave');
+                })
+
+                if(isMobile) {
+                    product.addEventListener('touchstart', (e) => {
+                        if(this.activeIndex == null) {
+                            // when product image is not highlighted and clicked
+                            e.preventDefault();
+                            this.activeIndex = i;
+                            this.mouseEnterHandler(e);
+                        } else if (i == this.activeIndex) {
+                            // when product image is highlighted and clicked again
+                            this.activeIndex = null;
+                        } else if (i != this.activeIndex) {
+                            // when another product image that's not highlighted is clicked
+                            e.preventDefault();
+                            this.activeIndex = i;
+                        }
+                    })
+                }
+
+                if(i >= this.leadingProductIndex && i < (this.leadingProductIndex + this.numProductsDisplayed)) {
+                    show(product);
+                    product.classList.add('active');
+                    this.setOpacity(this.caterpillarIndices[i], 1);
+                } else {
+                    hide(product);
+                    product.classList.remove('active');
+                    this.setOpacity(this.caterpillarIndices[i], 0);
+                }
             }
-        }
+        })
 
         if(isMobile) {
             const mainContent = document.getElementById('mainContent');
             mainContent.addEventListener('touchstart', (e) => {
-                // console.log(e.target);
                 if(this.activeIndex != null && !e.target.classList.contains('product-image')) {
                     this.mouseLeaveHandler();
                 }
             })
         }
-        this.resize();
     }
 
     update() {
 
-        if(this.caterpillarIndicatorHovered) {
-            this.scrollProgress += 10;
-        }
-
-        const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
-        const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
-
-        if( this.scrollProgress >= scrollThreshold) {
-            hide(this.productsNodeList[this.leadingProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 0);
-            this.productsNodeList[this.leadingProductIndex].classList.remove('active');
-            this.productsDisplayCountList[this.leadingProductIndex] += 1;
-            this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
-            show(this.productsNodeList[this.lastProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 1);
-            this.productsNodeList[this.lastProductIndex].classList.add('active');
-            this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
-        } 
-        if ( this.scrollProgress < reverseScrollThreshold-1) {
-            hide(this.productsNodeList[this.lastProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
-            this.productsNodeList[this.lastProductIndex].classList.remove('active');
-            this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
-            if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
-            this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
-            this.productsDisplayCountList[this.leadingProductIndex] -= 1;
-            show(this.productsNodeList[this.leadingProductIndex]);
-            this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 1);
-            this.productsNodeList[this.leadingProductIndex].classList.add('active');
-        }
-
-        for(let i = 0; i < this.productsNodeList.length; i++) {
-            let offsetScrollProgress = (this.scrollProgress - i * this.pathLengthOffset - this.productsDisplayCountList[i] * this.totalToMaxNumDisplayRatio * this.pathLength);
-            let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
-            const product = this.productsNodeList[i];
-            const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
-            productOffset.add(this.displayOffset);
-            slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight);
-            product.style.top = `${slidePoint.y}px`;
-            product.style.left = `${slidePoint.x}px`;
-
-            if(product.classList.contains('active')) {
-                let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
-                this.gradientCircles[i].style.bottom = `${pct * 24}px`;
-            } else {
-                this.gradientCircles[i].style.bottom = `0px`;
+        if(this.slideInitialized) {
+            if(this.caterpillarIndicatorHovered) {
+                this.scrollProgress += 10;
             }
-
-            if(this.name == 'magazine' ) {
-                for(let j = 0; j < this.magazineScrollRanges.length; j++) {
-                    let range = this.magazineScrollRanges[j];
-                    if( (Math.abs(offsetScrollProgress - range[0]) < 70 || Math.abs(offsetScrollProgress - range[1]) < 70) && ((Date.now() - this.lastTriggerTime) > 10 && this.lastScrollProgress != this.scrollProgress) ||
-                        ( (Math.abs(offsetScrollProgress - range[0]) < 30 || Math.abs(offsetScrollProgress - range[1]) < 30) && ((Date.now() - this.lastTriggerTime) > 70 && this.lastScrollProgress == this.scrollProgress)  ) ) 
-                    {
-                        const createNewBubble = new CustomEvent("create-bubble", {
-                            detail: {bubbleIndex: j},
-                            bubbles: true,
-                            cancelable: true,
-                            composed: false
-                        });
-                        this.canvas.dispatchEvent(createNewBubble);
-                        this.lastTriggerTime = Date.now();
+    
+            const scrollThreshold = (this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.leadingProductIndex]) + this.leadingProductIndex * this.pathLengthOffset);
+            const reverseScrollThreshold = this.pathLength * (1 + this.totalToMaxNumDisplayRatio * this.productsDisplayCountList[this.lastProductIndex]) + this.pathLengthOffset * (this.lastProductIndex - this.numProductsDisplayed);
+    
+            if( this.scrollProgress >= scrollThreshold) {
+                hide(this.productsNodeList[this.leadingProductIndex]);
+                this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 0);
+                this.productsNodeList[this.leadingProductIndex].classList.remove('active');
+                this.productsDisplayCountList[this.leadingProductIndex] += 1;
+                this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed) % this.productsNodeList.length;
+                show(this.productsNodeList[this.lastProductIndex]);
+                this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 1);
+                this.productsNodeList[this.lastProductIndex].classList.add('active');
+                this.leadingProductIndex = (this.leadingProductIndex + 1) % this.productsNodeList.length;
+            } 
+            if ( this.scrollProgress < reverseScrollThreshold-1) {
+                hide(this.productsNodeList[this.lastProductIndex]);
+                this.setOpacity(this.caterpillarIndices[this.lastProductIndex], 0);
+                this.productsNodeList[this.lastProductIndex].classList.remove('active');
+                this.lastProductIndex = (this.lastProductIndex - 1) % this.productsNodeList.length;
+                if(this.lastProductIndex < 0) this.lastProductIndex = this.productsNodeList.length + this.lastProductIndex;
+                this.leadingProductIndex = (this.leadingProductIndex - 1) % this.productsNodeList.length < 0 ? this.productsNodeList.length + (this.leadingProductIndex - 1) % this.productsNodeList.length : (this.leadingProductIndex - 1) % this.productsNodeList.length;
+                this.productsDisplayCountList[this.leadingProductIndex] -= 1;
+                show(this.productsNodeList[this.leadingProductIndex]);
+                this.setOpacity(this.caterpillarIndices[this.leadingProductIndex], 1);
+                this.productsNodeList[this.leadingProductIndex].classList.add('active');
+            }
+    
+            for(let i = 0; i < this.productsNodeList.length; i++) {
+                let offsetScrollProgress = (this.scrollProgress - i * this.pathLengthOffset - this.productsDisplayCountList[i] * this.totalToMaxNumDisplayRatio * this.pathLength);
+                let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
+                const product = this.productsNodeList[i];
+                const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
+                productOffset.add(this.displayOffset);
+                slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight);
+                product.style.top = `${slidePoint.y}px`;
+                product.style.left = `${slidePoint.x}px`;
+    
+                if(product.classList.contains('active')) {
+                    let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
+                    this.gradientCircles[i].style.bottom = `${pct * 24}px`;
+                } else {
+                    this.gradientCircles[i].style.bottom = `0px`;
+                }
+    
+                if(this.name == 'magazine' ) {
+                    for(let j = 0; j < this.magazineScrollRanges.length; j++) {
+                        let range = this.magazineScrollRanges[j];
+                        if( (Math.abs(offsetScrollProgress - range[0]) < 70 || Math.abs(offsetScrollProgress - range[1]) < 70) && ((Date.now() - this.lastTriggerTime) > 10 && this.lastScrollProgress != this.scrollProgress) ||
+                            ( (Math.abs(offsetScrollProgress - range[0]) < 30 || Math.abs(offsetScrollProgress - range[1]) < 30) && ((Date.now() - this.lastTriggerTime) > 70 && this.lastScrollProgress == this.scrollProgress)  ) ) 
+                        {
+                            const createNewBubble = new CustomEvent("create-bubble", {
+                                detail: {bubbleIndex: j},
+                                bubbles: true,
+                                cancelable: true,
+                                composed: false
+                            });
+                            this.canvas.dispatchEvent(createNewBubble);
+                            this.lastTriggerTime = Date.now();
+                        }
                     }
                 }
+                this.lastScrollProgress = this.scrollProgress;
             }
-            this.lastScrollProgress = this.scrollProgress;
         }
     }
 
