@@ -121,8 +121,8 @@ export default class Slide {
                 this.productsNodeList.push(product);
                 this.productsDisplayCountList.push(0);
 
-                product.addEventListener('mouseenter', (e) => {
-                    this.mouseEnterHandler(e);
+                product.addEventListener('mouseover', (e) => {
+                    if(!this.scrolling) this.mouseEnterHandler(e);
                     console.log('mouseenter product')
                 })
 

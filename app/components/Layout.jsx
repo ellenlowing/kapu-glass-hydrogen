@@ -1,6 +1,7 @@
 import Sketch from "./sketch/Sketch";
 import logo from '../../public/logo.png';
 import {Link, useLoaderData} from '@remix-run/react';
+import {isMobile} from 'react-device-detect';
 
 export function Layout({children, title}) {
     const {cart} = useLoaderData();
@@ -32,7 +33,7 @@ export function Layout({children, title}) {
         <main
           role="main"
           id="mainContent"
-          className="flex-grow"
+          className={`flex-grow ${isMobile ? 'select-none' : ''}`}
         >
           {children}
 

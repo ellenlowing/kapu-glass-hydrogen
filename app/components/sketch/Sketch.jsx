@@ -275,14 +275,13 @@ function sketch(p5) {
         }
 
         if(urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
+            slide.scrolling = false;
             if(!slide.freezeScroll && slide.svg) {
-                // console.log(slide.svg)
                 slide.update();
             }
         }
 
         if(p5.frameCount % roughFPS == 0) {
-
             p5.background(bgColor);
 
             if(urlPath.length == 0) {
@@ -413,6 +412,7 @@ function sketch(p5) {
             hide(slide.selectedProductInfo);
             logo.style.transform = `rotate(${logoAngle}deg)`;
             logoAngle += Math.sign(e.delta) * 0.5;
+            slide.scrolling = true;
         }
     }
 
