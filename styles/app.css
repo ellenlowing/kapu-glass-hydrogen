@@ -226,6 +226,12 @@
     letter-spacing: -0.04em;
   }
 
+  .romantic {
+    font-family: "romantic";
+    letter-spacing: 0.1em;
+    color: var(--gradient-caterpillar-color);
+  }
+
   .fa {
     font-family: "fa", "iota-light";
     text-transform: uppercase;

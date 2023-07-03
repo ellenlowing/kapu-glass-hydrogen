@@ -17,9 +17,12 @@ export default class Slide {
         this.roughBboxStyle = {
             stroke: '#00000000',
             fill: '#FFF',
-            roughness: 8,
-            strokeWidth: 0.8,
-            fillStyle: 'solid'
+            roughness: 1,
+            strokeWidth: 1,
+            fillStyle: 'solid',
+            preserveVertices: true,
+            disableMultiStroke: true,
+            disableMultiStrokeFill: true
         };
         this.roughBubbleStyle = {
             stroke: '#00000000',
@@ -37,6 +40,7 @@ export default class Slide {
         };
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
+        this.caterpillarTouched = false;
     }
 
     async setup(collectionName) {
@@ -53,6 +57,8 @@ export default class Slide {
             waitForElm('#selected-product-info'),
             waitForElm('#selected-product-title'),
             waitForElm('#selected-product-price'),
+            waitForElm('#caterpillar-help-text'),
+            waitForElm('#caterpillar-help-svg'),
         ]).then((values) => {
             this.slideInitialized = true;
 
@@ -82,7 +88,6 @@ export default class Slide {
             this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
             this.leadingProductIndex = 0;
             this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
-            this.resize();
 
             // selected product info
             this.selectedProductInfo = values[2];
@@ -96,7 +101,6 @@ export default class Slide {
             this.gradientCircles = document.getElementsByClassName('gradient-circle');
             this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
             this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
-            this.caterpillarBbox = this.caterpillarIndicator.getBoundingClientRect();
 
             if(isBrowser) {
                 this.caterpillarIndicator.addEventListener('mousemove', (e) => {
@@ -110,6 +114,14 @@ export default class Slide {
                     this.setScrollProgress(e.pageX);
                 })
             }
+
+            this.caterpillarHelpText = values[5];
+            this.caterpillarHelpSvg = values[6];
+            this.caterpillarHelpPath = this.caterpillarHelpSvg.firstChild;
+            this.caterpillarHelpPathLength = this.caterpillarHelpPath.getTotalLength();
+            this.caterpillarHelpAttrW = Number(this.caterpillarHelpSvg.getAttribute("width"));
+            this.caterpillarHelpAttrH = Number(this.caterpillarHelpSvg.getAttribute("height"));
+            this.resize();
 
             // set up individual product 
             this.productsNodeList = [];
@@ -210,7 +222,7 @@ export default class Slide {
                 const product = this.productsNodeList[i];
                 const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
                 productOffset.add(this.displayOffset);
-                slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight);
+                slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight, this.attrW, this.attrH);
                 product.style.top = `${slidePoint.y}px`;
                 product.style.left = `${slidePoint.x}px`;
     
@@ -248,11 +260,17 @@ export default class Slide {
     show(color) {
         if(color) {
             this.roughStyle.stroke = color;
-            this.roughBboxStyle.stroke = color;
+            this.roughBboxStyle.stroke = this.secondaryColor;
             this.roughBubbleStyle.stroke = color;
             this.p5.stroke(color);
         }
         this.rc.curve(this.points, this.roughStyle);
+
+        // draw help text
+        if(this.roughBboxStyle.strokeWidth > 0) {
+            this.rc.curve(this.helpPoints, this.roughBboxStyle);
+            console.log(this.roughBboxStyle.strokeWidth);
+        }
     }
 
     setOpacity(el, opacity) {
@@ -262,9 +280,23 @@ export default class Slide {
     setScrollProgress(clientX) {
         let caterpillarHoverProgress = this.p5.constrain((clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
         this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
+        if(!this.caterpillarTouched) {
+            let opacity = 1;
+            this.caterpillarTouched = true;
+            let caterpillarInterval = setInterval(() => {
+                opacity -= 0.05;
+                this.setOpacity(this.caterpillarHelpText, opacity);
+                this.roughBboxStyle.strokeWidth = opacity;
+                if(opacity <= 0) {
+                    clearInterval(caterpillarInterval);
+                    this.roughBboxStyle.strokeWidth = 0;
+                }
+            }, 50);
+        }
     }
 
     resize() {
+        // resize slide things
         this.points = [];
         let slideSteps = 40;
         if(isBrowser) {
@@ -278,14 +310,26 @@ export default class Slide {
         this.displayOffset = this.p5.createVector((this.p5.width - this.targetWidth)/2, (this.p5.height - this.targetHeight) / 2 );
         for(let i = 0; i <= slideSteps; i++) {
             let slidePoint = this.path.getPointAtLength(i * this.pathLength / slideSteps);
-            slidePoint = this.mapPoint(slidePoint, this.displayOffset, this.targetWidth, this.targetHeight);
+            slidePoint = this.mapPoint(slidePoint, this.displayOffset, this.targetWidth, this.targetHeight, this.attrW, this.attrH);
             this.points.push([slidePoint.x, slidePoint.y]);
+        }
+        
+        // resize caterpillar things
+        this.caterpillarBbox = this.caterpillarIndicator.getBoundingClientRect();
+        if(isBrowser) this.caterpillarHelpText.style.left = `${this.caterpillarBbox.right}px`;
+        this.caterpillarHelpBbox = this.caterpillarHelpText.getBoundingClientRect();
+        this.caterpillarHelpDisplayOffset = this.p5.createVector(this.caterpillarHelpBbox.x, this.caterpillarHelpBbox.y);
+        this.helpPoints = [];
+        for(let i = 0; i <= slideSteps; i++) {
+            let pt = this.caterpillarHelpPath.getPointAtLength(i * this.caterpillarHelpPathLength / slideSteps);
+            pt = this.mapPoint(pt, this.caterpillarHelpDisplayOffset, this.caterpillarHelpBbox.width, this.caterpillarHelpBbox.height, this.caterpillarHelpAttrW, this.caterpillarHelpAttrH);
+            this.helpPoints.push([pt.x, pt.y]);
         }
     }
 
-    mapPoint(point, offset = this.p5.createVector(0,0), targetWidth, targetHeight) {
-        point.x = point.x / this.attrW * targetWidth + offset.x;
-        point.y = point.y / this.attrH * targetHeight + offset.y;
+    mapPoint(point, offset = this.p5.createVector(0,0), targetWidth, targetHeight, attrW, attrH) {
+        point.x = point.x / attrW * targetWidth + offset.x;
+        point.y = point.y / attrH * targetHeight + offset.y;
         return point;
     }
 

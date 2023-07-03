@@ -125,7 +125,7 @@ export default function Cart() {
 
   return (
     <div className="cursor-none flex flex-col space-y-12 justify-center items-center md:py-8 md:px-12 px-4 py-6 h-screen relative">
-      <h2 className={`whitespace-pre-wrap max-w-prose text-5xl fa ${isBrowser ? '' : 'font-bold'}`}>
+      <h2 className={`whitespace-pre-wrap max-w-prose text-5xl fa font-bold`}>
         Your cart is empty
       </h2>
       <Link

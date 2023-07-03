@@ -42,6 +42,11 @@
   src: url("../../public/fonts/IotaDisplayA-SemiBold.otf") format("opentype");
 }
 
+@font-face {
+  font-family: "romantic";
+  src: url("../../public/fonts/ROMANTIC.ttf") format("truetype");
+}
+
 html, body {
     font-family: 'Director-Light';
 }

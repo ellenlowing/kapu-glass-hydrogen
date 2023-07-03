@@ -646,6 +646,11 @@ nav {
     /* font-size: 2.5em; */
     letter-spacing: -0.04em;
   }
+.romantic {
+    font-family: "romantic";
+    letter-spacing: 0.1em;
+    color: var(--gradient-caterpillar-color);
+  }
 .fa {
     font-family: "fa", "iota-light";
     text-transform: uppercase;
@@ -707,20 +712,32 @@ nav {
 .bottom-\[20px\] {
   bottom: 20px;
 }
+.bottom-\[40px\] {
+  bottom: 40px;
+}
+.bottom-\[70px\] {
+  bottom: 70px;
+}
 .left-0 {
   left: 0px;
 }
-.left-\[0px\] {
-  left: 0px;
+.left-\[0\.5px\] {
+  left: 0.5px;
 }
 .left-\[150px\] {
   left: 150px;
+}
+.left-\[1px\] {
+  left: 1px;
 }
 .left-\[20px\] {
   left: 20px;
 }
 .left-\[50\%\] {
   left: 50%;
+}
+.left-\[64\%\] {
+  left: 64%;
 }
 .right-0 {
   right: 0px;
@@ -740,17 +757,11 @@ nav {
 .top-\[11px\] {
   top: 11px;
 }
-.top-\[50\%\] {
-  top: 50%;
-}
-.left-\[1px\] {
-  left: 1px;
-}
-.left-\[0\.5px\] {
-  left: 0.5px;
-}
 .top-\[1px\] {
   top: 1px;
+}
+.top-\[50\%\] {
+  top: 50%;
 }
 .z-50 {
   z-index: 50;
@@ -775,11 +786,11 @@ nav {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
-.mr-\[-20px\] {
-  margin-right: -20px;
-}
 .mr-\[-12px\] {
   margin-right: -12px;
+}
+.mr-\[-20px\] {
+  margin-right: -20px;
 }
 .block {
   display: block;
@@ -799,6 +810,9 @@ nav {
 .h-20 {
   height: 5rem;
 }
+.h-\[30px\] {
+  height: 30px;
+}
 .h-\[320px\] {
   height: 320px;
 }
@@ -815,12 +829,6 @@ nav {
 .h-screen {
   height: 100vh;
 }
-.h-\[30px\] {
-  height: 30px;
-}
-.h-\[40px\] {
-  height: 40px;
-}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -830,8 +838,15 @@ nav {
 .w-\[160px\] {
   width: 160px;
 }
+.w-\[30px\] {
+  width: 30px;
+}
 .w-\[50px\] {
   width: 50px;
+}
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
 }
 .w-full {
   width: 100%;
@@ -839,12 +854,6 @@ nav {
 .w-max {
   width: -moz-max-content;
   width: max-content;
-}
-.w-\[30px\] {
-  width: 30px;
-}
-.w-\[40px\] {
-  width: 40px;
 }
 .max-w-3xl {
   max-width: 48rem;
@@ -889,11 +898,6 @@ nav {
 }
 .translate-y-\[-50\%\] {
   --tw-translate-y: -50%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-.scale-\[80\%\] {
-  --tw-scale-x: 80%;
-  --tw-scale-y: 80%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 .transform {
@@ -1048,6 +1052,14 @@ nav {
   padding-left: 2rem;
   padding-right: 2rem;
 }
+.px-\[1\.8rem\] {
+  padding-left: 1.8rem;
+  padding-right: 1.8rem;
+}
+.px-\[1rem\] {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -1089,6 +1101,12 @@ nav {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
+.pb-\[1\.4rem\] {
+  padding-bottom: 1.4rem;
+}
+.pb-\[1\.8rem\] {
+  padding-bottom: 1.8rem;
+}
 .pt-10 {
   padding-top: 2.5rem;
 }
@@ -1103,6 +1121,12 @@ nav {
 }
 .pt-8 {
   padding-top: 2rem;
+}
+.pt-\[0\.6rem\] {
+  padding-top: 0.6rem;
+}
+.pt-\[1rem\] {
+  padding-top: 1rem;
 }
 .text-left {
   text-align: left;
@@ -1124,6 +1148,9 @@ nav {
 .text-5xl {
   font-size: 3rem;
   line-height: 1;
+}
+.text-\[0\.6rem\] {
+  font-size: 0.6rem;
 }
 .text-\[1\.2em\] {
   font-size: 1.2em;
@@ -1148,9 +1175,6 @@ nav {
 .text-xs {
   font-size: 0.75rem;
   line-height: 1rem;
-}
-.text-\[0\.6rem\] {
-  font-size: 0.6rem;
 }
 .font-bold {
   font-weight: 700;

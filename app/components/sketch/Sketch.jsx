@@ -343,7 +343,6 @@ function sketch(p5) {
                         butterfly.show();
                         mousePath.points.shift();
                         mousePath.angles.shift();
-        
                     }
                     if(sparkles.length > 60) {
                         sparkles.shift();
@@ -537,8 +536,8 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         const pathIndex = pathNameList.indexOf(urlPath[1]);
         document.documentElement.style.setProperty('--gradient-caterpillar-color', secondaryColors[pathIndex]);
+        slide.secondaryColor = secondaryColors[pathIndex];
     }
-
 }
 
 const FEATURED_PRODUCT_QUERY = `#graphql
