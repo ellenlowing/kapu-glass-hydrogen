@@ -100,8 +100,9 @@ export default class Slide {
 
             if(isBrowser) {
                 this.caterpillarIndicator.addEventListener('mousemove', (e) => {
-                    let caterpillarHoverProgress = (e.clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width;
+                    let caterpillarHoverProgress = this.p5.constrain((e.clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
                     this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
+                    console.log(caterpillarHoverProgress);
                 })
             }
 
