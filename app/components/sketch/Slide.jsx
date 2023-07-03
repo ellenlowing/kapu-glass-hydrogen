@@ -28,13 +28,13 @@ export default class Slide {
             strokeWidth: 0.8,
             fillStyle: 'solid'
         };
-        this.activeCirclePerPage = {
-            "vessels": 2,
-            "accessories": 2,
-            "magazine": 2,
-            "workshops": 2,
-            "archive": 2
-        }
+        this.scrollPerPage = {
+            "vessels": 0,
+            "accessories": 0,
+            "magazine": 0,
+            "workshops": 0,
+            "archive": 0
+        };
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
     }
@@ -78,10 +78,7 @@ export default class Slide {
                 this.numProductsDisplayed = this.maxNumProductsDisplayed;
             }
             this.pathLengthOffset = this.pathLength / this.numProductsDisplayed;
-            if(this.activeCirclePerPage[this.name] >= this.numProducts) {
-                this.activeCirclePerPage[this.name] = this.activeCirclePerPage[this.name] % this.numProductsDisplayed;
-            }
-            this.scrollProgress = this.pathLengthOffset * this.activeCirclePerPage[this.name];
+            this.scrollProgress = this.scrollPerPage[this.name];
             this.totalToMaxNumDisplayRatio = this.numProducts / this.numProductsDisplayed;
             this.leadingProductIndex = 0;
             this.lastProductIndex = (this.leadingProductIndex + this.numProductsDisplayed - 1) % this.numProducts;
@@ -261,6 +258,8 @@ export default class Slide {
                 }
                 this.lastScrollProgress = this.scrollProgress;
             }
+
+            this.scrollPerPage[this.name] = this.scrollProgress;
         }
     }
 
@@ -291,7 +290,6 @@ export default class Slide {
         //     }, 50)
         // }
         this.scrollProgress = index * this.pathLengthOffset;
-        this.activeCirclePerPage[this.name] = index;
     }
 
     resize() {
