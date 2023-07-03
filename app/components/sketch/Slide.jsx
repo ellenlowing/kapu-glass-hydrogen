@@ -96,37 +96,14 @@ export default class Slide {
             this.gradientCircles = document.getElementsByClassName('gradient-circle');
             this.caterpillarIndices = document.getElementsByClassName('caterpillar-index');
             this.caterpillarIndicator = document.getElementById('caterpillar-indicator');
+            this.caterpillarBbox = this.caterpillarIndicator.getBoundingClientRect();
 
-            // make caterpillar button clickable
-            for(let circle of this.gradientCircles) {
-                if(isBrowser) {
-                    circle.addEventListener('mouseover', (e) => {
-                        this.setScrollProgress(circle);
-                    })
-                } 
-                // TODO add mobile method
+            if(isBrowser) {
+                this.caterpillarIndicator.addEventListener('mousemove', (e) => {
+                    let caterpillarHoverProgress = (e.clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width;
+                    this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
+                })
             }
-            // uncomment if conveyor belt should automate on mouseover
-            // if(isBrowser) {
-            //     this.caterpillarIndicator.addEventListener('mouseenter', (e) => {
-            //         this.caterpillarIndicatorHovered = true;
-            //     })
-            //     this.caterpillarIndicator.addEventListener('mouseleave', (e) => {
-            //         this.caterpillarIndicatorHovered = false;
-            //     })
-            //     console.log('setup');
-            // }
-            // if(isMobile) {
-            //     this.caterpillarIndicator.addEventListener('touchstart', e => {
-            //         if(!this.caterpillarIndicatorChanged) {
-            //             this.caterpillarIndicatorHovered = !this.caterpillarIndicatorHovered;
-            //             this.caterpillarIndicatorChanged = true;
-            //             setTimeout(() => {
-            //                 this.caterpillarIndicatorChanged = false;
-            //             }, 200)
-            //         }
-            //     })
-            // }
 
             // set up individual product 
             this.productsNodeList = [];
