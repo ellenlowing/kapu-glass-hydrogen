@@ -122,6 +122,9 @@ export default class Slide {
             this.caterpillarHelpAttrW = Number(this.caterpillarHelpSvg.getAttribute("width"));
             this.caterpillarHelpAttrH = Number(this.caterpillarHelpSvg.getAttribute("height"));
             this.resize();
+            if(this.caterpillarTouched) {
+                hide(this.caterpillarHelpText);
+            }
 
             // set up individual product 
             this.productsNodeList = [];
@@ -218,15 +221,15 @@ export default class Slide {
     
             for(let i = 0; i < this.productsNodeList.length; i++) {
                 let offsetScrollProgress = (this.scrollProgress - i * this.pathLengthOffset - this.productsDisplayCountList[i] * this.totalToMaxNumDisplayRatio * this.pathLength);
-                let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
                 const product = this.productsNodeList[i];
-                const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
-                productOffset.add(this.displayOffset);
-                slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight, this.attrW, this.attrH);
-                product.style.top = `${slidePoint.y}px`;
-                product.style.left = `${slidePoint.x}px`;
     
-                if(product.classList.contains('active')) {
+                if(product.classList.contains('active')) {                
+                    let slidePoint = this.path.getPointAtLength(offsetScrollProgress);
+                    const productOffset = this.p5.createVector(-product.clientWidth / 2, -product.clientHeight / 8 * 7); // controls anchor of product image
+                    productOffset.add(this.displayOffset);
+                    slidePoint = this.mapPoint(slidePoint, productOffset, this.targetWidth, this.targetHeight, this.attrW, this.attrH);
+                    product.style.top = `${slidePoint.y}px`;
+                    product.style.left = `${slidePoint.x}px`;
                     let pct = this.p5.sin(offsetScrollProgress / this.pathLength * this.p5.PI);
                     this.gradientCircles[i].style.bottom = `${pct * 24 * deviceMultiplier}px`;
                 } else {
@@ -269,7 +272,6 @@ export default class Slide {
         // draw help text
         if(this.roughBboxStyle.strokeWidth > 0) {
             this.rc.curve(this.helpPoints, this.roughBboxStyle);
-            console.log(this.roughBboxStyle.strokeWidth);
         }
     }
 

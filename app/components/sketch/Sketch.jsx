@@ -281,6 +281,7 @@ function sketch(p5) {
             }
         }
 
+        // draw every n frames
         if(p5.frameCount % roughFPS == 0) {
             p5.background(bgColor);
 
@@ -513,12 +514,14 @@ function sketch(p5) {
         }
     }
 
+    // grab average frame rate with deltaTime
+    // set update rate
     function getAverageFPS() {
         duration += p5.deltaTime;
         frames += 1;
         if(duration >= sampleDuration) {
             averageFPS = frames / duration * 1000;
-            roughFPS = Math.floor(averageFPS / 6);
+            roughFPS = Math.floor(averageFPS / 6); // target at 6 frames per second
             duration = 0;
             frames = 0; 
         }
