@@ -136,31 +136,38 @@ export default class Slide {
                 this.productsNodeList.push(product);
                 this.productsDisplayCountList.push(0);
 
-                product.addEventListener('mouseover', (e) => {
-                    if(!this.scrolling) this.mouseEnterHandler(e);
-                    console.log('mouseenter product')
-                })
-
-                product.addEventListener('mouseleave', (e) => {
-                    this.mouseLeaveHandler(e);
-                    console.log('mouseleave');
-                })
+                if(isBrowser) {
+                    product.addEventListener('mouseover', (e) => {
+                        if(!this.scrolling) this.mouseEnterHandler(e);
+                        console.log('mouseenter product')
+                    })
+    
+                    product.addEventListener('mouseleave', (e) => {
+                        this.mouseLeaveHandler(e);
+                        e.currentTarget.style.transform = 'scale(1)';
+                        console.log('mouseleave');
+                    })
+                }
 
                 if(isMobile) {
                     product.addEventListener('touchstart', (e) => {
-                        if(this.activeIndex == null) {
-                            // when product image is not highlighted and clicked
-                            e.preventDefault();
-                            this.activeIndex = i;
-                            this.mouseEnterHandler(e);
-                        } else if (i == this.activeIndex) {
-                            // when product image is highlighted and clicked again
-                            this.activeIndex = null;
-                        } else if (i != this.activeIndex) {
-                            // when another product image that's not highlighted is clicked
-                            e.preventDefault();
-                            this.activeIndex = i;
-                        }
+                        // if(!this.scrolling) {
+                            console.log('product touchstart')
+                            if(this.activeIndex == null) {
+                                // when product image is not highlighted and clicked
+                                e.preventDefault();
+                                this.activeIndex = i;
+                                this.mouseEnterHandler(e);
+                            } else if (i == this.activeIndex) {
+                                // when product image is highlighted and clicked again
+                                this.activeIndex = null;
+                            } else if (i != this.activeIndex) {
+                                // when another product image that's not highlighted is clicked
+                                e.preventDefault();
+                                this.activeIndex = i;
+                            }
+                        // }
+                        
                     })
                 }
 
@@ -175,15 +182,6 @@ export default class Slide {
                 }
             }
         })
-
-        if(isMobile) {
-            const mainContent = document.getElementById('mainContent');
-            mainContent.addEventListener('touchstart', (e) => {
-                if(this.activeIndex != null && !e.target.classList.contains('product-image')) {
-                    this.mouseLeaveHandler();
-                }
-            })
-        }
     }
 
     update() {
@@ -342,6 +340,7 @@ export default class Slide {
         this.freezeScroll = true; 
         this.roughStyle.roughness = Math.random() * 5 + 4;
 
+        e.currentTarget.style.transform = 'scale(2)';
         for(let node of this.productsNodeList) {
             if(node != e.currentTarget && node.classList.contains('active')) {
                 hide(node);
@@ -380,5 +379,6 @@ export default class Slide {
         }
         hide(this.selectedProductInfo);
         show(this.caterpillarIndicator);
+        // e.currentTarget.style.transform = 'scale(1)';
     }
 }

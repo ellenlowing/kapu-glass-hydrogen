@@ -413,14 +413,22 @@ function sketch(p5) {
     }
 
     p5.touchStarted = (e) => {
-        if(e.touches) {
+        // e.preventDefault();
+        console.log("main loop touch started", e.target.classList);
+        if(e.touches && !slide.freezeScroll && slide.svg) {
             p5.loop();
             startTouch = p5.createVector(e.touches[0].clientX, e.touches[0].clientY);
+        } else if (slide.activeIndex != null && !e.target.classList.contains('product-image')) {
+            // console.log()
+            slide.productsNodeList[slide.activeIndex].style.transform = 'scale(1)';
+            slide.mouseLeaveHandler();
         }
     }
 
     p5.touchMoved = (e) => {
-        if(e.touches) {
+        // e.preventDefault();
+        console.log("main loop touch moved");
+        if(e.touches && !slide.freezeScroll && slide.svg) {
             p5.loop();
             let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
             slide.scrollProgress += p5.constrain(movedTouch.y, -20, 20);

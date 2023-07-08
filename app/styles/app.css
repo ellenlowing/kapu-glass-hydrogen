@@ -829,6 +829,9 @@ nav {
 .h-screen {
   height: 100vh;
 }
+.h-\[40px\] {
+  height: 40px;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -854,6 +857,9 @@ nav {
 .w-max {
   width: -moz-max-content;
   width: max-content;
+}
+.w-\[60\%\] {
+  width: 60%;
 }
 .max-w-3xl {
   max-width: 48rem;
@@ -1092,6 +1098,10 @@ nav {
   padding-top: 0px;
   padding-bottom: 0px;
 }
+.px-\[0\.5rem\] {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 .pb-12 {
   padding-bottom: 3rem;
 }
@@ -1127,6 +1137,15 @@ nav {
 }
 .pt-\[1rem\] {
   padding-top: 1rem;
+}
+.pb-\[1\.6rem\] {
+  padding-bottom: 1.6rem;
+}
+.pb-\[2rem\] {
+  padding-bottom: 2rem;
+}
+.pt-\[0\.4rem\] {
+  padding-top: 0.4rem;
 }
 .text-left {
   text-align: left;

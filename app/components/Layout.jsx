@@ -16,7 +16,7 @@ export function Layout({children, title}) {
             <img id="logo" className="h-full" src={logo}></img>
           </Link>
 
-          <nav id="nav" className={`fixed z-[70]`}>
+          <nav id="nav" className={`fixed z-[70] h-[40px]`}>
             <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
             <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
             <Link id="nav-link-2" to="/collections/magazine" className=" cursor-pointer nav-link">magazine</Link>
