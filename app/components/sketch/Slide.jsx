@@ -124,6 +124,10 @@ export default class Slide {
             this.resize();
             if(this.caterpillarTouched) {
                 hide(this.caterpillarHelpText);
+            } else {
+                setTimeout(() => {
+                    this.hideCaterpillarCTA()
+                }, 10000);
             }
 
             // set up individual product 
@@ -280,8 +284,14 @@ export default class Slide {
         let caterpillarHoverProgress = this.p5.constrain((clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
         this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
         if(!this.caterpillarTouched) {
-            let opacity = 1;
             this.caterpillarTouched = true;
+            this.hideCaterpillarCTA();
+        }
+    }
+
+    hideCaterpillarCTA() {
+        if(!this.caterpillarCTAHidden) {
+            let opacity = 1;
             let caterpillarInterval = setInterval(() => {
                 opacity -= 0.05;
                 this.setOpacity(this.caterpillarHelpText, opacity);
@@ -290,7 +300,8 @@ export default class Slide {
                     clearInterval(caterpillarInterval);
                     this.roughBboxStyle.strokeWidth = 0;
                 }
-            }, 50);
+            }, 20);
+            this.caterpillarCTAHidden = true;
         }
     }
 
@@ -357,6 +368,7 @@ export default class Slide {
 
         show(this.selectedProductInfo);
         hide(this.caterpillarIndicator);
+        this.hideCaterpillarCTA();
 
         if(this.name == 'accessories') {
             const createNewSpiral = new CustomEvent("create-spiral", {
@@ -366,6 +378,7 @@ export default class Slide {
             });
             this.canvas.dispatchEvent(createNewSpiral);
         }
+
     }
 
     mouseLeaveHandler(e) {
@@ -379,6 +392,5 @@ export default class Slide {
         }
         hide(this.selectedProductInfo);
         show(this.caterpillarIndicator);
-        // e.currentTarget.style.transform = 'scale(1)';
     }
 }
