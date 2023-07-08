@@ -1,14 +1,16 @@
 export default class Habitat {
-    constructor(p5, rc) {
-        this.p5 = p5;
-        this.rc = rc;
-        this.mainImage = p5.createImage(p5.width, p5.height);
-        this.maskPg = p5.createGraphics(p5.width, p5.height);
+    constructor() {
         this.caterpillars = [];
         this.images = [];
         this.imagesIndex = 0;
         this.pixelDensity = 2;
-        // this.imagesCount = 0;
+    }
+
+    setup(p5, rc) {
+        this.p5 = p5;
+        this.rc = rc;
+        this.mainImage = p5.createImage(p5.width, p5.height);
+        this.maskPg = p5.createGraphics(p5.width, p5.height);
     }
 
     resize() {

@@ -113,7 +113,6 @@ function sketch(p5) {
     let titlePoints;
 
     p5.updateWithProps = props => {
-        if(props.links) console.log(props.links.length);
         for(let link of props.links) {
             habitat.imagesCount = props.links.length;
             p5.loadImage(link, img => {
@@ -138,7 +137,8 @@ function sketch(p5) {
         let roughLadder = rough.canvas(ladderCanvas);
         ladder = new Ladder(p5, roughLadder, ladderMenu);
 
-        habitat = new Habitat(p5, rc);
+        habitat = new Habitat();
+        habitat.setup(p5, rc);
 
         butterfly = new Butterfly(
             p5.createVector(p5.width/2, p5.height/2),
