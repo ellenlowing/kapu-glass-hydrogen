@@ -420,11 +420,14 @@ function sketch(p5) {
     }
 
     p5.touchMoved = (e) => {
-        // if(e.touches) {
-        //     p5.loop();
-        //     let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
-        //     slide.scrollProgress += p5.constrain(movedTouch.y, -10, 10);
-        // }
+        if(e.touches) {
+            p5.loop();
+            let movedTouch = p5.createVector(startTouch.x - e.touches[0].clientX, startTouch.y - e.touches[0].clientY);
+            slide.scrollProgress += p5.constrain(movedTouch.y, -20, 20);
+            logo.style.transform = `rotate(${logoAngle}deg)`;
+            logoAngle += Math.sign(movedTouch.y) * 0.5;
+            slide.scrolling = true;
+        }
     }
 
     p5.windowResized = () => {
