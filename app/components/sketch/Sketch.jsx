@@ -111,11 +111,8 @@ function sketch(p5) {
 
     p5.updateWithProps = props => {
         habitat.imagesCount = props.links.length;
-        for(let link of props.links) {
-            p5.loadImage(link, img => {
-                habitat.addImage(img);
-            });
-        }
+        habitat.links = props.links;
+        habitat.loadImages();
     }
 
     p5.setup = () => {
@@ -443,6 +440,7 @@ function sketch(p5) {
         const urlPath = p5.getURLPath();
         if(urlPath.length == 0) {
             p5.background(bgColor);
+            habitat.resize();
         } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
             p5.background(bgColor);
             slide.resize();

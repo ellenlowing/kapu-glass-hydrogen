@@ -9,31 +9,46 @@ export default class Habitat {
     setup(p5, rc) {
         this.p5 = p5;
         this.rc = rc;
-        this.mainImage = p5.createImage(p5.width, p5.height);
         this.maskPg = p5.createGraphics(p5.width, p5.height);
+        this.resize();
+        console.log("setup");
     }
 
     resize() {
-        
+        this.mainImage = this.p5.createImage(this.p5.width, this.p5.height);
+        this.imagesIndex = 0;
+        for(let img of this.images) {
+            this.addImage(img);
+        }
+        this.maskPg = this.p5.createGraphics(this.p5.width, this.p5.height);
+    }
+
+    loadImages() {
+        for(let link of this.links) {
+            this.p5.loadImage(link, img => {
+                this.images.push(img);
+                this.addImage(img);
+            });
+        }
     }
 
     addImage(img) {
-        this.images.push(img);
-
+        let tempImage = this.p5.createImage(img.width, img.height);
+        tempImage.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
         if(this.p5.width > this.p5.height) {
-            img.resize(0, this.p5.height / 2 * 0.5 * this.pixelDensity);
+            tempImage.resize(0, this.p5.height / 2 * 0.5 * this.pixelDensity);
         } else {
-            img.resize(this.p5.width / 2 * 0.5 * this.pixelDensity, 0);
+            tempImage.resize(this.p5.width / 2 * 0.5 * this.pixelDensity, 0);
         }
 
-        let w = img.width;
-        let h = img.height;
+        let w = tempImage.width;
+        let h = tempImage.height;
         let rx = this.p5.width / 2 * 0.8;
         let ry = this.p5.height / 2 * 0.7;
         let x = rx * Math.cos(Math.PI * 2 / (this.imagesCount) * this.imagesIndex) + (this.p5.width - w / this.pixelDensity) / 2;
         let y = ry * Math.sin(Math.PI * 2/ (this.imagesCount) * this.imagesIndex) + (this.p5.height - h / this.pixelDensity) / 2;
 
-        this.mainImage.copy(img, 0, 0, w, h, x, y, w / this.pixelDensity, h / this.pixelDensity);
+        this.mainImage.copy(tempImage, 0, 0, w, h, x, y, w / this.pixelDensity, h / this.pixelDensity);
         this.imagesIndex++;
     }
 
