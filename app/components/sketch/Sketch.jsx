@@ -8,7 +8,7 @@ const ReactP5Wrapper = lazy(() =>
 );
 import Butterfly from './Butterfly';
 import Ladder from './Ladder';
-import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier} from './Utility';
+import {hide, show, colors, secondaryColors, pathNameList, magazineScrollRanges, arrayEquals, setPixelDensity, deviceMultiplier, waitForElm} from './Utility';
 import Path from './Path';
 import Flower from './Flower';
 import Slide from './Slide';
@@ -109,10 +109,13 @@ function sketch(p5) {
     // let faFontLoaded = false;
     // let titlePoints;
 
-    p5.updateWithProps = props => {
-        habitat.imagesCount = props.links.length;
-        habitat.links = props.links;
-        habitat.loadImages();
+    p5.updateWithProps = async props => {
+        waitForElm('#defaultCanvas0').then(() => {
+            habitat.imagesCount = props.links.length;
+            habitat.links = props.links;
+            habitat.loadImages();
+            console.log("loading images after canvas is loaded");
+        })
     }
 
     p5.setup = () => {
@@ -221,7 +224,7 @@ function sketch(p5) {
                 if(urlPath.length == 0) {
                     console.log('set up home');
                     // add caterpillar
-
+                    habitat.resize();
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
                     console.log('init slide');
