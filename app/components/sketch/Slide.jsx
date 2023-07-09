@@ -185,6 +185,8 @@ export default class Slide {
                     this.setOpacity(this.caterpillarIndices[i], 0);
                 }
             }
+
+            console.log('finished init slide');
         })
     }
 

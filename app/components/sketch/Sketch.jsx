@@ -225,7 +225,7 @@ function sketch(p5) {
                 } else if( urlPath[0] == 'collections') {
                     const collectionName = urlPath[1];
                     console.log('init slide');
-                    slide.setup(collectionName);
+                    await slide.setup(collectionName).then(() => {});
                     setGradientCaterpillarColor();
         
                     // diff animations per collection page
