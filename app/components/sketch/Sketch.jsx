@@ -124,6 +124,7 @@ function sketch(p5) {
         p5.noStroke();
 
         canvas = document.getElementById('defaultCanvas0');
+        p5.drawingContext.willReadFrequently = true;
         rc = rough.canvas(canvas);
 
         console.log('initialized canvas');
