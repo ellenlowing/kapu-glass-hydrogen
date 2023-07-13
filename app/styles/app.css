@@ -535,7 +535,7 @@ video {
   }
 .svg-slide path {
     position: relative;
-    stroke: none;
+    /* stroke: none; */
   }
 .w-half {
     width: 50%;
@@ -589,7 +589,7 @@ nav {
     transform: translateY(-280px);
   }
 .nav-link {
-    font-family: "iota-sb";
+    font-family: "Director-Light";
     font-size: 1em;
     text-align: center;
     display: block;
@@ -682,6 +682,9 @@ nav {
     width: -moz-max-content;
     width: -o-max-content;
   }
+.visible {
+  visibility: visible;
+}
 .fixed {
   position: fixed;
 }
@@ -778,6 +781,9 @@ nav {
 .z-\[70\] {
   z-index: 70;
 }
+.m-auto {
+  margin: auto;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -812,6 +818,9 @@ nav {
 }
 .h-\[30px\] {
   height: 30px;
+}
+.h-\[30vh\] {
+  height: 30vh;
 }
 .h-\[320px\] {
   height: 320px;
@@ -849,6 +858,9 @@ nav {
 }
 .w-\[60\%\] {
   width: 60%;
+}
+.w-\[60vw\] {
+  width: 60vw;
 }
 .w-fit {
   width: -moz-fit-content;
@@ -935,6 +947,9 @@ nav {
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
 .flex-col {
   flex-direction: column;
 }
@@ -952,6 +967,9 @@ nav {
 }
 .justify-items-start {
   justify-items: start;
+}
+.gap-10 {
+  gap: 2.5rem;
 }
 .gap-2 {
   gap: 0.5rem;
@@ -1182,6 +1200,10 @@ nav {
   font-size: 0.75rem;
   line-height: 1rem;
 }
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
 .font-bold {
   font-weight: 700;
 }
@@ -1222,6 +1244,12 @@ nav {
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
 }
 .opacity-50 {
   opacity: 0.5;
@@ -1265,8 +1293,32 @@ nav {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.delay-500 {
+  transition-delay: 500ms;
+}
 .duration-200 {
   transition-duration: 200ms;
+}
+.duration-\[3000\] {
+  transition-duration: 3000;
+}
+.duration-700 {
+  transition-duration: 700ms;
+}
+.duration-\[3000ms\] {
+  transition-duration: 3000ms;
+}
+.duration-\[2000ms\] {
+  transition-duration: 2000ms;
+}
+.duration-\[1000ms\] {
+  transition-duration: 1000ms;
+}
+.duration-\[1500ms\] {
+  transition-duration: 1500ms;
+}
+.duration-\[500ms\] {
+  transition-duration: 500ms;
 }
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);

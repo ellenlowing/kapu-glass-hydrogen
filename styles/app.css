@@ -36,7 +36,7 @@
 
   .svg-slide path {
     position: relative;
-    stroke: none;
+    /* stroke: none; */
   }
   
   .w-half {
@@ -154,7 +154,7 @@
   }
 
   .nav-link {
-    font-family: "iota-sb";
+    font-family: "Director-Light";
     font-size: 1em;
     text-align: center;
     display: block;
