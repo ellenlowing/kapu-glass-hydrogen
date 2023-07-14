@@ -40,7 +40,7 @@ export default class Habitat {
             tempImage.resize(0, this.p5.height / 2 * 0.5 * this.pixelDensity);
         } else if ((this.p5.height / this.p5.width) >= 1.2) {
             //portrait
-            tempImage.resize(this.p5.width / 2 * 0.5 * this.pixelDensity, 0);
+            tempImage.resize(this.p5.width / 2 * 0.55 * this.pixelDensity, 0);
         } else {
             //square
             tempImage.resize(0, this.p5.height / 2 * 0.4 * this.pixelDensity);

@@ -312,36 +312,88 @@
 
   #grid-link-0 .grid-link-path {
     stroke: #fbe106;
+    -webkit-filter: drop-shadow(0px 0px 3px #fbe106);
   }
 
   #grid-link-0:hover .grid-link-path,
   #grid-link-0:active .grid-link-path {
-    -webkit-filter: drop-shadow(0px 0px 30px #fbe106);
+    animation: gridLink0 6s infinite;
   }
 
   #grid-link-1 .grid-link-path {
     stroke: #FBAC00;
+    -webkit-filter: drop-shadow(0px 0px 3px #FBAC00);
   }
 
   #grid-link-1:hover .grid-link-path,
   #grid-link-1:active .grid-link-path{
-    -webkit-filter: drop-shadow(0px 0px 30px #FBAC00);
+    animation: gridLink1 6s infinite;
   }
 
   #grid-link-2 .grid-link-path {
     stroke: #b8b8ff;
+    -webkit-filter: drop-shadow(0px 0px 3px #b8b8ff);
   }
 
   #grid-link-2:hover .grid-link-path,
   #grid-link-2:active .grid-link-path {
-    -webkit-filter: drop-shadow(0px 0px 30px #b8b8ff);
+    animation: gridLink2 6s infinite;
   }
 
   #grid-link-3 .grid-link-path {
     stroke: #40c945;
+    -webkit-filter: drop-shadow(0px 0px 3px #40c945);
   }
   #grid-link-3:hover .grid-link-path,
   #grid-link-3:active .grid-link-path {
-    -webkit-filter: drop-shadow(0px 0px 30px #40c945);
+    animation: gridLink3 6s infinite;
+  }
+
+  @keyframes gridLink0 {
+    0% {
+      -webkit-filter: drop-shadow(0px 0px 3px #fbe106);
+    }
+    50% {
+      -webkit-filter: drop-shadow(0px 0px 30px #fbe106);
+    }
+    100% {
+      -webkit-filter: drop-shadow(0px 0px 3px #fbe106);
+    }
+  }
+
+  @keyframes gridLink1 {
+    0% {
+      -webkit-filter: drop-shadow(0px 0px 3px #FBAC00);
+    }
+    50% {
+      -webkit-filter: drop-shadow(0px 0px 30px #FBAC00);
+    }
+    100% {
+      -webkit-filter: drop-shadow(0px 0px 3px #FBAC00);
+    }
+  }
+
+  @keyframes gridLink2 {
+    0% {
+      -webkit-filter: drop-shadow(0px 0px 3px #b8b8ff);
+    }
+    50% {
+      -webkit-filter: drop-shadow(0px 0px 30px #b8b8ff);
+    }
+    100% {
+      -webkit-filter: drop-shadow(0px 0px 3px #b8b8ff);
+    }
+  }
+
+  @keyframes gridLink3 {
+    0% {
+      -webkit-filter: drop-shadow(0px 0px 3px #40c945);
+    }
+    50% {
+      -webkit-filter: drop-shadow(0px 0px 30px #40c945);
+    }
+    100% {
+      -webkit-filter: drop-shadow(0px 0px 3px #40c945);
+    }
   }
 }
