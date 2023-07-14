@@ -33,7 +33,7 @@ export default function ProductGrid({collection}) {
       </div>
       {isBrowser && 
         <>
-          <div id="caterpillar-help-text" className="select-none px-[1.8rem] pt-[1rem] pb-[1.8rem] text-left w-fit absolute bottom-[70px] translate-x-[-50%] romantic text-2xl">
+          <div id="caterpillar-help-text" className="select-none px-[1.8rem] pt-[1rem] pb-[1.8rem] text-left w-fit absolute bottom-[70px] translate-x-[-50%] director-bold text-md">
             just scroll, or touch me with your cursor...
           </div>
           <svg id="caterpillar-help-svg" width="461" height="79" viewBox="0 0 461 79" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +43,7 @@ export default function ProductGrid({collection}) {
       } 
       {isMobile && 
         <>
-          <div id="caterpillar-help-text" className="select-none px-[0.5rem] pt-[0.4rem] pb-[2rem] text-center w-[60%] absolute bottom-[40px] left-[64%] translate-x-[-50%] romantic text-lg">
+          <div id="caterpillar-help-text" className="select-none px-[0.5rem] pt-[0.4rem] pb-[1.4rem] text-center w-[60%] absolute bottom-[40px] left-[64%] translate-x-[-50%] director-bold text-xs">
             drag up or down on empty spaces, or over me...
           </div>
           <svg id="caterpillar-help-svg" width="287" height="71" viewBox="0 0 287 71" fill="none" xmlns="http://www.w3.org/2000/svg">

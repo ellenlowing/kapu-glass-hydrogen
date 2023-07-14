@@ -38,7 +38,7 @@ function setPixelDensity(canvas) {
     let pixelRatio = window.devicePixelRatio;
 	
     // Optionally print it to the console (if interested).
-		console.log(`Device Pixel Ratio: ${pixelRatio}`);
+    console.log(`Device Pixel Ratio: ${pixelRatio}`);
 
     // Get the actual screen (or CSS) size of the canvas.
     let sizeOnScreen = canvas.getBoundingClientRect();

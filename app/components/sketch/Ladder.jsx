@@ -1,4 +1,4 @@
-import {hide, show, colors} from './Utility';
+import {hide, show, colors, setPixelDensity} from './Utility';
 import {isMobile} from 'react-device-detect';
 
 export default class Ladder {

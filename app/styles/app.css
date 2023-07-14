@@ -646,11 +646,6 @@ nav {
     /* font-size: 2.5em; */
     letter-spacing: -0.04em;
   }
-.romantic {
-    font-family: "romantic";
-    letter-spacing: 0.1em;
-    color: var(--gradient-caterpillar-color);
-  }
 .fa {
     font-family: "fa", "iota-light";
     text-transform: uppercase;
@@ -662,6 +657,12 @@ nav {
 .director-light {
     font-family: "Director-Light";
   }
+.director-reg {
+    font-family: "Director-Regular";
+  }
+.director-bold {
+    font-family: "Director-Bold";
+  }
 .gradient-circle {
     background: radial-gradient(50% 50% at 50% 50%, var(--gradient-caterpillar-color) 68.75%, rgba(255, 255, 255, 0) 100%);
     mix-blend-mode: darken;
@@ -669,6 +670,9 @@ nav {
 .caterpillar-indicator-mobile {
     width: -moz-max-content;
     width: -o-max-content;
+  }
+#caterpillar-help-text {
+    color: var(--gradient-caterpillar-color);
   }
 .grid-link span,
   .grid-link span:hover,
@@ -770,6 +774,9 @@ nav {
 .right-0 {
   right: 0px;
 }
+.right-\[0\] {
+  right: 0;
+}
 .right-\[20px\] {
   right: 20px;
 }
@@ -790,9 +797,6 @@ nav {
 }
 .top-\[50\%\] {
   top: 50%;
-}
-.right-\[0\] {
-  right: 0;
 }
 .z-50 {
   z-index: 50;
@@ -1205,6 +1209,12 @@ nav {
 .pt-\[1rem\] {
   padding-top: 1rem;
 }
+.pb-\[1rem\] {
+  padding-bottom: 1rem;
+}
+.pb-\[1\.4rem\] {
+  padding-bottom: 1.4rem;
+}
 .text-left {
   text-align: left;
 }
@@ -1213,10 +1223,6 @@ nav {
 }
 .text-right {
   text-align: right;
-}
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
 }
 .text-3xl {
   font-size: 1.875rem;

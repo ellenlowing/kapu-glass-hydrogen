@@ -12,13 +12,10 @@ export function Layout({children, title}) {
     const location = useLocation();
 
     useEffect(() => {
-      console.log(location.pathname.length);
       if(location.pathname == '/') {
         setIsHome(true);
-        console.log('is home')
       } else {
         setIsHome(false);
-        console.log('not home')
       }
 
       if(isHome) {
@@ -36,13 +33,12 @@ export function Layout({children, title}) {
           role="banner"
           className={`absolute items-center h-20 z-[60] top-0 justify-between leading-none p-1 antialiased transition`}
         >
-          
-          <Link className={`h-full ${isHome ? 'transition ease-in-out duration-[1000ms] delay-500' : ''}  ${!loading ? 'opacity-100' : 'opacity-0'}`} to="/">
+          <Link className={`h-full ${isHome ? 'hidden' : 'visible'}`} to="/">
             <img id="logo" className="h-full" src={logo}></img>
           </Link>
           
-          <div className={` ${isHome ? 'opacity-0' : 'opacity-100'}`}>
-            <nav id="nav" className={`fixed z-[70] h-[40px]`}>
+          <div className={`${isHome ? 'opacity-0' : 'opacity-100'}`}>
+            <nav id="nav" className={`${isHome ? 'hidden' : 'visible'} fixed z-[70] h-[40px]`}>
               <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
               <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
               <Link id="nav-link-2" to="/collections/magazine" className=" cursor-pointer nav-link">magazine</Link>
@@ -53,11 +49,7 @@ export function Layout({children, title}) {
               <a id="menu-switch" className=" cursor-pointer nav-link">menu</a>
             </nav>
             <canvas id="ladder-menu" className={`fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px] z-[60] mix-blend-multiply `}></canvas>
-
           </div>
-
-          <div className="absolute top-[0] right-[0] z-[99]">{isHome}</div>
-        
         </header>
 
         <main

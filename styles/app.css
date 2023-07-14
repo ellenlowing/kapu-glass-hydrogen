@@ -254,6 +254,14 @@
     font-family: "Director-Light";
   }
 
+  .director-reg {
+    font-family: "Director-Regular";
+  }
+
+  .director-bold {
+    font-family: "Director-Bold";
+  }
+
   .gradient-circle {
     background: radial-gradient(50% 50% at 50% 50%, var(--gradient-caterpillar-color) 68.75%, rgba(255, 255, 255, 0) 100%);
     mix-blend-mode: darken;
@@ -280,6 +288,10 @@
     width: -moz-max-content;
     width: -webkit-max-content;
     width: -o-max-content;
+  }
+
+  #caterpillar-help-text {
+    color: var(--gradient-caterpillar-color);
   }
 
   .grid-link span,

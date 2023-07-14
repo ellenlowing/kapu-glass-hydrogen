@@ -95,6 +95,7 @@ function sketch(p5) {
     let sparkles;
     
     let canvas;
+    let ladderMenu;
 
     let bgColor = '#000';
     let mainColor;
@@ -124,7 +125,7 @@ function sketch(p5) {
 
         console.log('initialized canvas');
         
-        let ladderMenu = document.getElementById('ladder-menu');
+        ladderMenu = document.getElementById('ladder-menu');
         let ladderCanvas = ladderMenu;
         const c = setPixelDensity(ladderCanvas);
         let roughLadder = rough.canvas(ladderCanvas);
