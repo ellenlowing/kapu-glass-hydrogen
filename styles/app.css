@@ -314,7 +314,8 @@
     stroke: #fbe106;
   }
 
-  #grid-link-0:hover .grid-link-path {
+  #grid-link-0:hover .grid-link-path,
+  #grid-link-0:active .grid-link-path {
     -webkit-filter: drop-shadow(0px 0px 30px #fbe106);
   }
 
@@ -322,7 +323,8 @@
     stroke: #FBAC00;
   }
 
-  #grid-link-1:hover .grid-link-path {
+  #grid-link-1:hover .grid-link-path,
+  #grid-link-1:active .grid-link-path{
     -webkit-filter: drop-shadow(0px 0px 30px #FBAC00);
   }
 
@@ -330,14 +332,16 @@
     stroke: #b8b8ff;
   }
 
-  #grid-link-2:hover .grid-link-path {
+  #grid-link-2:hover .grid-link-path,
+  #grid-link-2:active .grid-link-path {
     -webkit-filter: drop-shadow(0px 0px 30px #b8b8ff);
   }
 
   #grid-link-3 .grid-link-path {
     stroke: #40c945;
   }
-  #grid-link-3:hover .grid-link-path {
+  #grid-link-3:hover .grid-link-path,
+  #grid-link-3:active .grid-link-path {
     -webkit-filter: drop-shadow(0px 0px 30px #40c945);
   }
 }

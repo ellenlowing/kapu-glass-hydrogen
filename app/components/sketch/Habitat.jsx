@@ -35,16 +35,21 @@ export default class Habitat {
     addImage(img) {
         let tempImage = this.p5.createImage(img.width, img.height);
         tempImage.copy(img, 0, 0, img.width, img.height, 0, 0, img.width, img.height);
-        if(this.p5.width > this.p5.height) {
+        if((this.p5.width / this.p5.height) >= 1.2) {
+            // landscape
             tempImage.resize(0, this.p5.height / 2 * 0.5 * this.pixelDensity);
-        } else {
+        } else if ((this.p5.height / this.p5.width) >= 1.2) {
+            //portrait
             tempImage.resize(this.p5.width / 2 * 0.5 * this.pixelDensity, 0);
+        } else {
+            //square
+            tempImage.resize(0, this.p5.height / 2 * 0.4 * this.pixelDensity);
         }
 
         let w = tempImage.width;
         let h = tempImage.height;
         let rx = this.p5.width / 2 * 0.8;
-        let ry = this.p5.height / 2 * 0.7;
+        let ry = this.p5.height / 2 * 0.8;
         let x = rx * Math.cos(Math.PI * 2 / (this.imagesCount) * this.imagesIndex) + (this.p5.width - w / this.pixelDensity) / 2;
         let y = ry * Math.sin(Math.PI * 2/ (this.imagesCount) * this.imagesIndex) + (this.p5.height - h / this.pixelDensity) / 2;
 

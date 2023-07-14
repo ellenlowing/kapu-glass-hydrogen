@@ -14,16 +14,14 @@ export function Layout({children, title}) {
     useEffect(() => {
       if(location.pathname == '/') {
         setIsHome(true);
-      } else {
-        setIsHome(false);
-      }
-
-      if(isHome) {
         setTimeout(() => {
           setLoading(false);
-        }, 2000);
+        }, 1500);
+        console.log('1 is home')
       } else {
+        setIsHome(false);
         setLoading(false);
+        console.log('1 is not home')
       }
     }, [location])
 
@@ -57,10 +55,10 @@ export function Layout({children, title}) {
           id="mainContent"
           className={`flex-grow ${isMobile ? 'select-none' : ''}`}
         >
-          <div id="loading-text" className={`w-full select-none fa text-uppercase ${isMobile ? 'text-xl w-[80%]' : 'text-3xl'} leading-relaxed absolute text-center top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${isHome ? 'visible' : 'hidden'} transition ease-in-out duration-[1000ms] ${loading ? 'opacity-100' : 'opacity-0'}`}>
+          <div id="loading-text" className={`w-full select-none fa text-uppercase ${isMobile ? 'text-xl w-[80%]' : 'text-3xl w-[80%]'} leading-relaxed absolute text-center top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] ${isHome ? 'visible' : 'hidden'} transition ease-in-out duration-[1000ms] ${loading ? 'opacity-100' : 'opacity-0'}`}>
             Right here is a good place to start
           </div> 
-          <div className={`${isHome ? 'transition ease-in-out duration-[1000ms] delay-500' : ''} ${!loading ? 'opacity-100' : 'opacity-0'}`}>
+          <div className={`${isHome ? 'transition-opacity ease-in-out duration-[1000ms] delay-500' : ''} ${!loading ? 'opacity-100' : 'opacity-0'}`}>
             {children}
             <Sketch/>
           </div>
