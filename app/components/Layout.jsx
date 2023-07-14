@@ -12,10 +12,13 @@ export function Layout({children, title}) {
     const location = useLocation();
 
     useEffect(() => {
+      console.log(location.pathname.length);
       if(location.pathname == '/') {
         setIsHome(true);
+        console.log('is home')
       } else {
         setIsHome(false);
+        console.log('not home')
       }
 
       if(isHome) {
@@ -25,7 +28,6 @@ export function Layout({children, title}) {
       } else {
         setLoading(false);
       }
-      console.log(location.pathname);
     }, [location])
 
     return (
@@ -39,7 +41,7 @@ export function Layout({children, title}) {
             <img id="logo" className="h-full" src={logo}></img>
           </Link>
           
-          <div className={` ${isHome ? 'hidden' : 'visible'}`}>
+          <div className={` ${isHome ? 'opacity-0' : 'opacity-100'}`}>
             <nav id="nav" className={`fixed z-[70] h-[40px]`}>
               <Link id="nav-link-0" to="/collections/vessels" className=" cursor-pointer nav-link">vessels</Link>
               <Link id="nav-link-1" to="/collections/accessories" className=" cursor-pointer nav-link">accessories</Link>
@@ -50,9 +52,12 @@ export function Layout({children, title}) {
               <Link id="nav-link-6" to="/cart" className=" cursor-pointer nav-link">cart{cart?.totalQuantity > 0 && `(${cart?.totalQuantity})`}</Link>
               <a id="menu-switch" className=" cursor-pointer nav-link">menu</a>
             </nav>
+            <canvas id="ladder-menu" className={`fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px] z-[60] mix-blend-multiply `}></canvas>
+
           </div>
+
+          <div className="absolute top-[0] right-[0] z-[99]">{isHome}</div>
         
-          <canvas id="ladder-menu" className={`fixed w-[160px] h-[320px] top-[0] right-[5vw] translate-y-[-280px] z-[60] mix-blend-multiply ${isHome ? 'hidden' : 'visible'}`}></canvas>
         </header>
 
         <main
