@@ -15,7 +15,9 @@ export default function About() {
                 About kapu
             </h2>
             <div className="w-full">
-                Kapu is a project in glass and design. Kapu exchanges worldwide, born in Brooklyn with a home base in Sydney. <br></br>Say hi at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
+                Kapu is a project in glass and design. Kapu exchanges worldwide, born in Brooklyn with a home base in Sydney. 
+                <br></br>Say hi at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
+                <br></br>Follow <a href="https://www.instagram.com/kapu.glass/">@kapu.glass</a> on Instagram.
             </div>
             {/* <img className="w-full max-w-[400px] pt-10" src={portrait}></img> */}
 
