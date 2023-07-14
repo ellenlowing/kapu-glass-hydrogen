@@ -19,7 +19,6 @@ import Cloud from './Cloud';
 import BubbleEmitter from './BubbleEmitter';
 import Sparkle from './Sparkle';
 import Habitat from './Habitat';
-import fa from '../../../public/fonts/FA_TEEQGAFPBI_cleaned.ttf';
 
 export async function loader({context}) {
     const {product} = await context.storefront.query(FEATURED_PRODUCT_QUERY);
@@ -105,10 +104,6 @@ function sketch(p5) {
 
     let sampleDuration = 500, duration = 0, frames = 0, averageFPS;
 
-    // let faFont = null;
-    // let faFontLoaded = false;
-    // let titlePoints;
-
     p5.updateWithProps = async props => {
         waitForElm('#defaultCanvas0').then(() => {
             habitat.imagesCount = props.links.length;
@@ -143,11 +138,6 @@ function sketch(p5) {
             p5,
             rc
         );
-
-        // faFont = p5.loadFont(`${fa}`, font => {
-        //     console.log('success!');
-        //     faFontLoaded = true;
-        // });
 
         mousePath = new Path(p5);
 
@@ -286,11 +276,6 @@ function sketch(p5) {
                 // home
                 habitat.update();
                 habitat.show();
-
-                // if(faFontLoaded) {
-                    // if(deviceMultiplier == 1) drawRoughTitle(p5.width/2, p5.height/2);
-                    // else drawRoughTitle(p5.width/2, 0);
-                // }
             } else if (urlPath.indexOf('collections') != -1 && urlPath.length > 1) {
                 slide.show(mainColor);
                 if(urlPath.indexOf('vessels') != -1) {
@@ -480,35 +465,6 @@ function sketch(p5) {
         // ladder.resize();
         ladder.show();
     }
-
-    // function drawRoughTitle(x, y) {
-    //     let string = 'RIGHT HERE IS A GOOD PLACE TO START';
-    //     let fontSize = deviceMultiplier == 1 ? 36 : 36;
-    //     let fontSpacing = deviceMultiplier == 1 ? fontSize / 3 * 2 : 12;
-    //     titlePoints = [];
-    //     for(let i = 0; i < string.length; i++) {
-    //         titlePoints.push(faFont.textToPoints(string.charAt(i), 0, 0, fontSize));
-    //     }
-    //     let letterOffset = 0;
-    //     let slantedOffset = 0;
-    //     let midPointOffset = string.length * fontSpacing / 2;
-    //     for(let letter of titlePoints) {
-    //         let roughPoints = [];
-    //         for(let pt of letter) {
-    //             roughPoints.push([pt.x + x + letterOffset - midPointOffset, pt.y + y + slantedOffset]);
-    //         }
-    //         if(roughPoints.length > 0) {
-    //             rc.curve(roughPoints, {
-    //                 disableMultiStroke: true,
-    //                 roughness: deviceMultiplier,
-    //             });
-    //         }
-    //         letterOffset += fontSpacing;
-    //         if(deviceMultiplier != 1) {
-    //             slantedOffset += fontSpacing * 1.5;
-    //         }
-    //     }
-    // }
 
     function setupBubbleEmitters() {
         bubbleEmitters = [];
