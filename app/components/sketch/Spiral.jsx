@@ -20,7 +20,7 @@ export default class Spiral {
         this.stepCount = stepCount;
         this.upperbound = 1.8;
         this.lowerbound = 0.2;
-        this.angleDiv = this.p5.random(this.lowerbound, this.upperbound);
+        this.angleDiv = this.lowerbound;
         this.speed = this.p5.random(0.001, 0.01);
         this.halfspeed = this.speed / 2;
         this.countUp = true;
