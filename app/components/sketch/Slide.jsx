@@ -123,7 +123,7 @@ export default class Slide {
             this.caterpillarHelpPathLength = this.caterpillarHelpPath.getTotalLength();
             this.caterpillarHelpAttrW = Number(this.caterpillarHelpSvg.getAttribute("width"));
             this.caterpillarHelpAttrH = Number(this.caterpillarHelpSvg.getAttribute("height"));
-            // this.resize();
+            this.resize();
             if(this.caterpillarTouched) {
                 this.hideCaterpillarCTA()
                 this.setOpacity(this.caterpillarHelpText, 0);

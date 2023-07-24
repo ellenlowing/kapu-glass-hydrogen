@@ -484,14 +484,20 @@ function sketch(p5) {
     // grab average frame rate with deltaTime
     // set update rate
     function getAverageFPS() {
-        duration += p5.deltaTime;
-        frames += 1;
-        if(duration >= sampleDuration) {
-            averageFPS = frames / duration * 1000;
-            roughFPS = Math.floor(averageFPS / 6); // target at 6 frames per second
-            duration = 0;
-            frames = 0; 
+        if(p5.millis() >= 5000) {
+            duration += p5.deltaTime;
+            frames += 1;
+            if(duration >= sampleDuration) {
+                averageFPS = frames / duration * 1000;
+                roughFPS = Math.floor(averageFPS / 6); // target at 6 frames per second
+                duration = 0;
+                frames = 0; 
+            }
+        } else {
+            if(deviceMultiplier == 0.5) roughFPS = 5;
+            else roughFPS = 10;
         }
+        
     }
 
     function lerpColor(colorA, colorB, t) {
