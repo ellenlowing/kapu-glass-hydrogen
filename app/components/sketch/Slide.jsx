@@ -41,6 +41,7 @@ export default class Slide {
         this.magazineScrollRanges = magazineScrollRanges;
         this.bubbleTriggers = [false, false, false, false];
         this.caterpillarTouched = false;
+        this.firstDrawn = false;
     }
 
     async setup(collectionName) {
@@ -61,6 +62,7 @@ export default class Slide {
             waitForElm('#caterpillar-help-svg'),
         ]).then((values) => {
             this.slideInitialized = true;
+            this.firstDrawn = false;
 
             // svg stuff
             this.svg = values[0];
@@ -121,9 +123,10 @@ export default class Slide {
             this.caterpillarHelpPathLength = this.caterpillarHelpPath.getTotalLength();
             this.caterpillarHelpAttrW = Number(this.caterpillarHelpSvg.getAttribute("width"));
             this.caterpillarHelpAttrH = Number(this.caterpillarHelpSvg.getAttribute("height"));
-            this.resize();
+            // this.resize();
             if(this.caterpillarTouched) {
-                hide(this.caterpillarHelpText);
+                this.hideCaterpillarCTA()
+                this.setOpacity(this.caterpillarHelpText, 0);
             } else {
                 setTimeout(() => {
                     this.hideCaterpillarCTA()
@@ -264,17 +267,24 @@ export default class Slide {
     }
 
     show(color) {
-        if(color) {
-            this.roughStyle.stroke = color;
-            this.roughBboxStyle.stroke = this.secondaryColor;
-            this.roughBubbleStyle.stroke = color;
-            this.p5.stroke(color);
-        }
-        this.rc.curve(this.points, this.roughStyle);
+        if(this.slideInitialized) {
+            if(!this.firstDrawn) {
+                this.firstDrawn = true;
+                this.resize();
+            }
 
-        // draw help text
-        if(this.roughBboxStyle.strokeWidth > 0) {
-            this.rc.curve(this.helpPoints, this.roughBboxStyle);
+            if(color) {
+                this.roughStyle.stroke = color;
+                this.roughBboxStyle.stroke = this.secondaryColor;
+                this.roughBubbleStyle.stroke = color;
+                this.p5.stroke(color);
+            }
+            this.rc.curve(this.points, this.roughStyle);
+    
+            // draw help text
+            if(this.roughBboxStyle.strokeWidth > 0) {
+                this.rc.curve(this.helpPoints, this.roughBboxStyle);
+            }
         }
     }
 
@@ -285,14 +295,10 @@ export default class Slide {
     setScrollProgress(clientX) {
         let caterpillarHoverProgress = this.p5.constrain((clientX - this.caterpillarBbox.x) / this.caterpillarBbox.width, 0, 1);
         this.scrollProgress = caterpillarHoverProgress * this.pathLengthOffset * this.numProducts;
-        if(!this.caterpillarTouched) {
-            this.caterpillarTouched = true;
-            this.hideCaterpillarCTA();
-        }
     }
 
     hideCaterpillarCTA() {
-        if(!this.caterpillarCTAHidden) {
+        if(!this.caterpillarTouched) {
             let opacity = 1;
             let caterpillarInterval = setInterval(() => {
                 opacity -= 0.05;
@@ -303,7 +309,7 @@ export default class Slide {
                     this.roughBboxStyle.strokeWidth = 0;
                 }
             }, 20);
-            this.caterpillarCTAHidden = true;
+            this.caterpillarTouched = true;
         }
     }
 
@@ -328,8 +334,7 @@ export default class Slide {
         
         // resize caterpillar things
         this.caterpillarBbox = this.caterpillarIndicator.getBoundingClientRect();
-        if(isBrowser) this.caterpillarHelpText.style.left = `${this.caterpillarBbox.right}px`;
-        this.caterpillarHelpBbox = this.caterpillarHelpText.getBoundingClientRect();
+        this.caterpillarHelpBbox = this.caterpillarHelpText.getBoundingClientRect(); // incorrect on load if page is loaded on other pages first
         this.caterpillarHelpDisplayOffset = this.p5.createVector(this.caterpillarHelpBbox.x, this.caterpillarHelpBbox.y);
         this.helpPoints = [];
         for(let i = 0; i <= slideSteps; i++) {

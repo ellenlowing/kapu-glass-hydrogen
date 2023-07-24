@@ -31,10 +31,10 @@ export default function About() {
             </div>
 
             <h2 className="font-bold text-lead pt-24 pb-6 fa text-4xl">
-                newsletter signup
+                newsletter
             </h2>
-            <div className="text-red-400">
-                Add mailchimp signup form here
+            <div className="">
+                Subscribe on Substack. 
             </div>
         </section>
     );

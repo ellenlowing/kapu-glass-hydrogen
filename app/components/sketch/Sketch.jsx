@@ -36,6 +36,7 @@ export default function Sketch() {
 
     useEffect(() => {
         setIsSSR(false);
+
     }, [])
 
     return (

@@ -4,7 +4,30 @@ import SVGSlide from './SVGSlide';
 import {isMobile, isBrowser} from 'react-device-detect';
 
 export default function ProductGrid({collection}) {
+  const [orientation, setOrientation] = useState('landscape');
 
+  useEffect(() => {
+      if(typeof window !== 'undefined') {
+
+          const handleWindowResize = () => {
+              if((window.innerWidth / window.innerHeight) >= 1.2) {
+                  setOrientation('landscape');
+              } else if ((window.innerHeight / window.innerWidth) >= 1.2) {
+                  setOrientation('portrait');
+              } else {
+                  setOrientation('square');
+              }
+            };
+
+          handleWindowResize();
+        
+            window.addEventListener('resize', handleWindowResize);
+        
+            return () => {
+              window.removeEventListener('resize', handleWindowResize);
+            };
+      }
+  }, []);
   return (
     <>
       <section 
@@ -19,7 +42,7 @@ export default function ProductGrid({collection}) {
       </section>
 
       <div id="selected-product-info" className=" absolute text-center bottom-[20px] w-full bg-red-800 fa">
-        <h1 id="selected-product-title" className={`fa absolute text-left  bottom-0 leading-none max-w-[70%] font-bold ${isMobile ? 'text-[2em] left-[20px] ' : 'text-[3em] left-[20px]'}`} ></h1>
+        <h1 id="selected-product-title" className={`fa absolute text-left  bottom-0 leading-none max-w-[70%] ${isMobile ? 'text-[2em] left-[20px] font-bold' : 'text-[3em] left-[20px]'}`} ></h1>
         <span id="selected-product-price" className={`fa absolute text-right bottom-0  ${isMobile ? 'text-[1.2em] right-[20px] font-bold' : 'text-[2em] right-[20px]'}`}></span>
         <p className='fa absolute z-[-10] bottom-[-40px]'>preload</p>
       </div>
@@ -33,7 +56,7 @@ export default function ProductGrid({collection}) {
       </div>
       {isBrowser && 
         <>
-          <div id="caterpillar-help-text" className="select-none px-[1.8rem] pt-[1rem] pb-[1.8rem] text-left w-fit absolute bottom-[70px] translate-x-[-50%] director-bold text-md">
+          <div id="caterpillar-help-text" className="select-none px-[1.8rem] pt-[1rem] pb-[1.8rem] text-left w-fit absolute bottom-[70px] left-[60%] translate-x-[-50%] director-bold text-md">
             just scroll, or touch me with your cursor...
           </div>
           <svg id="caterpillar-help-svg" width="461" height="79" viewBox="0 0 461 79" fill="none" xmlns="http://www.w3.org/2000/svg">
