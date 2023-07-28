@@ -298,6 +298,7 @@
   .grid-link span:hover,
   .grid-link span:active {
     color: black;
+    -webkit-text-stroke: 0.1px black;
   }
 
   .grid-link-svg {
