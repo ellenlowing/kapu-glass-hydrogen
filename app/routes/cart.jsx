@@ -67,7 +67,6 @@ export async function action({request, context}) {
               lines,
               storefront,
           });
-          console.log(result)
           }
 
           cartId = result.cart.id;

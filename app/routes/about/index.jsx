@@ -17,7 +17,7 @@ export default function About() {
             <div className="w-full">
                 Kapu is a project in glass and design. Kapu exchanges worldwide, born in Brooklyn with a home base in Sydney. 
                 <br></br>Say hi at <a href="mailto:kapu.glass@gmail.com">kapu.glass@gmail.com</a>. 
-                <br></br>Follow <a href="https://www.instagram.com/kapu.glass/">@kapu.glass</a> on Instagram.
+                <br></br>Follow <a target="_blank" href="https://www.instagram.com/kapu.glass/">@kapu.glass</a> on Instagram.
             </div>
             {/* <img className="w-full max-w-[400px] pt-10" src={portrait}></img> */}
 
@@ -34,7 +34,7 @@ export default function About() {
                 newsletter
             </h2>
             <div className="">
-                Subscribe on Substack. 
+                Subscribe on <a target="_blank" href="https://substack.com/profile/158707134-kapu?utm_source=profile-page">Substack</a>.
             </div>
         </section>
     );

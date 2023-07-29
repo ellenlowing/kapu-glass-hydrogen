@@ -37,6 +37,7 @@ export const links = () => {
 export const meta = () => ({
   charset: 'utf-8',
   viewport: 'width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no',
+  google: 'notranslate'
 });
 
 export async function loader({context}) {
@@ -69,7 +70,7 @@ export default function App() {
   const {name} = layout.shop;
 
   return (
-    <html lang="en">
+    <html translate="no" lang="en">
       <head>
         <Seo />
         <Meta />
