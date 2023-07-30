@@ -45,7 +45,7 @@ export default class Butterfly {
         let reversedString = reversed.toString();
         this.roughStyle.stroke = reversedString;
         this.roughAntennaStyle.stroke = reversedString;
-        this.t += (0.001 / deviceMultiplier);
+        this.t += (0.0025 / deviceMultiplier);
         if(this.t >= 1) {
             this.t = 0;
             this.colorA = this.colorB;

@@ -358,15 +358,22 @@ function sketch(p5) {
 
         const urlPath = p5.getURLPath();
         if(urlPath.indexOf('products') != -1 || urlPath.indexOf('about') != -1 || urlPath.indexOf('cart') != -1) {
-            let color = butterfly.updateColor();
+            let color;
+            if(butterfly) {
+                color = butterfly.updateColor();
+            }
+            
             if(deviceMultiplier === 1) {
                 mousePath.addPoint(p5.mouseX, p5.mouseY);
                 if(mousePath.points.length > 3) {
                     mousePath.points.shift();
                     mousePath.angles.shift();
     
-                    let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
-                    sparkles.push(sparkle);
+                    if(butterfly)
+                    {
+                        let sparkle = new Sparkle(p5, rc, color, p5.createVector(mousePath.points[0].x, mousePath.points[0].y));
+                        sparkles.push(sparkle);
+                    }
                 }
                 if(sparkles.length > 120) {
                     sparkles.shift();
