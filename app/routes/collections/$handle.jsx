@@ -1,6 +1,7 @@
 import {useLoaderData} from '@remix-run/react';
 import {json} from '@shopify/remix-oxygen';
 import ProductGrid from '../../components/ProductGrid';
+import {AnalyticsPageType} from '@shopify/hydrogen';
 
 const seo = ({data}) => ({
     title: data?.collection?.title,
@@ -27,6 +28,10 @@ export async function loader({params, context}) {
   // https://remix.run/docs/en/v1/utils/json
   return json({
     collection,
+    analytics: {
+      pageType: AnalyticsPageType.collection,
+      collections: [collection]
+    }
   });
 }
 

@@ -5,7 +5,9 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useLocation
 } from '@remix-run/react';
+import {useEffect} from 'react';
 import styles from './styles/app.css';
 import customStyles from './styles/custom.css';
 import favicon from '../public/favicon.png';
@@ -15,6 +17,15 @@ import bootstrapStyles from 'bootstrap/dist/css/bootstrap.min.css';
 import resetStyles from './styles/reset.css';
 import { CART_QUERY } from './queries/cart.js';
 import {json} from 'react-router';
+import {useAnalyticsFromLoaders, useAnalyticsFromActions} from './utils';
+import {useShopifyCookies} from '@shopify/hydrogen';
+import {
+  AnalyticsEventName,
+  getClientBrowserParameters,
+  sendShopifyAnalytics,
+  ShopifySalesChannel,
+  useShopifyCookies,
+} from '@shopify/hydrogen';
 
 export const links = () => {
   return [
@@ -61,13 +72,34 @@ export async function loader({context}) {
   return json({
     layout,
     cart,
-    product
+    product,
+    analytics: {
+      shopId: layout.id
+    }
   });
 }
 
 export default function App() {
   const {layout} = useLoaderData();
   const {name} = layout.shop;
+  const location = useLocation();
+  const pageAnalytics = useAnalyticsFromLoaders();
+  const analyticsFromActions = useAnalyticsFromActions();
+  useShopifyCookies({hasUserConsent: true});
+
+  useEffect(() => {
+    const payload = {
+      ...getClientBrowserParameters(),
+      ...pageAnalytics,
+      hasUserConsent,
+      shopifySalesChannel: ShopifySalesChannel.hydrogen,
+    };
+
+    sendShopifyAnalytics({
+      eventName: AnalyticsEventName.PAGE_VIEW,
+      payload,
+    });
+  }, [location]);
 
   return (
     <html translate="no" lang="en">
@@ -92,6 +124,7 @@ const LAYOUT_QUERY = `#graphql
     shop {
       name
       description
+      id
     }
   }
 `;

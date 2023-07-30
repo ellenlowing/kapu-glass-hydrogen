@@ -27,7 +27,12 @@ export async function loader({context}) {
       ).cart
     : null;
 
-  return {cart};
+  return json({
+    cart,
+    analytics: {
+      cartId
+    }
+  })
 }
 
 export async function action({request, context}) {

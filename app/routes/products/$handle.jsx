@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import {useMatches, useFetcher} from '@remix-run/react';
 import {isMobile} from 'react-device-detect';
 import { CART_QUERY } from '../../queries/cart';
+import {AnalyticsPageType} from '@shopify/hydrogen';
 
 const seo = ({data}) => ({
   title: data?.product?.title,
@@ -52,13 +53,17 @@ export const loader = async ({params, context, request}) => {
   return json({
       product,
       selectedVariant,
-      cart
+      cart,
+      analytics: {
+        pageType: AnalyticsPageType.product,
+        products: [product]
+      }
   });
 }
 
 
 export default function ProductHandle() {
-    const {product, selectedVariant, cart} = useLoaderData();
+    const {product, selectedVariant, cart, productAnalytics} = useLoaderData();
     const {price, compareAtPrice} = product.variants?.nodes[0] || {};
     const [cartQuantity, setCartQuantity] = useState(cart?.totalQuantity);
     const [cartAdded, setCartAdded] = useState(false);
@@ -126,7 +131,7 @@ export default function ProductHandle() {
                       />
                       {(price?.amount > 0 && availableForSale) && 
                         <div className={`py-[0px] lg:py-16 self-end place-self-end lg:self-start lg:place-self-start ${isMobile ? 'pt-12' : ''}`}>
-                          <ProductForm variantId={selectedVariant?.id} />
+                          <ProductForm variantId={selectedVariant?.id} productAnalytics={productAnalytics} />
                           {cartAdded && <span className="inline-block px-4">Added!</span>}
                         </div>
                       }
@@ -139,12 +144,17 @@ export default function ProductHandle() {
     );
 }
 
-function ProductForm({variantId}) {
+function ProductForm({variantId, productAnalytics}) {
   const [root] = useMatches();
   const selectedLocale = root?.data?.selectedLocale;
   const fetcher = useFetcher();
 
   const lines = [{merchandiseId: variantId, quantity: 1}];
+
+  const analytics = {
+    event: 'addToCart',
+    products: [productAnalytics]
+  };
 
   return (
     <fetcher.Form action="/cart" method="post" className="inline-block">
@@ -155,7 +165,8 @@ function ProductForm({variantId}) {
         value={selectedLocale?.country ?? 'US'}
       />
       <input type="hidden" name="lines" value={JSON.stringify(lines)} />
-      <button className="border-[#000000] border-[1px] py-1 px-2 font-medium max-w-[400px] hover:bg-black hover:text-white">
+      <input type="hidden" name="analytics" value={JSON.stringify(analytics)}/>
+      <button type="submit" className="border-[#000000] border-[1px] py-1 px-2 font-medium max-w-[400px] hover:bg-black hover:text-white">
         Add to Cart
       </button>
     </fetcher.Form>
