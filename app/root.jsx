@@ -18,7 +18,6 @@ import resetStyles from './styles/reset.css';
 import { CART_QUERY } from './queries/cart.js';
 import {json} from 'react-router';
 import {useAnalyticsFromLoaders, useAnalyticsFromActions} from './utils';
-import {useShopifyCookies} from '@shopify/hydrogen';
 import {
   AnalyticsEventName,
   getClientBrowserParameters,
@@ -91,7 +90,6 @@ export default function App() {
     const payload = {
       ...getClientBrowserParameters(),
       ...pageAnalytics,
-      hasUserConsent,
       shopifySalesChannel: ShopifySalesChannel.hydrogen,
     };
 
