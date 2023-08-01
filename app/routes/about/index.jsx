@@ -25,9 +25,9 @@ export default function About() {
                 Credits
             </h2>
             <div className="">
-                Site by Ellen Lo <br></br>
-                Logo by Roshan Ramesh <br></br>
-                Portrait by Neil Kumar
+                Site by <a target="_blank" href="https://ellenlowing.com/">Ellen Lo</a> <br></br>
+                Logo by <a target="_blank" href="https://www.roshanramesh.com/">Roshan Ramesh</a> <br></br>
+                Portrait by <a target="_blank"  href="https://neil-kumar.co/">Neil Kumar</a>
             </div>
 
             <h2 className="font-bold text-lead pt-24 pb-6 fa text-4xl">
