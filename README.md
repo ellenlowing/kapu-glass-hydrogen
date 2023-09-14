@@ -27,7 +27,7 @@ Each slide shape is saved in an SVG, so the positions on slide can be obtained b
 
 #### Caterpillars
 
-![caterpillars](https://i.giphwy.com/media/BHL1gJGg0hPI8Gt881/giphy-downsized-large.gif)
+![caterpillars](https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYjVvczlyOG5xamVuOGc1dDRsdmhhbWsxOWk5cHoyZ280MTE1amIycSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BHL1gJGg0hPI8Gt881/giphy-downsized.gif)
 
 Caterpillars "munch" at the featured images on the homepage. 
 
