@@ -1,42 +1,15 @@
-# Hydrogen template: Hello World
+# Kapu's Playground
 
-Hydrogen is Shopify’s stack for headless commerce. Hydrogen is designed to dovetail with [Remix](https://remix.run/), Shopify’s full stack web framework. This template contains a **minimal setup** of components, queries and tooling to get started with Hydrogen.
+An interactive storefront for Kapu: a playground and shop where you watch caterpillars munch and slide glass.
 
-[Check out Hydrogen docs](https://shopify.dev/custom-storefronts/hydrogen)
-[Get familiar with Remix](https://remix.run/docs/en/v1)
+## Libraries + Frameworks
 
-## What's included
-
-- Remix
-- Hydrogen
-- Oxygen
-- Shopify CLI
-- ESLint
-- Prettier
-- GraphQL generator
-- TypeScript and JavaScript flavors
-- Minimal setup of components and routes
-
-## Getting started
-
-**Requirements:**
-
-- Node.js version 16.14.0 or higher
-
-```bash
-npm create @shopify/hydrogen@latest --template hello-world
-```
-
-Remember to update `.env` with your shop's domain and Storefront API token!
-
-## Building for production
-
-```bash
-npm run build
-```
-
-## Local development
-
-```bash
-npm run dev
-```
+- `Hydrogen`: Shopify's framework that contains Remix optimized components and integrated Storefront API
+- `Remix`: for smooth data fetching and rendering
+- `GraphQL`: for querying Shopify data
+- `p5.js`: for its neat vector math support
+- `Rough.js`: for the hipness purgatory look
+- `TailwindCSS`: for styling
+- `React`
+- `Node.js`
+- `JavaScript`
